@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <PageContainer>
       <PageHeader
-        title="Welcome to Crusoe Tech"
+        title="Welcome to Crusoe Techs"
         description="Professional technology solutions for your business."
       />
       <Section title="Hero Section">
