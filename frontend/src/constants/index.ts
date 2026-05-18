@@ -1,5 +1,7 @@
+/** Production API — override via NEXT_PUBLIC_API_URL in .env.local */
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+  process.env.NEXT_PUBLIC_API_URL ??
+  "https://crusoe-nhbu.onrender.com/api";
 
 export const ROUTES = {
   home: "/",
