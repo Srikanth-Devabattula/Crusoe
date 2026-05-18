@@ -20,9 +20,17 @@ const app = express();
 // Required behind Render/Railway reverse proxy
 app.set("trust proxy", 1);
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
-app.use(cors(getCorsOptions()));
+
+const corsOptions = getCorsOptions();
+app.use(cors(corsOptions));
+// Explicit preflight for all API routes
+app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

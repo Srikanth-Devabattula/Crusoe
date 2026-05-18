@@ -1,20 +1,16 @@
-const DEFAULT_ORIGINS = ["http://localhost:3000"];
+/** Origins always allowed (local dev calling production API) */
+const DEV_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"];
 
 /**
- * Allowed origins from CLIENT_URL (comma-separated).
+ * Allowed origins from CLIENT_URL (comma-separated) + dev defaults
  * Example: http://localhost:3000,https://your-app.vercel.app
  */
 function getAllowedOrigins() {
-  const fromEnv = process.env.CLIENT_URL;
+  const fromEnv =
+    process.env.CLIENT_URL?.split(",").map((o) => o.trim()).filter(Boolean) ||
+    [];
 
-  if (!fromEnv?.trim()) {
-    return DEFAULT_ORIGINS;
-  }
-
-  return fromEnv
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean);
+  return [...new Set([...DEV_ORIGINS, ...fromEnv])];
 }
 
 function getCorsOptions() {
@@ -22,7 +18,7 @@ function getCorsOptions() {
 
   return {
     origin(origin, callback) {
-      // Allow server-to-server, Postman, mobile apps (no Origin header)
+      // Postman, server-to-server, same-origin
       if (!origin) {
         return callback(null, true);
       }
@@ -31,9 +27,18 @@ function getCorsOptions() {
         return callback(null, true);
       }
 
-      return callback(new Error(`CORS blocked for origin: ${origin}`));
+      // Do not pass Error — that becomes 403 via error middleware
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(
+          `CORS: blocked origin "${origin}". Allowed: ${allowedOrigins.join(", ")}`
+        );
+      }
+      return callback(null, false);
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 204,
   };
 }
 

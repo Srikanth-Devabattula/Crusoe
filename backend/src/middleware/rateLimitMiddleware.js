@@ -1,5 +1,7 @@
 const rateLimit = require("express-rate-limit");
 
+const skipOptions = (req) => req.method === "OPTIONS";
+
 /**
  * General API rate limiter
  */
@@ -12,6 +14,7 @@ const apiLimiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
+  skip: skipOptions,
 });
 
 /**
@@ -24,6 +27,7 @@ const authLimiter = rateLimit({
     success: false,
     message: "Too many login attempts, please try again later.",
   },
+  skip: skipOptions,
 });
 
 module.exports = { apiLimiter, authLimiter };
