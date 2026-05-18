@@ -1,0 +1,6 @@
+/* Design tokens — extend when building final UI */
+
+:root {
+  --color-primary: #171717;
+  --color-muted: #6b7280;
+}
