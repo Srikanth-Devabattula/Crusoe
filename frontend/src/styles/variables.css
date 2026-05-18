@@ -1,6 +1,7 @@
-/* Design tokens — extend when building final UI */
+/* Design tokens */
 
 :root {
   --color-primary: #171717;
   --color-muted: #6b7280;
+  --font-sans-fallback: "Roboto", system-ui, sans-serif;
 }

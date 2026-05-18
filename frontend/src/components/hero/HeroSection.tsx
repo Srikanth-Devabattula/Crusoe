@@ -64,7 +64,7 @@ export function HeroSection() {
             <motion.h1
               custom={0.12}
               variants={fadeUp}
-              className="mt-6 text-[32px] font-bold leading-[1.08] tracking-tight text-gray-900 sm:text-[44px] lg:text-[38px] xl:text-[46px] 2xl:text-[50px]"
+              className="text-heading mt-6 text-[32px] leading-[1.08] sm:text-[44px] lg:text-[38px] xl:text-[46px] 2xl:text-[50px]"
             >
               Building Reliable Software.{" "}
               <span className="text-brand">Delivering Real Impact.</span>
@@ -73,7 +73,7 @@ export function HeroSection() {
             <motion.p
               custom={0.2}
               variants={fadeUp}
-              className="mt-5 text-xs leading-relaxed text-gray-600 sm:text-sm lg:max-w-2xl lg:text-[13px] xl:max-w-none"
+              className="text-description mt-5 lg:max-w-2xl xl:max-w-none"
             >
               We deliver quality assurance, test automation, CAD customization
               and software tooling solutions that drive performance, reliability

@@ -1,3 +1,5 @@
+@import "../styles/variables.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -19,6 +21,7 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
+  font-family: var(--font-sans), var(--font-sans-fallback);
 }
 
 /* Themed scrollbar — no arrow buttons (WebKit/Blink) */
@@ -74,7 +77,16 @@ body {
   }
 
   .page-subheading {
-    @apply mt-2 text-lg text-gray-600;
+    @apply text-description mt-2 sm:text-base lg:text-[15px];
+  }
+
+  /** Hero + card body copy — keep left and slider descriptions in sync */
+  .text-description {
+    @apply font-sans text-xs font-normal leading-relaxed text-gray-600 sm:text-sm lg:text-[13px];
+  }
+
+  .text-heading {
+    @apply font-sans font-bold tracking-tight text-gray-900;
   }
 }
 

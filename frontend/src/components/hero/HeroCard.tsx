@@ -68,13 +68,13 @@ export function HeroCard({ slide, isActive = false, className }: HeroCardProps) 
             />
           </div>
 
-          <h3 className="mt-4 text-lg font-bold tracking-tight text-gray-900 sm:text-xl lg:text-[1.35rem]">
+          <h3 className="text-heading mt-4 text-xl sm:text-2xl lg:text-[1.5rem]">
             {slide.title}
           </h3>
 
           <span className="mt-3 block h-1 w-12 rounded-full bg-brand" aria-hidden />
 
-          <p className="mt-4 text-xs leading-relaxed text-gray-600 sm:text-[13px] lg:max-w-md lg:text-xs">
+          <p className="text-description mt-4 lg:max-w-md">
             {slide.description}
           </p>
 
