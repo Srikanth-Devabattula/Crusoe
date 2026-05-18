@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -18,9 +19,14 @@ const app = express();
 // Security & logging middleware
 app.use(helmet());
 app.use(morgan("dev"));
+const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
@@ -48,9 +54,20 @@ app.get("/", (req, res) => {
   });
 });
 
-// Health check
+// Health check (includes DB status for deploy probes)
 app.get("/api/health", (req, res) => {
-  res.json({ success: true, message: "API is running" });
+  const dbConnected = mongoose.connection.readyState === 1;
+
+  res.status(dbConnected ? 200 : 503).json({
+    success: dbConnected,
+    message: dbConnected
+      ? "API is running"
+      : "API up but database not connected",
+    database: {
+      connected: dbConnected,
+      name: mongoose.connection.name || null,
+    },
+  });
 });
 
 // Static uploads (resumes)
