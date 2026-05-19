@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 
 import { HeroSection } from "@/components/hero";
-import { PageContainer } from "@/components/common/PageContainer";
-import { Section } from "@/components/common/Section";
+import {
+  AchievementsSection,
+  LogosSection,
+  OurServicesSection,
+  WhyChooseUsSection,
+  TestimonialsSection,
+  StartAConvoSection,
+} from "@/components/home";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -14,11 +20,12 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <PageContainer>
-        <Section title="Featured Services">
-          <p className="text-gray-600">Services preview placeholder.</p>
-        </Section>
-      </PageContainer>
+      <AchievementsSection />
+      <LogosSection />
+      <OurServicesSection />
+      <WhyChooseUsSection />
+      <TestimonialsSection />
+      <StartAConvoSection />
     </>
   );
 }

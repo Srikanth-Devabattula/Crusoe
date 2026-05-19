@@ -21,6 +21,11 @@ const config: Config = {
           muted: "#E8F5DC",
           glow: "rgba(108, 191, 42, 0.35)",
         },
+        nav: {
+          DEFAULT: "var(--color-navbar)",
+          border: "var(--color-navbar-border)",
+          hover: "var(--color-navbar-hover)",
+        },
       },
       boxShadow: {
         "hero-card":

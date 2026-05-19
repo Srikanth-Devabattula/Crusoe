@@ -3,5 +3,8 @@
 :root {
   --color-primary: #171717;
   --color-muted: #6b7280;
+  --color-navbar: #fdfeff;
+  --color-navbar-border: #e8edf3;
+  --color-navbar-hover: #f2f6fa;
   --font-sans-fallback: "Roboto", system-ui, sans-serif;
 }

@@ -82,7 +82,7 @@ body {
 
   /** Hero + card body copy — keep left and slider descriptions in sync */
   .text-description {
-    @apply font-sans text-xs font-normal leading-relaxed text-gray-600 sm:text-sm lg:text-[13px];
+    @apply font-sans text-xs font-normal leading-relaxed text-gray-600 sm:text-sm lg:text-[16px];
   }
 
   .text-heading {
@@ -116,4 +116,13 @@ body {
 
 .hero-swiper .swiper-slide-active .hero-card-inner {
   @apply scale-[1.01];
+}
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    linear-gradient(135deg, rgba(8, 117, 225, 0.08), transparent 26%),
+    linear-gradient(315deg, rgba(67, 176, 42, 0.08), transparent 26%),
+    #f6f9fc;
 }

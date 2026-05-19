@@ -40,6 +40,7 @@ export function Navbar() {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
+
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
 
@@ -52,11 +53,9 @@ export function Navbar() {
       if (currentY <= TOP_REVEAL_OFFSET) {
         setNavVisible(true);
       } else if (currentY > lastScrollY.current + SCROLL_DELTA) {
-        // Scrolling down — hide navbar
         setNavVisible(false);
         setMobileOpen(false);
       } else if (currentY < lastScrollY.current - SCROLL_DELTA) {
-        // Scrolling up — show navbar
         setNavVisible(true);
       }
 
@@ -71,8 +70,12 @@ export function Navbar() {
       }
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, {
+      passive: true,
+    });
+
+    return () =>
+      window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -88,56 +91,65 @@ export function Navbar() {
   }, [mobileOpen]);
 
   return (
-    <header
-      className={cn(
-        "fixed left-0 right-0 top-0 z-50 border-b border-transparent bg-white/95 backdrop-blur-md transition-transform duration-300 ease-in-out will-change-transform",
-        navVisible ? "translate-y-0 shadow-sm" : "-translate-y-full"
-      )}
-    >
-      <nav className="hero-container">
-        <div className="flex h-[72px] items-center gap-3 sm:h-[78px] lg:h-[84px] xl:h-[88px]">
+    <>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 px-3 pt-4 sm:px-5",
+          navVisible
+            ? "translate-y-0"
+            : "-translate-y-full",
+          "transition-transform duration-300 ease-in-out"
+        )}
+      >
+        <nav className="mx-auto w-[90%] rounded-[28px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.1)]">
+          <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-5">
           {/* Logo */}
-          <Link href={ROUTES.home} className="relative z-10 shrink-0">
+          <Link
+            href={ROUTES.home}
+            className="shrink-0 outline-none"
+          >
             <Image
               src="/images/global/logo.png"
               alt="Crusoe Tech"
               width={220}
               height={70}
               priority
-              className="h-auto w-[128px] sm:w-[148px] md:w-[168px] lg:w-[172px] xl:w-[190px] 2xl:w-[205px]"
+              className="h-auto w-[130px] sm:w-[150px] md:w-[165px] lg:w-[180px]"
             />
           </Link>
 
-          {/* Desktop links — centered in remaining space */}
-          <div className="hidden min-w-0 flex-1 lg:flex lg:justify-center xl:px-2">
-            <ul className="flex items-center gap-5 lg:gap-6 xl:gap-7 2xl:gap-8">
+          {/* Desktop Menu */}
+          <div className="hidden flex-1 justify-center lg:flex">
+            <ul className="flex items-center gap-1">
               {navLinks.map((link) => {
                 const isActive =
                   pathname === link.href ||
-                  (link.href !== "/" && pathname.startsWith(link.href));
+                  (link.href !== "/" &&
+                    pathname.startsWith(link.href));
 
                 return (
-                  <li key={link.href} className="relative shrink-0 px-0.5 lg:px-1">
+                  <li key={link.href}>
                     <Link
                       href={link.href}
                       className={cn(
-                        "group relative flex items-center gap-0.5 whitespace-nowrap text-[13px] font-medium transition-colors duration-300 xl:text-[14px]",
+                        "group relative inline-flex h-11 items-center gap-1 px-4 text-[13px] font-bold uppercase tracking-[0.08em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2",
                         isActive
                           ? "text-brand"
-                          : "text-[#2D3748] hover:text-brand"
+                          : "text-slate-700 hover:text-brand"
                       )}
                     >
                       {link.label}
 
                       {link.hasDropdown && (
-                        <ChevronDown className="h-3.5 w-3.5 xl:h-4 xl:w-4" />
+                        <ChevronDown className="size-3.5 text-brand" />
                       )}
 
                       <span
                         className={cn(
-                          "absolute -bottom-2.5 left-0 h-[2px] rounded-full bg-brand transition-all duration-300 xl:-bottom-3 xl:h-[2.5px]",
+                          "absolute bottom-1 left-0 h-[2px] rounded-full bg-brand transition-all duration-300",
                           isActive ? "w-full" : "w-0 group-hover:w-full"
                         )}
+                        aria-hidden
                       />
                     </Link>
                   </li>
@@ -146,75 +158,99 @@ export function Navbar() {
             </ul>
           </div>
 
-          {/* Desktop CTA */}
+          {/* CTA */}
           <Link
             href={ROUTES.contact}
-            className="relative z-10 hidden shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl bg-brand px-5 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_30px_rgba(108,191,42,0.25)] transition-all duration-300 hover:bg-brand-dark hover:shadow-[0_12px_32px_rgba(108,191,42,0.3)] lg:ml-5 lg:inline-flex xl:ml-7 xl:px-6 xl:py-3 xl:text-[14px]"
+            className="hidden items-center gap-2 rounded-2xl bg-brand px-6 py-3 text-[14px] font-semibold text-white shadow-[0_10px_30px_rgba(108,191,42,0.35)] transition-all duration-300 hover:scale-[1.03] hover:bg-brand-dark lg:inline-flex"
           >
             Get In Touch
-            <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={2.5} />
+
+            <ArrowRight
+              className="h-4 w-4"
+              strokeWidth={2.5}
+            />
           </Link>
 
-          {/* Mobile menu toggle */}
+          {/* Mobile Toggle */}
           <button
             type="button"
-            className="ml-auto rounded-xl p-2 text-gray-700 transition hover:bg-gray-100 lg:hidden"
+            className="ml-auto grid size-12 place-items-center rounded-2xl border border-[#e8edf3] bg-[#FDFEFF] text-[#081526] transition-colors hover:bg-[#f2f6fa] lg:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-label={
+              mobileOpen ? "Close menu" : "Open menu"
+            }
           >
-            {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+            {mobileOpen ? (
+              <X className="size-5" />
+            ) : (
+              <Menu className="size-5" />
+            )}
           </button>
-        </div>
-      </nav>
+          </div>
+        </nav>
 
-      {/* Mobile menu */}
-      <div
-        className={cn(
-          "fixed left-0 top-[72px] z-40 h-[calc(100vh-72px)] w-full overflow-y-auto bg-white transition-all duration-300 sm:top-[78px] sm:h-[calc(100vh-78px)] lg:hidden",
-          mobileOpen
-            ? "translate-x-0 opacity-100"
-            : "pointer-events-none -translate-x-full opacity-0"
-        )}
-      >
-        <div className="px-4 py-4 sm:px-6">
-          <ul className="flex flex-col gap-1">
-            {navLinks.map((link) => {
-              const isActive =
-                pathname === link.href ||
-                (link.href !== "/" && pathname.startsWith(link.href));
+        {/* Mobile Menu */}
+        <div
+          className={cn(
+            "mx-auto mt-3 w-[90%] overflow-hidden rounded-[28px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.08)] transition-all duration-300 lg:hidden",
+            mobileOpen
+              ? "max-h-[1000px]"
+              : "max-h-0 border-transparent shadow-none"
+          )}
+        >
+          <div className="p-4">
+            <ul className="flex flex-col gap-2">
+              {navLinks.map((link) => {
+                const isActive =
+                  pathname === link.href ||
+                  (link.href !== "/" &&
+                    pathname.startsWith(link.href));
 
-              return (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(
-                      "flex items-center justify-between rounded-xl px-4 py-3 text-[15px] font-medium transition-all duration-300",
-                      isActive
-                        ? "bg-brand-muted/60 text-brand"
-                        : "text-[#2D3748] hover:bg-gray-50 hover:text-brand"
-                    )}
-                  >
-                    <span>{link.label}</span>
-                    {link.hasDropdown && <ChevronDown size={17} />}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={cn(
+                        "relative flex items-center justify-between rounded-2xl px-4 py-4 text-sm font-bold uppercase tracking-[0.08em] transition-colors duration-300",
+                        isActive
+                          ? "bg-[#E8F5DC] text-brand"
+                          : "text-slate-700 hover:bg-[#f2f6fa] hover:text-brand"
+                      )}
+                    >
+                      {link.label}
 
-          <div className="mt-4">
-            <Link
-              href={ROUTES.contact}
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-brand-dark"
-            >
-              Get In Touch
-              <ArrowRight size={18} />
-            </Link>
+                      {link.hasDropdown && (
+                        <ChevronDown className="size-4" />
+                      )}
+
+                      {isActive && (
+                        <span
+                          className="absolute bottom-2 left-4 right-4 h-0.5 rounded-full bg-brand"
+                          aria-hidden
+                        />
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="mt-4">
+              <Link
+                href={ROUTES.contact}
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-2xl bg-brand px-5 py-3 text-[15px] font-semibold text-white transition-all duration-300 hover:bg-brand-dark"
+              >
+                Get In Touch
+
+                <ArrowRight size={18} />
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+    </>
   );
 }
