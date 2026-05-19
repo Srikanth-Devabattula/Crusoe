@@ -1,14 +1,200 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Clock3,
+  ShieldCheck,
+  Users,
+  Target,
+  Layers3,
+} from "lucide-react";
+
+const features = [
+  {
+    icon: Users,
+    title: "Expert Team",
+    description: "Skilled engineers and QA specialists.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Quality Focused",
+    description: "Excellence in every client engagement.",
+  },
+  {
+    icon: Layers3,
+    title: "Agile Approach",
+    description: "Flexible processes built around your needs.",
+  },
+  {
+    icon: Clock3,
+    title: "On-Time Delivery",
+    description: "Committed to meeting deadlines.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Security First",
+    description: "Robust security with strong data protection.",
+  },
+  {
+    icon: Target,
+    title: "Long-Term Partner",
+    description: "We grow when you grow.",
+  },
+];
+
+const fadeEase = [0.22, 1, 0.36, 1] as const;
+
+const fadeUp = {
+  hidden: {
+    opacity: 0,
+    y: 26,
+  },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delay,
+      ease: fadeEase,
+    },
+  }),
+};
+
 export function WhyChooseUsSection() {
   return (
     <section
       id="why-choose-us"
       aria-label="Why choose us"
-      className="section-padding"
+      className="relative overflow-hidden bg-[#f7f9fc] py-16 sm:py-20 lg:py-24"
     >
-      <div className="hero-container">
-        <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50/80 px-6 py-16 text-center">
-          <p className="text-sm font-medium text-gray-500">Why Choose Us</p>
-          <p className="mt-1 text-xs text-gray-400">Section placeholder</p>
+      <div className="absolute inset-0 opacity-[0.08]">
+        <div className="h-full w-full bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:18px_18px]" />
+      </div>
+
+      <div className="hero-container relative z-10">
+        <div className="relative overflow-hidden rounded-[28px] border border-[#e7efe0] bg-[linear-gradient(135deg,#ffffff_0%,#f8fbf4_45%,#eef8e7_100%)] shadow-[0_14px_40px_rgba(15,23,42,0.06)] desktop:rounded-[38px]">
+          <div className="absolute -left-20 top-1/2 h-[320px] w-[320px] -translate-y-1/2 rounded-full bg-brand/[0.10] blur-3xl" />
+
+          <div className="absolute inset-0 opacity-[0.04]">
+            <div className="h-full w-full bg-[radial-gradient(#6CBF2A_1px,transparent_1px)] [background-size:18px_18px]" />
+          </div>
+
+          <div className="relative grid min-w-0 gap-10 px-6 py-8 sm:gap-12 sm:px-8 sm:py-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(120px,0.42fr)_minmax(300px,1.1fr)] lg:items-center lg:gap-5 lg:px-8 lg:py-10 desktop:grid-cols-[minmax(0,1fr)_minmax(160px,0.55fr)_minmax(340px,1.2fr)] desktop:gap-7 desktop:px-10 desktop:py-12 xl:grid-cols-[minmax(0,1fr)_minmax(240px,0.75fr)_minmax(400px,1.35fr)] xl:gap-12 xl:px-12 xl:py-14 2xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.8fr)_minmax(440px,1.4fr)] 2xl:gap-14 2xl:px-14">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0}
+              className="min-w-0"
+            >
+              <p className="text-base font-bold uppercase tracking-[0.12em] text-brand sm:text-lg lg:text-sm desktop:text-lg xl:text-xl">
+                Why Choose Us
+              </p>
+
+              <h2 className="text-heading mt-3 max-w-[520px] text-[32px] leading-[1.08] sm:mt-4 sm:text-[44px] lg:mt-3 lg:max-w-none lg:text-[28px] lg:leading-[1.12] desktop:mt-4 desktop:text-[34px] xl:text-[46px] 2xl:text-[50px]">
+                Engineering Excellence.
+                <br />
+                <span className="text-brand">Customer Success.</span>
+              </h2>
+
+              <div className="mt-4 h-[4px] w-16 rounded-full bg-brand lg:mt-4 desktop:mt-6 desktop:h-[5px] desktop:w-20" />
+
+              <p className="text-description mt-5 max-w-[440px] leading-relaxed text-[#5b6472] sm:mt-6 sm:text-base lg:mt-5 lg:max-w-none lg:text-sm desktop:mt-8 desktop:text-[16px]">
+                Our commitment to quality, innovation and transparency helps us
+                build long-term partnerships with our clients.
+              </p>
+
+              <Link
+                href="/about"
+                className="group mt-7 inline-flex items-center gap-2.5 rounded-[18px] bg-brand px-6 py-3.5 text-[15px] font-semibold text-white shadow-[0_14px_34px_rgba(108,191,42,0.28)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(108,191,42,0.38)] desktop:mt-10 desktop:gap-3 desktop:rounded-[20px] desktop:px-8 desktop:py-5 desktop:text-[17px]"
+              >
+                Know More About Us
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0.08}
+              className="relative flex min-w-0 items-center justify-center"
+            >
+              <div className="absolute h-[280px] w-[280px] rounded-full bg-[radial-gradient(circle_at_center,rgba(108,191,42,0.16),transparent_68%)] sm:h-[320px] sm:w-[320px] lg:h-[220px] lg:w-[220px] desktop:h-[320px] desktop:w-[320px] xl:h-[480px] xl:w-[480px] 2xl:h-[520px] 2xl:w-[520px]" />
+              <div className="absolute h-[280px] w-[280px] rounded-full border border-brand/10 sm:h-[320px] sm:w-[320px] lg:h-[220px] lg:w-[220px] desktop:h-[320px] desktop:w-[320px] xl:h-[480px] xl:w-[480px] 2xl:h-[520px] 2xl:w-[520px]" />
+              <div className="absolute hidden h-[380px] w-[380px] rounded-full border border-brand/10 desktop:block xl:h-[440px] xl:w-[440px]" />
+              <div className="absolute hidden h-[300px] w-[300px] rounded-full border border-brand/10 desktop:block xl:h-[360px] xl:w-[360px]" />
+
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="relative z-10"
+              >
+                <Image
+                  src="/images/services/whychooseus1.png"
+                  alt="Why choose us"
+                  width={800}
+                  height={800}
+                  className="h-auto w-full max-w-[220px] object-contain drop-shadow-[0_40px_70px_rgba(108,191,42,0.22)] sm:max-w-[260px] lg:max-w-[140px] desktop:max-w-[200px] xl:max-w-[320px] 2xl:max-w-[420px]"
+                />
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0.14}
+              className="min-w-0 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 lg:grid-cols-2 lg:gap-2.5 desktop:gap-3.5 xl:gap-4 2xl:gap-5"
+            >
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+
+                return (
+                  <motion.div
+                    key={feature.title}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.06,
+                    }}
+                    className="group w-full min-w-0 rounded-[16px] border border-white/60 bg-white/70 p-2.5 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(15,23,42,0.08)] sm:rounded-[18px] sm:p-3 lg:rounded-[14px] lg:p-2 desktop:rounded-[18px] desktop:p-3 xl:rounded-[22px] xl:p-4 2xl:rounded-[24px] 2xl:p-5"
+                  >
+                    <div className="flex items-start gap-2 text-left sm:gap-2.5 lg:gap-1.5 desktop:gap-2.5 xl:gap-3 2xl:gap-4">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-[#f8fbf4] shadow-[0_6px_18px_rgba(15,23,42,0.05)] sm:h-11 sm:w-11 sm:rounded-[14px] desktop:h-12 desktop:w-12 xl:h-14 xl:w-14 xl:rounded-[16px] 2xl:h-16 2xl:w-16 2xl:rounded-[20px]">
+                        <Icon
+                          className="h-5 w-5 text-brand sm:h-[22px] sm:w-[22px] desktop:h-6 desktop:w-6 xl:h-6 xl:w-6 2xl:h-7 2xl:w-7"
+                          strokeWidth={2}
+                        />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-[13px] font-bold leading-tight tracking-[-0.02em] text-[#111827] sm:text-[14px] lg:text-[11px] lg:leading-[1.2] desktop:text-[13px] xl:text-[15px] 2xl:text-[18px]">
+                          {feature.title}
+                        </h3>
+                        <p className="mt-1 line-clamp-2 text-[10px] leading-snug text-[#6b7280] sm:mt-1.5 sm:text-[11px] lg:text-[9px] lg:leading-[1.35] desktop:text-[11px] xl:text-[12px] xl:leading-snug 2xl:mt-2 2xl:text-[14px] 2xl:leading-[1.45]">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

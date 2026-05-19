@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        desktop: "1376px",
+      },
       fontFamily: {
         sans: ["var(--font-sans)", "Roboto", "system-ui", "sans-serif"],
       },

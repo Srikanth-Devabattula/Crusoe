@@ -192,11 +192,12 @@ export function Navbar() {
         {/* Mobile Menu */}
         <div
           className={cn(
-            "mx-auto mt-3 w-[90%] max-w-[1760px] overflow-hidden rounded-[28px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.08)] transition-all duration-300 lg:hidden",
+            "mx-auto w-[90%] max-w-[1760px] overflow-hidden rounded-[28px] transition-all duration-300 lg:hidden",
             mobileOpen
-              ? "max-h-[1000px]"
-              : "max-h-0 border-transparent shadow-none"
+              ? "mt-3 max-h-[1000px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.08)]"
+              : "pointer-events-none mt-0 max-h-0 border-0 bg-transparent p-0 opacity-0 shadow-none"
           )}
+          aria-hidden={!mobileOpen}
         >
           <div className="p-4">
             <ul className="flex flex-col gap-2">

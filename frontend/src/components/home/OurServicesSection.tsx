@@ -62,7 +62,7 @@ export function OurServicesSection() {
 
       <div className="hero-container relative z-10">
         {/* top content */}
-        <div className="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-start lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-1 lg:gap-8 desktop:grid-cols-[1fr_minmax(0,360px)] desktop:items-start desktop:gap-12 xl:grid-cols-[1fr_420px] xl:gap-16">
           {/* left heading */}
           <motion.div
             initial="hidden"
@@ -71,11 +71,11 @@ export function OurServicesSection() {
             variants={fadeUp}
             custom={0}
           >
-            <p className="text-base font-bold uppercase tracking-[0.12em] text-brand sm:text-lg lg:text-xl">
+            <p className="text-base font-bold uppercase tracking-[0.12em] text-brand sm:text-lg lg:text-sm desktop:text-lg xl:text-xl">
               Our Services
             </p>
 
-            <h2 className="text-heading mt-4 max-w-[720px] text-[32px] leading-[1.08] sm:text-[44px] lg:text-[38px] xl:text-[46px] 2xl:text-[50px]">
+            <h2 className="text-heading mt-4 max-w-[720px] text-[32px] leading-[1.08] sm:text-[44px] lg:text-[28px] lg:leading-[1.12] desktop:text-[34px] xl:text-[46px] 2xl:text-[50px]">
               Solutions That Drive
               <br />
               <span className="text-brand">Quality and Innovation</span>
@@ -89,9 +89,9 @@ export function OurServicesSection() {
             viewport={{ once: true }}
             variants={fadeUp}
             custom={0.08}
-            className="lg:pt-4"
+            className="lg:max-w-none desktop:pt-2 xl:pt-4"
           >
-            <p className="max-w-[420px] text-[17px] leading-[2] text-[#4b5563]">
+            <p className="max-w-[420px] text-[15px] leading-[1.75] text-[#4b5563] lg:max-w-none desktop:text-[16px] xl:text-[17px] xl:leading-[2]">
               We combine deep domain expertise with modern engineering
               practices to deliver high-quality solutions tailored to your
               business needs.
