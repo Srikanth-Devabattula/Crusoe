@@ -117,6 +117,44 @@ body {
 .hero-swiper .swiper-slide-active .hero-card-inner {
   @apply scale-[1.01];
 }
+
+/* Partner logos — seamless infinite scroll (two identical sets) */
+@keyframes logo-marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.logos-marquee-viewport {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+.logos-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: logo-marquee-scroll 28s linear infinite;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.logos-marquee-viewport:hover .logos-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logos-marquee-track {
+    animation: none;
+  }
+}
 body {
   min-height: 100vh;
   margin: 0;

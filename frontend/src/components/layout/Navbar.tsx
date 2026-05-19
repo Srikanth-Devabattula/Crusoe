@@ -101,8 +101,8 @@ export function Navbar() {
           "transition-transform duration-300 ease-in-out"
         )}
       >
-        <nav className="mx-auto w-[90%] rounded-[28px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.1)]">
-          <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-5">
+        <nav className="mx-auto w-[90%] max-w-[1760px] rounded-[28px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.1)]">
+          <div className="flex h-16 items-center justify-between gap-2 px-3 sm:h-[4.5rem] sm:gap-3 sm:px-4 lg:gap-2 lg:px-3 xl:gap-4 xl:px-5">
           {/* Logo */}
           <Link
             href={ROUTES.home}
@@ -114,13 +114,13 @@ export function Navbar() {
               width={220}
               height={70}
               priority
-              className="h-auto w-[130px] sm:w-[150px] md:w-[165px] lg:w-[180px]"
+              className="h-auto w-[118px] sm:w-[132px] lg:w-[128px] xl:w-[150px] 2xl:w-[180px]"
             />
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden flex-1 justify-center lg:flex">
-            <ul className="flex items-center gap-1">
+          {/* Desktop Menu — from 1024px; hamburger below */}
+          <div className="hidden min-w-0 flex-1 justify-center lg:flex">
+            <ul className="flex items-center gap-0.5 lg:gap-0.5 xl:gap-1">
               {navLinks.map((link) => {
                 const isActive =
                   pathname === link.href ||
@@ -132,7 +132,7 @@ export function Navbar() {
                     <Link
                       href={link.href}
                       className={cn(
-                        "group relative inline-flex h-11 items-center gap-1 px-4 text-[13px] font-bold uppercase tracking-[0.08em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2",
+                        "group relative inline-flex h-10 shrink-0 items-center gap-0.5 whitespace-nowrap px-2 text-[10px] font-bold uppercase tracking-[0.04em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 lg:px-2 lg:text-[10px] xl:h-11 xl:px-2.5 xl:text-[11px] xl:tracking-[0.06em] 2xl:px-4 2xl:text-[13px] 2xl:tracking-[0.08em]",
                         isActive
                           ? "text-brand"
                           : "text-slate-700 hover:text-brand"
@@ -141,7 +141,7 @@ export function Navbar() {
                       {link.label}
 
                       {link.hasDropdown && (
-                        <ChevronDown className="size-3.5 text-brand" />
+                        <ChevronDown className="size-3 shrink-0 text-brand lg:size-3.5" />
                       )}
 
                       <span
@@ -161,7 +161,7 @@ export function Navbar() {
           {/* CTA */}
           <Link
             href={ROUTES.contact}
-            className="hidden items-center gap-2 rounded-2xl bg-brand px-6 py-3 text-[14px] font-semibold text-white shadow-[0_10px_30px_rgba(108,191,42,0.35)] transition-all duration-300 hover:scale-[1.03] hover:bg-brand-dark lg:inline-flex"
+            className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap rounded-2xl bg-brand px-3.5 py-2 text-[11px] font-semibold text-white shadow-[0_10px_30px_rgba(108,191,42,0.35)] transition-all duration-300 hover:scale-[1.03] hover:bg-brand-dark lg:inline-flex xl:gap-2 xl:px-5 xl:py-2.5 xl:text-[13px] 2xl:px-6 2xl:py-3 2xl:text-[14px]"
           >
             Get In Touch
 
@@ -174,7 +174,7 @@ export function Navbar() {
           {/* Mobile Toggle */}
           <button
             type="button"
-            className="ml-auto grid size-12 place-items-center rounded-2xl border border-[#e8edf3] bg-[#FDFEFF] text-[#081526] transition-colors hover:bg-[#f2f6fa] lg:hidden"
+            className="ml-auto grid size-11 shrink-0 place-items-center rounded-2xl border border-[#e8edf3] bg-[#FDFEFF] text-[#081526] transition-colors hover:bg-[#f2f6fa] sm:size-12 lg:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={
               mobileOpen ? "Close menu" : "Open menu"
@@ -192,7 +192,7 @@ export function Navbar() {
         {/* Mobile Menu */}
         <div
           className={cn(
-            "mx-auto mt-3 w-[90%] overflow-hidden rounded-[28px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.08)] transition-all duration-300 lg:hidden",
+            "mx-auto mt-3 w-[90%] max-w-[1760px] overflow-hidden rounded-[28px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.08)] transition-all duration-300 lg:hidden",
             mobileOpen
               ? "max-h-[1000px]"
               : "max-h-0 border-transparent shadow-none"

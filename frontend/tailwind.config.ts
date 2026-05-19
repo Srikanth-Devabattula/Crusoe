@@ -58,6 +58,10 @@ const config: Config = {
           "0%": { backgroundPosition: "200% 0" },
           "100%": { backgroundPosition: "-200% 0" },
         },
+        "logo-marquee": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "float-slow": "float-slow 8s ease-in-out infinite",
@@ -65,6 +69,7 @@ const config: Config = {
         "orbit-spin": "orbit-spin 20s linear infinite",
         "pulse-glow": "pulse-glow 4s ease-in-out infinite",
         shimmer: "shimmer 3s linear infinite",
+        "logo-marquee": "logo-marquee 32s linear infinite",
       },
     },
   },
