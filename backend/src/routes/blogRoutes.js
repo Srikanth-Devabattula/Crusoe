@@ -6,12 +6,13 @@ const {
   deleteBlog,
 } = require("../controllers/blogController");
 const { protect, adminOnly } = require("../middleware/authMiddleware");
+const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
-router.get("/", getBlogs);
-router.post("/", protect, adminOnly, createBlog);
-router.put("/:id", protect, adminOnly, updateBlog);
-router.delete("/:id", protect, adminOnly, deleteBlog);
+router.get("/", asyncHandler(getBlogs));
+router.post("/", protect, adminOnly, asyncHandler(createBlog));
+router.put("/:id", protect, adminOnly, asyncHandler(updateBlog));
+router.delete("/:id", protect, adminOnly, asyncHandler(deleteBlog));
 
 module.exports = router;

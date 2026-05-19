@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Toaster } from "react-hot-toast";
+import { Roboto } from "next/font/google";
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
+import { ToastProvider } from "@/components/providers/ToastProvider";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const roboto = Roboto({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+  weight: ["400", "500", "700"],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -26,10 +31,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+    <html lang="en" className={roboto.variable}>
+      <body className="font-sans antialiased">
         <ConditionalLayout>{children}</ConditionalLayout>
-        <Toaster position="top-right" />
+        <ToastProvider />
       </body>
     </html>
   );

@@ -1,3 +1,7 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 import { Footer } from "./Footer";
 import { Navbar } from "./Navbar";
 
@@ -6,10 +10,21 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main
+        className={
+          isHome
+            ? "flex-1"
+            : "flex-1 pt-[72px] sm:pt-[78px] lg:pt-[84px] xl:pt-[88px]"
+        }
+      >
+        {children}
+      </main>
       <Footer />
     </div>
   );

@@ -17,13 +17,16 @@ cp .env.example .env
 npm run dev
 ```
 
-API runs at [http://localhost:5000](http://localhost:5000).
+- Production: [https://crusoe-nhbu.onrender.com](https://crusoe-nhbu.onrender.com)
+- Local: [http://localhost:5000](http://localhost:5000)
 
 ## Environment Variables
 
 | Variable | Description |
 |----------|-------------|
-| `PORT` | Server port (default: 5000) |
+| `PORT` | Server port (set by Render in production) |
+| `CLIENT_URL` | Comma-separated frontend URLs for CORS |
+| `NODE_ENV` | `production` on Render |
 | `MONGODB_URI` | MongoDB connection string |
 | `JWT_SECRET` | Secret for JWT signing |
 | `SMTP_HOST` | Email SMTP host |

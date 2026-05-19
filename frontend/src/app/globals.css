@@ -1,3 +1,5 @@
+@import "../styles/variables.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,16 +7,65 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --scrollbar-track: #eef4e8;
+  --scrollbar-thumb: #b8dc94;
+  --scrollbar-thumb-hover: #6cbf2a;
+}
+
+html {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+  font-family: var(--font-sans), var(--font-sans-fallback);
+}
+
+/* Themed scrollbar — no arrow buttons (WebKit/Blink) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border: 2px solid var(--scrollbar-track);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-button:single-button,
+::-webkit-scrollbar-button:vertical:start:decrement,
+::-webkit-scrollbar-button:vertical:end:increment,
+::-webkit-scrollbar-button:horizontal:start:decrement,
+::-webkit-scrollbar-button:horizontal:end:increment {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 @layer components {
   .container-page {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .hero-container {
+    @apply mx-auto w-full max-w-[1760px] px-3 sm:px-4 md:px-5 lg:px-6 xl:px-7 2xl:px-8;
   }
 
   .section-padding {
@@ -26,7 +77,16 @@ body {
   }
 
   .page-subheading {
-    @apply mt-2 text-lg text-gray-600;
+    @apply text-description mt-2 sm:text-base lg:text-[15px];
+  }
+
+  /** Hero + card body copy — keep left and slider descriptions in sync */
+  .text-description {
+    @apply font-sans text-xs font-normal leading-relaxed text-gray-600 sm:text-sm lg:text-[16px];
+  }
+
+  .text-heading {
+    @apply font-sans font-bold tracking-tight text-gray-900;
   }
 }
 
@@ -34,4 +94,73 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .hero-glass {
+    @apply border border-white/60 bg-white/70 shadow-hero-card shadow-hero-glass backdrop-blur-xl;
+  }
+
+  .hero-gradient-text {
+    @apply bg-gradient-to-r from-brand to-brand-light bg-clip-text text-transparent;
+  }
+}
+
+/* Swiper hero — scoped overrides */
+.hero-swiper {
+  @apply w-full;
+}
+
+.hero-swiper .swiper-wrapper,
+.hero-swiper .swiper-slide {
+  @apply h-full;
+}
+
+.hero-swiper .swiper-slide-active .hero-card-inner {
+  @apply scale-[1.01];
+}
+
+/* Partner logos — seamless infinite scroll (two identical sets) */
+@keyframes logo-marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.logos-marquee-viewport {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+.logos-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: logo-marquee-scroll 28s linear infinite;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.logos-marquee-viewport:hover .logos-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logos-marquee-track {
+    animation: none;
+  }
+}
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    linear-gradient(135deg, rgba(8, 117, 225, 0.08), transparent 26%),
+    linear-gradient(315deg, rgba(67, 176, 42, 0.08), transparent 26%),
+    #f6f9fc;
 }

@@ -23,7 +23,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Variable | Description |
 |----------|-------------|
-| `NEXT_PUBLIC_API_URL` | Backend API base URL (default: `http://localhost:5000/api`) |
+| `NEXT_PUBLIC_API_URL` | Backend API base URL (production: `https://crusoe-nhbu.onrender.com/api`) |
 
 ## Project Structure
 

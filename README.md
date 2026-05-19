@@ -32,7 +32,8 @@ npm run dev
 ```
 
 - Frontend: [http://localhost:3000](http://localhost:3000)
-- Backend API: [http://localhost:5000/api](http://localhost:5000/api)
+- Backend API (production): [https://crusoe-nhbu.onrender.com/api](https://crusoe-nhbu.onrender.com/api)
+- Backend API (local): [http://localhost:5000/api](http://localhost:5000/api)
 
 ## Features
 

@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "@/constants";
+import { getApiErrorMessage } from "@/lib/api-error";
 
 /**
- * Shared Axios instance for API requests.
- * Attaches auth token from localStorage when available (client-side only).
+ * Shared Axios instance — base URL from NEXT_PUBLIC_API_URL
  */
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -11,6 +11,7 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
   withCredentials: true,
+  timeout: 30000,
 });
 
 api.interceptors.request.use((config) => {
@@ -25,13 +26,11 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    // Centralized error logging — extend with toast/redirect as needed
-    if (process.env.NODE_ENV === "development") {
-      console.error("[API Error]", error.response?.data || error.message);
-    }
-    return Promise.reject(error);
+  (error: AxiosError) => {
+    const message = getApiErrorMessage(error);
+    return Promise.reject(new Error(message));
   }
 );
 
 export default api;
+export { getApiErrorMessage };
