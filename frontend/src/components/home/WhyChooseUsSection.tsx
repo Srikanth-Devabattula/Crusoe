@@ -96,18 +96,30 @@ export function WhyChooseUsSection() {
                 Why Choose Us
               </p>
 
-              <h2 className="text-heading mt-3 max-w-[520px] text-[32px] leading-[1.08] sm:mt-4 sm:text-[44px] lg:mt-3 lg:max-w-none lg:text-[28px] lg:leading-[1.12] desktop:mt-4 desktop:text-[34px] xl:text-[46px] 2xl:text-[50px]">
-                Engineering Excellence.
+              <h2 className="text-heading mt-3 max-w-[520px] text-[26px] leading-[1.1] sm:mt-4 sm:text-[30px] lg:mt-3 lg:max-w-none lg:text-[28px] lg:leading-[1.12] xl:text-[34px] 2xl:text-[38px]">
+                World&apos;s leading Software and Engineering
                 <br />
-                <span className="text-brand">Customer Success.</span>
+                <span className="text-brand">Companies Trust Us</span>
               </h2>
 
               <div className="mt-4 h-[4px] w-16 rounded-full bg-brand lg:mt-4 desktop:mt-6 desktop:h-[5px] desktop:w-20" />
 
-              <p className="text-description mt-5 max-w-[440px] leading-relaxed text-[#5b6472] sm:mt-6 sm:text-base lg:mt-5 lg:max-w-none lg:text-sm desktop:mt-8 desktop:text-[16px]">
-                Our commitment to quality, innovation and transparency helps us
-                build long-term partnerships with our clients.
+              <p className="text-description mt-5 max-w-[520px] leading-relaxed text-[#5b6472] sm:mt-6 sm:text-base lg:mt-5 lg:max-w-none lg:text-sm lg:leading-relaxed desktop:mt-6 desktop:text-[16px]">
+                Since 2015 Crusoe has been helping world&apos;s leading software
+                companies to develop the latest Cloud based CAD, PDM and PLM
+                products. Also helping leading Engineering companies to develop
+                cutting edge products.
               </p>
+
+              <div className="mt-6 rounded-[20px] border border-brand/20 bg-white/70 p-4 backdrop-blur sm:mt-7 sm:p-5 lg:mt-5 lg:rounded-[16px] lg:p-3.5 desktop:mt-7 desktop:rounded-[20px] desktop:p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.12em] text-brand sm:text-sm">
+                  Vision
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-[#5b6472] lg:text-xs lg:leading-relaxed desktop:mt-2.5 desktop:text-[15px] desktop:leading-relaxed">
+                  Become a Top-Tier Technology &amp; Services Company catering to
+                  the leading Global Software &amp; Engineering Companies.
+                </p>
+              </div>
 
               <Link
                 href="/about"
