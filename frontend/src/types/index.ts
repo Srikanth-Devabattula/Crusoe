@@ -50,7 +50,13 @@ export interface ApplicationFormData {
   resume?: File;
 }
 
-export interface VerifyOtpFormData {
+export interface LoginFormData {
   email: string;
-  otp: string;
+  password: string;
+}
+
+export interface RegisterFormData {
+  name: string;
+  email: string;
+  password: string;
 }

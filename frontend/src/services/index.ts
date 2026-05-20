@@ -1,5 +1,5 @@
 export { healthService } from "./health.service";
-export { adminAuthService } from "./admin-auth.service";
+export { authService } from "./auth.service";
 export { blogService } from "./blog.service";
 export { jobService } from "./job.service";
 export { contactService } from "./contact.service";

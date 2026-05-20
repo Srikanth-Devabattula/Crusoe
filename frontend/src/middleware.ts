@@ -8,15 +8,11 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
 
   if (isAdminProtected) {
-    const token = request.cookies.get("adminToken")?.value;
+    const token = request.cookies.get("authToken")?.value;
 
     if (!token) {
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
-  }
-
-  if (pathname === "/admin/login" && request.cookies.get("adminToken")?.value) {
-    return NextResponse.redirect(new URL("/admin/dashboard", request.url));
   }
 
   return NextResponse.next();

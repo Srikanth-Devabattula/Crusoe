@@ -1,30 +1,21 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { sendError } = require("../utils/responseHandler");
-const { isAdminEmail } = require("../config/adminEmails");
-const { ADMIN_TOKEN_COOKIE } = require("../utils/adminCookie");
-
-const extractToken = (req) => {
-  if (req.headers.authorization?.startsWith("Bearer")) {
-    return req.headers.authorization.split(" ")[1];
-  }
-
-  if (req.cookies?.[ADMIN_TOKEN_COOKIE]) {
-    return req.cookies[ADMIN_TOKEN_COOKIE];
-  }
-
-  if (req.cookies?.token) {
-    return req.cookies.token;
-  }
-
-  return null;
-};
 
 /**
  * Protect routes — requires valid JWT
  */
 const protect = async (req, res, next) => {
-  const token = extractToken(req);
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies?.token) {
+    token = req.cookies.token;
+  }
 
   if (!token) {
     return sendError(res, 401, "Not authorized, no token");
@@ -45,13 +36,13 @@ const protect = async (req, res, next) => {
 };
 
 /**
- * Restrict to allowlisted admin
+ * Restrict to admin role
  */
 const adminOnly = (req, res, next) => {
-  if (req.user?.role === "admin" && isAdminEmail(req.user.email)) {
+  if (req.user && req.user.role === "admin") {
     next();
   } else {
-    return sendError(res, 403, "You don't have access to admin panel");
+    return sendError(res, 403, "Not authorized as admin");
   }
 };
 

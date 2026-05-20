@@ -1,28 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
-import { Mail, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { Button } from "@/components/ui/Button";
 
-const emailSchema = z.object({
-  email: z.string().email("Enter a valid email address"),
+const loginSchema = z.object({
+  email: z.string().email("Enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const otpSchema = z.object({
-  otp: z
-    .string()
-    .length(6, "Enter the 6-digit code")
-    .regex(/^\d+$/, "OTP must contain only numbers"),
+const registerSchema = loginSchema.extend({
+  name: z.string().min(2, "Name must be at least 2 characters"),
 });
 
-type EmailValues = z.infer<typeof emailSchema>;
-type OtpValues = z.infer<typeof otpSchema>;
+type LoginValues = z.infer<typeof loginSchema>;
+type RegisterValues = z.infer<typeof registerSchema>;
 
 function Field({
   label,
@@ -34,157 +31,122 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <label className="mb-1.5 block text-sm font-medium text-slate-700">{label}</label>
+    <>
+      <label className="mb-1 block text-sm font-medium text-gray-700">{label}</label>
       {children}
-      {error && <p className="mt-1.5 text-xs text-red-600">{error}</p>}
-    </div>
+      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+    </>
   );
 }
 
-const inputClass =
-  "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
-
 export function AdminLoginForm() {
-  const { sendOtp, verifyOtp } = useAuth();
-  const [step, setStep] = useState<"email" | "otp">("email");
-  const [email, setEmail] = useState("");
+  const { hasAdmin, login, register, checkHasAdmin, isLoading } = useAuth();
+  const [mode, setMode] = useState<"login" | "register">("login");
 
-  const emailForm = useForm<EmailValues>({
-    resolver: zodResolver(emailSchema),
-    defaultValues: { email: "" },
+  const isRegister = hasAdmin === false;
+
+  useEffect(() => {
+    if (hasAdmin === false) setMode("register");
+    else if (hasAdmin === true) setMode("login");
+  }, [hasAdmin]);
+
+  const loginForm = useForm<LoginValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
   });
 
-  const otpForm = useForm<OtpValues>({
-    resolver: zodResolver(otpSchema),
-    defaultValues: { otp: "" },
+  const registerForm = useForm<RegisterValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: { name: "", email: "", password: "" },
   });
 
-  const onSendOtp = async (data: EmailValues) => {
+  const onLogin = async (data: LoginValues) => {
     try {
-      await sendOtp(data.email);
-      setEmail(data.email);
-      setStep("otp");
-      otpForm.reset({ otp: "" });
-      toast.success("Verification code sent");
+      await login(data);
+      toast.success("Logged in successfully");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
   };
 
-  const onVerifyOtp = async (data: OtpValues) => {
+  const onRegister = async (data: RegisterValues) => {
     try {
-      await verifyOtp({ email, otp: data.otp });
-      toast.success("Welcome back!");
+      await register(data);
+      toast.success("Admin account created");
+      await checkHasAdmin();
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
   };
 
-  const onResendOtp = async () => {
-    try {
-      await sendOtp(email);
-      toast.success("New code sent");
-    } catch (error) {
-      toast.error(getApiErrorMessage(error));
-    }
-  };
+  if (isLoading && hasAdmin === null) {
+    return <p className="text-sm text-gray-500">Loading...</p>;
+  }
 
-  if (step === "otp") {
+  if (isRegister || mode === "register") {
     return (
-      <form onSubmit={otpForm.handleSubmit(onVerifyOtp)} className="space-y-5">
-        <div className="flex items-start gap-3 rounded-xl border border-emerald-100 bg-emerald-50/80 px-4 py-3">
-          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
-          <p className="text-sm text-emerald-900">
-            Code sent to <span className="font-semibold">{email}</span>. Expires in 5
-            minutes.
-          </p>
-        </div>
-
-        <Field label="Verification code" error={otpForm.formState.errors.otp?.message}>
+      <form onSubmit={registerForm.handleSubmit(onRegister)} className="space-y-4">
+        <p className="rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-800">
+          No admin account yet. Create your first admin user below.
+        </p>
+        <Field label="Name" error={registerForm.formState.errors.name?.message}>
           <input
             type="text"
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            maxLength={6}
-            placeholder="000000"
-            className={`${inputClass} text-center text-lg tracking-[0.4em]`}
-            {...otpForm.register("otp")}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            {...registerForm.register("name")}
           />
         </Field>
-
-        <Button
-          type="submit"
-          className="w-full py-3"
-          disabled={otpForm.formState.isSubmitting}
-        >
-          {otpForm.formState.isSubmitting ? (
-            <span className="inline-flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Verifying...
-            </span>
-          ) : (
-            "Verify & sign in"
-          )}
+        <Field label="Email" error={registerForm.formState.errors.email?.message}>
+          <input
+            type="email"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            {...registerForm.register("email")}
+          />
+        </Field>
+        <Field label="Password" error={registerForm.formState.errors.password?.message}>
+          <input
+            type="password"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            {...registerForm.register("password")}
+          />
+        </Field>
+        <Button type="submit" className="w-full" disabled={registerForm.formState.isSubmitting}>
+          {registerForm.formState.isSubmitting ? "Creating..." : "Create admin account"}
         </Button>
-
-        <div className="flex flex-col gap-2 border-t border-slate-100 pt-4 text-sm">
+        {hasAdmin && (
           <button
             type="button"
-            className="inline-flex items-center justify-center gap-1 text-slate-600 hover:text-slate-900"
-            onClick={onResendOtp}
-            disabled={otpForm.formState.isSubmitting}
+            className="w-full text-sm text-gray-600 underline"
+            onClick={() => setMode("login")}
           >
-            Resend code
+            Already have an account? Log in
           </button>
-          <button
-            type="button"
-            className="inline-flex items-center justify-center gap-1 text-slate-600 hover:text-slate-900"
-            onClick={() => {
-              setStep("email");
-              otpForm.reset({ otp: "" });
-            }}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Use a different email
-          </button>
-        </div>
+        )}
       </form>
     );
   }
 
   return (
-    <form onSubmit={emailForm.handleSubmit(onSendOtp)} className="space-y-5">
-      <div className="flex items-start gap-3 rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
-        <Mail className="mt-0.5 h-5 w-5 shrink-0 text-slate-500" />
-        <p className="text-sm text-slate-600">
-          Authorized admins only. Enter your email to receive a secure one-time code.
-        </p>
-      </div>
-
-      <Field label="Work email" error={emailForm.formState.errors.email?.message}>
+    <form onSubmit={loginForm.handleSubmit(onLogin)} className="space-y-4">
+      <p className="rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-600">
+        Log in with your email and password.
+      </p>
+      <Field label="Email" error={loginForm.formState.errors.email?.message}>
         <input
           type="email"
-          autoComplete="email"
-          placeholder="you@company.com"
-          className={inputClass}
-          {...emailForm.register("email")}
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          {...loginForm.register("email")}
         />
       </Field>
-
-      <Button
-        type="submit"
-        className="w-full py-3"
-        disabled={emailForm.formState.isSubmitting}
-      >
-        {emailForm.formState.isSubmitting ? (
-          <span className="inline-flex items-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Sending code...
-          </span>
-        ) : (
-          "Send verification code"
-        )}
+      <Field label="Password" error={loginForm.formState.errors.password?.message}>
+        <input
+          type="password"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          {...loginForm.register("password")}
+        />
+      </Field>
+      <Button type="submit" className="w-full" disabled={loginForm.formState.isSubmitting}>
+        {loginForm.formState.isSubmitting ? "Signing in..." : "Log in"}
       </Button>
     </form>
   );

@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "@/constants";
 import { getApiErrorMessage } from "@/lib/api-error";
-import { ADMIN_TOKEN_KEY, getStoredToken } from "@/lib/auth-storage";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -14,7 +13,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
-    const token = getStoredToken();
+    const token = localStorage.getItem("authToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -25,11 +24,8 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error.response?.status === 401 && typeof window !== "undefined") {
-      sessionStorage.removeItem(ADMIN_TOKEN_KEY);
-      sessionStorage.removeItem("adminUser");
-    }
-    return Promise.reject(new Error(getApiErrorMessage(error)));
+    const message = getApiErrorMessage(error);
+    return Promise.reject(new Error(message));
   }
 );
 
