@@ -1,13 +1,5 @@
 const mongoose = require("mongoose");
 
-const BLOG_CATEGORIES = [
-  "technology",
-  "engineering",
-  "company-news",
-  "insights",
-  "product",
-];
-
 const blogSchema = new mongoose.Schema(
   {
     title: {
@@ -32,7 +24,9 @@ const blogSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: BLOG_CATEGORIES,
+      required: [true, "Category is required"],
+      trim: true,
+      lowercase: true,
       default: "insights",
     },
     coverImage: {
@@ -56,4 +50,3 @@ const blogSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Blog", blogSchema);
-module.exports.BLOG_CATEGORIES = BLOG_CATEGORIES;

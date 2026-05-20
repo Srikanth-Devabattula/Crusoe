@@ -3,14 +3,19 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { BlogCard } from "@/components/blog/BlogCard";
-import { BlogCategoryFilters, type BlogFilterCategory } from "@/components/blog/BlogCategoryFilters";
+import {
+  BlogCategoryFilters,
+  type BlogFilterCategory,
+} from "@/components/blog/BlogCategoryFilters";
 import { BlogFeaturedHero } from "@/components/blog/BlogFeaturedHero";
+import { useBlogCategories } from "@/hooks/useBlogCategories";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { getFeaturedBlog } from "@/lib/blog";
 import { blogService } from "@/services";
 import type { Blog } from "@/types";
 
 export function BlogListing() {
+  const { categories, getLabel } = useBlogCategories();
   const [allPosts, setAllPosts] = useState<Blog[]>([]);
   const [activeCategory, setActiveCategory] = useState<BlogFilterCategory>("all");
   const [isLoading, setIsLoading] = useState(true);
@@ -46,17 +51,9 @@ export function BlogListing() {
   );
 
   const filteredPosts = useMemo(() => {
-    let list =
-      activeCategory === "all"
-        ? allPosts
-        : allPosts.filter((p) => p.category === activeCategory);
-
-    if (showFeaturedHero && featured) {
-      list = list.filter((p) => p._id !== featured._id);
-    }
-
-    return list;
-  }, [allPosts, activeCategory, featured, showFeaturedHero]);
+    if (activeCategory === "all") return allPosts;
+    return allPosts.filter((p) => p.category === activeCategory);
+  }, [allPosts, activeCategory]);
 
   const categoryCounts = useMemo(() => {
     const counts: Partial<Record<BlogFilterCategory, number>> = { all: allPosts.length };
@@ -69,7 +66,10 @@ export function BlogListing() {
   return (
     <>
       {showFeaturedHero && featured && !isLoading && (
-        <BlogFeaturedHero post={featured} />
+        <BlogFeaturedHero
+          post={featured}
+          categoryLabel={getLabel(featured.category)}
+        />
       )}
 
       <section className="bg-white py-12 sm:py-16 lg:py-20">
@@ -87,6 +87,7 @@ export function BlogListing() {
 
           <div className="mt-8">
             <BlogCategoryFilters
+              categories={categories}
               active={activeCategory}
               onChange={setActiveCategory}
               counts={categoryCounts}
@@ -118,7 +119,11 @@ export function BlogListing() {
           ) : (
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filteredPosts.map((post) => (
-                <BlogCard key={post._id} post={post} />
+                <BlogCard
+                  key={post._id}
+                  post={post}
+                  categoryLabel={getLabel(post.category)}
+                />
               ))}
             </div>
           )}

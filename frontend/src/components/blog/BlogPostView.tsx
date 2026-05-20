@@ -10,15 +10,10 @@ import {
 } from "react-icons/hi";
 
 import { BlogCard } from "@/components/blog/BlogCard";
-import { BLOG_CATEGORY_STYLES } from "@/data/blogCategories";
+import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
-import {
-  estimateReadTime,
-  formatBlogCategory,
-  formatBlogDate,
-  getBlogCoverStyle,
-} from "@/lib/blog";
-import { cn } from "@/lib/cn";
+import { useBlogCategories } from "@/hooks/useBlogCategories";
+import { estimateReadTime, formatBlogDate } from "@/lib/blog";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { getBlogCoverUrl } from "@/lib/uploads";
 import { blogService } from "@/services";
@@ -29,6 +24,7 @@ interface BlogPostViewProps {
 }
 
 export function BlogPostView({ slug }: BlogPostViewProps) {
+  const { getLabel } = useBlogCategories();
   const [post, setPost] = useState<Blog | null>(null);
   const [related, setRelated] = useState<Blog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -91,7 +87,7 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
     );
   }
 
-  const styles = BLOG_CATEGORY_STYLES[post.category];
+  const styles = getCategoryStyle(post.category);
   const readTime = estimateReadTime(post.content);
   const coverSrc = getBlogCoverUrl(post.coverImage);
 
@@ -111,7 +107,7 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
             className="mt-6 inline-flex rounded-full px-3 py-1 text-xs font-semibold"
             style={{ backgroundColor: styles.bg, color: styles.text }}
           >
-            {formatBlogCategory(post.category)}
+            {getLabel(post.category)}
           </span>
 
           <h1 className="mt-4 max-w-4xl text-3xl font-bold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
@@ -149,10 +145,10 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
             />
           ) : (
             <div
-              className={cn(
-                "absolute inset-0 bg-gradient-to-br",
-                getBlogCoverStyle(post.category)
-              )}
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(to bottom right, ${styles.accent}33, ${styles.bg}, #eef4e8)`,
+              }}
             />
           )}
         </div>
@@ -176,7 +172,11 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
             <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Related articles</h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item) => (
-                <BlogCard key={item._id} post={item} />
+                <BlogCard
+                  key={item._id}
+                  post={item}
+                  categoryLabel={getLabel(item.category)}
+                />
               ))}
             </div>
           </div>

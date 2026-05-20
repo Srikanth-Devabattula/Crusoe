@@ -2,25 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiClock } from "react-icons/fi";
 
-import { BLOG_CATEGORY_STYLES } from "@/data/blogCategories";
+import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
-import {
-  estimateReadTime,
-  formatBlogCategory,
-  formatBlogDate,
-  getBlogCoverStyle,
-} from "@/lib/blog";
+import { estimateReadTime, formatBlogDate } from "@/lib/blog";
 import { getBlogCoverUrl } from "@/lib/uploads";
 import { cn } from "@/lib/cn";
 import type { Blog } from "@/types";
 
 interface BlogCardProps {
   post: Blog;
+  categoryLabel: string;
   variant?: "default" | "compact";
 }
 
-export function BlogCard({ post, variant = "default" }: BlogCardProps) {
-  const styles = BLOG_CATEGORY_STYLES[post.category];
+export function BlogCard({ post, categoryLabel, variant = "default" }: BlogCardProps) {
+  const styles = getCategoryStyle(post.category);
   const readTime = estimateReadTime(post.content);
   const coverSrc = getBlogCoverUrl(post.coverImage);
 
@@ -49,17 +45,17 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
           />
         ) : (
           <div
-            className={cn(
-              "absolute inset-0 bg-gradient-to-br",
-              getBlogCoverStyle(post.category)
-            )}
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom right, ${styles.accent}33, ${styles.bg}, #eef4e8)`,
+            }}
           />
         )}
         <span
           className="absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-semibold shadow-sm"
           style={{ backgroundColor: styles.bg, color: styles.text }}
         >
-          {formatBlogCategory(post.category)}
+          {categoryLabel}
         </span>
       </div>
 

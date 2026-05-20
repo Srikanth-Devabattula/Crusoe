@@ -5,16 +5,19 @@ import toast from "react-hot-toast";
 import { ArrowLeft, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 
+import { AdminBlogCategories } from "@/components/admin/AdminBlogCategories";
 import { AdminBlogForm } from "@/components/admin/AdminBlogForm";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { Button } from "@/components/ui/Button";
-import { BLOG_CATEGORY_LABELS } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
+import { useBlogCategories } from "@/hooks/useBlogCategories";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { blogService } from "@/services";
 import type { Blog } from "@/types";
 
 export function AdminBlogsContent() {
+  const { categories, isLoading: categoriesLoading, reload, getLabel } =
+    useBlogCategories();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
@@ -77,8 +80,15 @@ export function AdminBlogsContent() {
           Back to all posts
         </button>
 
+        <AdminBlogCategories
+          categories={categories}
+          isLoading={categoriesLoading}
+          onChanged={reload}
+        />
+
         <AdminBlogForm
           editingBlog={editingBlog}
+          categories={categories}
           onCancelEdit={closeForm}
           onSuccess={() => {
             closeForm();
@@ -92,6 +102,12 @@ export function AdminBlogsContent() {
   return (
     <>
       <AdminHeader title="Blog posts" />
+
+      <AdminBlogCategories
+        categories={categories}
+        isLoading={categoriesLoading}
+        onChanged={reload}
+      />
 
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -127,9 +143,9 @@ export function AdminBlogsContent() {
                       {blog.excerpt || "No excerpt"}
                     </p>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      <span className="rounded-full bg-gray-200 px-2 py-0.5 text-[10px] font-semibold uppercase text-gray-700">
-                        {BLOG_CATEGORY_LABELS[blog.category] ?? blog.category}
-                      </span>
+                        <span className="rounded-full bg-gray-200 px-2 py-0.5 text-[10px] font-semibold uppercase text-gray-700">
+                          {getLabel(blog.category)}
+                        </span>
                       {blog.featured && (
                         <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-800">
                           Featured

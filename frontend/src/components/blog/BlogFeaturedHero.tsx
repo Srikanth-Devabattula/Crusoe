@@ -2,24 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiClock } from "react-icons/fi";
 
-import { BLOG_CATEGORY_STYLES } from "@/data/blogCategories";
+import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
-import {
-  estimateReadTime,
-  formatBlogCategory,
-  formatBlogDate,
-  getBlogCoverStyle,
-} from "@/lib/blog";
+import { estimateReadTime, formatBlogDate } from "@/lib/blog";
 import { getBlogCoverUrl } from "@/lib/uploads";
-import { cn } from "@/lib/cn";
 import type { Blog } from "@/types";
 
 interface BlogFeaturedHeroProps {
   post: Blog;
+  categoryLabel: string;
 }
 
-export function BlogFeaturedHero({ post }: BlogFeaturedHeroProps) {
-  const styles = BLOG_CATEGORY_STYLES[post.category];
+export function BlogFeaturedHero({ post, categoryLabel }: BlogFeaturedHeroProps) {
+  const styles = getCategoryStyle(post.category);
   const readTime = estimateReadTime(post.content);
   const coverSrc = getBlogCoverUrl(post.coverImage);
 
@@ -43,10 +38,10 @@ export function BlogFeaturedHero({ post }: BlogFeaturedHeroProps) {
               />
             ) : (
               <div
-                className={cn(
-                  "absolute inset-0 bg-gradient-to-br",
-                  getBlogCoverStyle(post.category)
-                )}
+                className="absolute inset-0"
+                style={{
+                  background: `linear-gradient(to bottom right, ${styles.accent}33, ${styles.bg}, #eef4e8)`,
+                }}
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-white/20" />
@@ -60,7 +55,7 @@ export function BlogFeaturedHero({ post }: BlogFeaturedHeroProps) {
               className="inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold"
               style={{ backgroundColor: styles.bg, color: styles.text }}
             >
-              {formatBlogCategory(post.category)}
+              {categoryLabel}
             </span>
             <p className="mt-4 text-sm text-slate-500">{formatBlogDate(post.createdAt)}</p>
             <h2 className="mt-2 text-2xl font-bold leading-tight text-slate-900 transition-colors group-hover:text-brand sm:text-3xl lg:text-4xl">

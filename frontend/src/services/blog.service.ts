@@ -1,5 +1,5 @@
 import api from "@/lib/api";
-import type { ApiResponse, Blog, BlogCategory, BlogFormData } from "@/types";
+import type { ApiResponse, Blog, BlogFormData } from "@/types";
 
 type BlogMutationOptions = {
   coverFile?: File | null;
@@ -41,7 +41,7 @@ export const blogService = {
     return response.data;
   },
 
-  getPublished: async (category?: BlogCategory | "all") => {
+  getPublished: async (category?: string) => {
     const params =
       category && category !== "all" ? { category } : undefined;
     const response = await api.get<ApiResponse<Blog[]>>("/blogs/public", {

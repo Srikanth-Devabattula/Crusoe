@@ -8,11 +8,10 @@ import { z } from "zod";
 import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/Button";
-import { BLOG_CATEGORIES, BLOG_CATEGORY_LABELS } from "@/data/blogCategories";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { getBlogCoverUrl } from "@/lib/uploads";
 import { blogService } from "@/services";
-import type { Blog, BlogCategory } from "@/types";
+import type { Blog, BlogCategoryItem, BlogFormData } from "@/types";
 
 const blogSchema = z.object({
   title: z.string().min(3, "Title is required"),
@@ -25,7 +24,7 @@ const blogSchema = z.object({
     ),
   excerpt: z.string().min(20, "Excerpt must be at least 20 characters").max(400),
   content: z.string().min(50, "Content must be at least 50 characters"),
-  category: z.enum(BLOG_CATEGORIES as [BlogCategory, ...BlogCategory[]]),
+  category: z.string().min(1, "Category is required"),
   coverImage: z
     .string()
     .optional()
@@ -79,12 +78,14 @@ function Field({
 interface AdminBlogFormProps {
   onSuccess: () => void;
   editingBlog?: Blog | null;
+  categories: BlogCategoryItem[];
   onCancelEdit?: () => void;
 }
 
 export function AdminBlogForm({
   onSuccess,
   editingBlog,
+  categories,
   onCancelEdit,
 }: AdminBlogFormProps) {
   const isEditing = Boolean(editingBlog);
@@ -120,12 +121,16 @@ export function AdminBlogForm({
   useEffect(() => {
     if (editingBlog) {
       const isExternal = /^https?:\/\//i.test(editingBlog.coverImage ?? "");
+      const categorySlug =
+        categories.some((c) => c.slug === editingBlog.category)
+          ? editingBlog.category
+          : categories[0]?.slug ?? "insights";
       form.reset({
         title: editingBlog.title,
         slug: editingBlog.slug,
         excerpt: editingBlog.excerpt ?? "",
         content: editingBlog.content ?? "",
-        category: editingBlog.category ?? "insights",
+        category: categorySlug,
         coverImage: isExternal ? editingBlog.coverImage ?? "" : "",
         featured: editingBlog.featured ?? false,
         published: editingBlog.published,
@@ -133,11 +138,14 @@ export function AdminBlogForm({
       setCoverFile(null);
       setCoverRemoved(false);
     } else {
-      form.reset(defaultValues);
+      form.reset({
+        ...defaultValues,
+        category: categories[0]?.slug ?? "insights",
+      });
       setCoverFile(null);
       setCoverRemoved(false);
     }
-  }, [editingBlog, form]);
+  }, [editingBlog, categories, form]);
 
   const onSubmit = async (values: BlogFormValues) => {
     const externalUrl = values.coverImage?.trim() ?? "";
@@ -205,13 +213,19 @@ export function AdminBlogForm({
         </Field>
 
         <Field label="Category" required error={form.formState.errors.category?.message}>
-          <select {...form.register("category")} className={inputClass}>
-            {BLOG_CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {BLOG_CATEGORY_LABELS[cat]}
-              </option>
-            ))}
-          </select>
+          {categories.length === 0 ? (
+            <p className="text-sm text-amber-700">
+              Add at least one category on the posts list page before creating a blog.
+            </p>
+          ) : (
+            <select {...form.register("category")} className={inputClass}>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat.slug}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          )}
         </Field>
 
         <Field
@@ -298,7 +312,10 @@ export function AdminBlogForm({
       </div>
 
       <div className="mt-8 flex flex-wrap gap-3">
-        <Button type="submit" disabled={form.formState.isSubmitting}>
+        <Button
+          type="submit"
+          disabled={form.formState.isSubmitting || categories.length === 0}
+        >
           {form.formState.isSubmitting
             ? "Saving..."
             : isEditing

@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const Blog = require("../models/Blog");
-const { BLOG_CATEGORIES } = require("../models/Blog");
+const BlogCategory = require("../models/BlogCategory");
 const { blogCoverDir } = require("../middleware/uploadMiddleware");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
@@ -58,7 +58,8 @@ const getPublishedBlogs = async (req, res) => {
   const filter = { published: true };
 
   if (req.query.category && req.query.category !== "all") {
-    if (!BLOG_CATEGORIES.includes(req.query.category)) {
+    const category = await BlogCategory.findOne({ slug: req.query.category });
+    if (!category) {
       return sendError(res, 400, "Invalid category");
     }
     filter.category = req.query.category;
@@ -100,8 +101,10 @@ const validateBlogBody = (body, isUpdate = false) => {
     }
   }
 
-  if (category !== undefined && !BLOG_CATEGORIES.includes(category)) {
-    return "Invalid category";
+  if (category !== undefined) {
+    if (!category || !String(category).trim()) {
+      return "Category is required";
+    }
   }
 
   if (slug !== undefined && slug !== "" && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
@@ -139,6 +142,11 @@ const clearOtherFeatured = async (blogId) => {
   await Blog.updateMany({ _id: { $ne: blogId }, featured: true }, { featured: false });
 };
 
+const assertCategoryExists = async (slug) => {
+  const category = await BlogCategory.findOne({ slug: String(slug).toLowerCase().trim() });
+  return category;
+};
+
 const createBlog = async (req, res) => {
   const body = parseBlogRequestBody(req.body);
   const cover = resolveCoverImage(req);
@@ -149,6 +157,12 @@ const createBlog = async (req, res) => {
 
   const error = validateBlogBody(body);
   if (error) return sendError(res, 400, error);
+
+  if (body.category) {
+    const category = await assertCategoryExists(body.category);
+    if (!category) return sendError(res, 400, "Invalid category");
+    body.category = category.slug;
+  }
 
   const payload = sanitizeBlogBody(body);
   const baseSlug = payload.slug || slugify(payload.title);
@@ -180,6 +194,12 @@ const updateBlog = async (req, res) => {
 
   const error = validateBlogBody(body, true);
   if (error) return sendError(res, 400, error);
+
+  if (body.category) {
+    const category = await assertCategoryExists(body.category);
+    if (!category) return sendError(res, 400, "Invalid category");
+    body.category = category.slug;
+  }
 
   const payload = sanitizeBlogBody(body);
 

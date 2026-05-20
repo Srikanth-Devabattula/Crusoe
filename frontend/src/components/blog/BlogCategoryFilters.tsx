@@ -1,27 +1,28 @@
 "use client";
 
-import { BLOG_CATEGORIES, BLOG_CATEGORY_LABELS } from "@/data/blogCategories";
 import { cn } from "@/lib/cn";
-import type { BlogCategory } from "@/types";
+import type { BlogCategoryItem } from "@/types";
 
-export type BlogFilterCategory = BlogCategory | "all";
+export type BlogFilterCategory = "all" | string;
 
 interface BlogCategoryFiltersProps {
+  categories: BlogCategoryItem[];
   active: BlogFilterCategory;
   onChange: (category: BlogFilterCategory) => void;
   counts?: Partial<Record<BlogFilterCategory, number>>;
 }
 
 export function BlogCategoryFilters({
+  categories,
   active,
   onChange,
   counts,
 }: BlogCategoryFiltersProps) {
   const items: { id: BlogFilterCategory; label: string }[] = [
     { id: "all", label: "All" },
-    ...BLOG_CATEGORIES.map((id) => ({
-      id,
-      label: BLOG_CATEGORY_LABELS[id],
+    ...categories.map((cat) => ({
+      id: cat.slug,
+      label: cat.name,
     })),
   ];
 

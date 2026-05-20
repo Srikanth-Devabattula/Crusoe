@@ -8,6 +8,7 @@ const path = require("path");
 
 const authRoutes = require("./routes/authRoutes");
 const blogRoutes = require("./routes/blogRoutes");
+const blogCategoryRoutes = require("./routes/blogCategoryRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
@@ -39,6 +40,7 @@ app.use("/api", apiLimiter);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/blog-categories", blogCategoryRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/applications", applicationRoutes);
