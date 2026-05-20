@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, Briefcase, LogOut } from "lucide-react";
+import { LayoutDashboard, FileText, Briefcase, ClipboardList, LogOut } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { ROUTES } from "@/constants";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,6 +11,11 @@ const adminLinks = [
   { href: ROUTES.admin.dashboard, label: "Dashboard", icon: LayoutDashboard },
   { href: ROUTES.admin.blogs, label: "Blogs", icon: FileText },
   { href: ROUTES.admin.jobs, label: "Jobs", icon: Briefcase },
+  {
+    href: ROUTES.admin.applications,
+    label: "Applications",
+    icon: ClipboardList,
+  },
 ];
 
 export function AdminSidebar() {
@@ -35,7 +40,7 @@ export function AdminSidebar() {
               href={href}
               className={cn(
                 "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap",
-                pathname === href
+                pathname === href || pathname.startsWith(`${href}/`)
                   ? "bg-gray-900 text-white"
                   : "text-gray-700 hover:bg-gray-200"
               )}

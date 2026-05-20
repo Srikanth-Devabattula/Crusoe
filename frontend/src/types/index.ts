@@ -63,6 +63,24 @@ export interface ApplicationFormData {
   resume?: File;
 }
 
+export interface JobApplication {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  resume: string;
+  status: "pending" | "reviewed" | "accepted" | "rejected";
+  createdAt: string;
+}
+
+export interface JobWithApplications {
+  job: Pick<
+    Job,
+    "_id" | "title" | "experience" | "location" | "department" | "type"
+  >;
+  applications: JobApplication[];
+}
+
 export interface LoginFormData {
   email: string;
   password: string;

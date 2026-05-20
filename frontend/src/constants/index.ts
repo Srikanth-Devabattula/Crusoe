@@ -19,6 +19,7 @@ export const ROUTES = {
     dashboard: "/admin/dashboard",
     blogs: "/admin/blogs",
     jobs: "/admin/jobs",
+    applications: "/admin/applications",
   },
 } as const;
 
