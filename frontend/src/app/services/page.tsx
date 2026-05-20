@@ -1,23 +1,23 @@
-import { PageContainer } from "@/components/common/PageContainer";
-import { PageHeader } from "@/components/common/PageHeader";
-import { Section } from "@/components/common/Section";
+import {
+  ServicesCtaSection,
+  ServicesGridSection,
+  ServicesHero,
+  ServicesWhyChooseSection,
+} from "@/components/services";
 import { createPageMetadata } from "@/lib/createPageMetadata";
 
 export const metadata = createPageMetadata(
   "Services",
-  "Explore our professional technology services."
+  "Quality assurance, automated testing, CAD customisation, and software tooling — engineering solutions that deliver impact."
 );
 
 export default function ServicesPage() {
   return (
-    <PageContainer>
-      <PageHeader
-        title="Our Services"
-        description="Solutions tailored to your business needs."
-      />
-      <Section title="Service List">
-        <p className="text-gray-600">Services grid placeholder.</p>
-      </Section>
-    </PageContainer>
+    <>
+      <ServicesHero />
+      <ServicesGridSection />
+      <ServicesWhyChooseSection />
+      <ServicesCtaSection />
+    </>
   );
 }

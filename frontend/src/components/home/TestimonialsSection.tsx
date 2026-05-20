@@ -43,7 +43,12 @@ const testimonials = [
   },
 ];
 
-export function TestimonialsSection() {
+type TestimonialsSectionProps = {
+  /** On dedicated page, hero already has the main heading */
+  variant?: "home" | "page";
+};
+
+export function TestimonialsSection({ variant = "home" }: TestimonialsSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [slidesPerView, setSlidesPerView] = useState(1);
@@ -144,21 +149,23 @@ export function TestimonialsSection() {
     <section
       id="testimonials"
       aria-label="Testimonials"
-      className="section-padding bg-gray-50"
+      className={`section-padding ${variant === "page" ? "bg-[#f8faf6]" : "bg-gray-50"}`}
     >
       <div className="hero-container">
-        <div className="flex items-center justify-between mb-12">
+        <div className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between lg:mb-12">
           <div>
-            <p className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">
+            <p className="mb-2 text-[18px] font-semibold uppercase tracking-wider text-brand">
               TESTIMONIALS
             </p>
 
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
-              What Our Clients Say
-            </h2>
+            {variant === "home" && (
+              <h2 className="text-3xl font-bold text-gray-900 lg:text-4xl">
+                What Our Clients Say
+              </h2>
+            )}
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex shrink-0 gap-2 self-start sm:self-auto">
             <button
               onClick={handleManualPrev}
               disabled={currentIndex === 0}

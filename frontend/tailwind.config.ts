@@ -5,6 +5,17 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/data/**/*.{js,ts,jsx,tsx}",
+  ],
+  safelist: [
+    "bg-[#F3F8EE]",
+    "bg-[#F3F7FC]",
+    "bg-[#F5F0FB]",
+    "bg-[#FBF7EE]",
+    "text-[#6DBB2D]",
+    "text-[#4A7DDB]",
+    "text-[#8B5CF6]",
+    "text-[#D4A017]",
   ],
   theme: {
     extend: {

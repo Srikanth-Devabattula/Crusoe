@@ -3,12 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  ChevronDown,
-  ArrowRight,
-  Menu,
-  X,
-} from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/cn";
@@ -16,11 +11,7 @@ import { ROUTES } from "@/constants";
 
 const navLinks = [
   { href: ROUTES.home, label: "Home" },
-  {
-    href: ROUTES.services,
-    label: "Services",
-    hasDropdown: true,
-  },
+  { href: ROUTES.services, label: "Services" },
   { href: ROUTES.about, label: "About Us" },
   { href: ROUTES.careers, label: "Careers" },
   {
@@ -140,10 +131,6 @@ export function Navbar() {
                     >
                       {link.label}
 
-                      {link.hasDropdown && (
-                        <ChevronDown className="size-3 shrink-0 text-brand lg:size-3.5" />
-                      )}
-
                       <span
                         className={cn(
                           "absolute bottom-1 left-0 h-[2px] rounded-full bg-brand transition-all duration-300",
@@ -213,17 +200,13 @@ export function Navbar() {
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        "relative flex items-center justify-between rounded-2xl px-4 py-4 text-sm font-bold uppercase tracking-[0.08em] transition-colors duration-300",
+                        "relative block rounded-2xl px-4 py-4 text-sm font-bold uppercase tracking-[0.08em] transition-colors duration-300",
                         isActive
                           ? "bg-[#E8F5DC] text-brand"
                           : "text-slate-700 hover:bg-[#f2f6fa] hover:text-brand"
                       )}
                     >
                       {link.label}
-
-                      {link.hasDropdown && (
-                        <ChevronDown className="size-4" />
-                      )}
 
                       {isActive && (
                         <span
