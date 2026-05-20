@@ -44,70 +44,10 @@ const testimonials = [
 ];
 
 export function TestimonialsSection() {
-  const [currentIndex, setCurrentIndex] = useState(testimonials.length);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [slidesPerView, setSlidesPerView] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
-  const [isResetting, setIsResetting] = useState(false);
-
-  const nextTestimonial = useCallback(() => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => prev + 1);
-    setTimeout(() => setIsTransitioning(false), 300);
-  }, [isTransitioning]);
-
-  const prevTestimonial = useCallback(() => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => prev - 1);
-    setTimeout(() => setIsTransitioning(false), 300);
-  }, [isTransitioning]);
-
-  const handleManualNext = useCallback(() => {
-    setIsPaused(true);
-    nextTestimonial();
-
-    setTimeout(() => setIsPaused(false), 8000);
-  }, [nextTestimonial]);
-
-  const handleManualPrev = useCallback(() => {
-    setIsPaused(true);
-    prevTestimonial();
-    setTimeout(() => setIsPaused(false), 8000);
-  }, [prevTestimonial]);
-
-  useEffect(() => {
-    if (isTransitioning || isResetting) return;
-
-    if (currentIndex >= testimonials.length * 2) {
-      setIsResetting(true);
-      const timer = setTimeout(() => {
-        setCurrentIndex(testimonials.length);
-        setIsResetting(false);
-      }, 50);
-      return () => clearTimeout(timer);
-    } else if (currentIndex < testimonials.length) {
-      setIsResetting(true);
-      const timer = setTimeout(() => {
-        setCurrentIndex(testimonials.length * 2 - 1);
-        setIsResetting(false);
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [currentIndex, isTransitioning, isResetting]);
-
-  useEffect(() => {
-    if (isPaused) return;
-
-    const interval = setInterval(() => {
-      if (!isPaused && !isTransitioning) {
-        nextTestimonial();
-      }
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, [nextTestimonial, isPaused, isTransitioning]);
 
   useEffect(() => {
     const updateSlidesPerView = () => {
@@ -121,15 +61,84 @@ export function TestimonialsSection() {
     };
 
     updateSlidesPerView();
+
     window.addEventListener("resize", updateSlidesPerView);
-    return () => window.removeEventListener("resize", updateSlidesPerView);
+
+    return () =>
+      window.removeEventListener("resize", updateSlidesPerView);
   }, []);
 
-  const infiniteTestimonials = [
-    ...testimonials,
-    ...testimonials,
-    ...testimonials,
-  ];
+  const maxIndex = Math.max(
+    testimonials.length - slidesPerView,
+    0
+  );
+
+  const nextTestimonial = useCallback(() => {
+    if (isTransitioning) return;
+
+    if (currentIndex >= maxIndex) return;
+
+    setIsTransitioning(true);
+
+    setCurrentIndex((prev) => prev + 1);
+
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 300);
+  }, [isTransitioning, currentIndex, maxIndex]);
+
+  const prevTestimonial = useCallback(() => {
+    if (isTransitioning) return;
+
+    if (currentIndex <= 0) return;
+
+    setIsTransitioning(true);
+
+    setCurrentIndex((prev) => prev - 1);
+
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 300);
+  }, [isTransitioning, currentIndex]);
+
+  const handleManualNext = useCallback(() => {
+    setIsPaused(true);
+
+    nextTestimonial();
+
+    setTimeout(() => {
+      setIsPaused(false);
+    }, 8000);
+  }, [nextTestimonial]);
+
+  const handleManualPrev = useCallback(() => {
+    setIsPaused(true);
+
+    prevTestimonial();
+
+    setTimeout(() => {
+      setIsPaused(false);
+    }, 8000);
+  }, [prevTestimonial]);
+
+  // Auto Slide
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      if (!isTransitioning) {
+        setCurrentIndex((prev) => {
+          if (prev >= maxIndex) {
+            return 0;
+          }
+
+          return prev + 1;
+        });
+      }
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [isPaused, isTransitioning, maxIndex]);
 
   return (
     <section
@@ -143,6 +152,7 @@ export function TestimonialsSection() {
             <p className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">
               TESTIMONIALS
             </p>
+
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
               What Our Clients Say
             </h2>
@@ -151,14 +161,25 @@ export function TestimonialsSection() {
           <div className="flex gap-2">
             <button
               onClick={handleManualPrev}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-brand hover:text-white hover:border-brand transition-colors"
+              disabled={currentIndex === 0}
+              className={`w-10 h-10 rounded-full border flex items-center justify-center transition-colors ${
+                currentIndex === 0
+                  ? "border-gray-200 text-gray-300 cursor-not-allowed"
+                  : "border-gray-300 hover:bg-brand hover:text-white hover:border-brand"
+              }`}
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
+
             <button
               onClick={handleManualNext}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-brand hover:text-white hover:border-brand transition-colors"
+              disabled={currentIndex >= maxIndex}
+              className={`w-10 h-10 rounded-full border flex items-center justify-center transition-colors ${
+                currentIndex >= maxIndex
+                  ? "border-gray-200 text-gray-300 cursor-not-allowed"
+                  : "border-gray-300 hover:bg-brand hover:text-white hover:border-brand"
+              }`}
               aria-label="Next testimonial"
             >
               <ChevronRight className="w-5 h-5" />
@@ -168,14 +189,16 @@ export function TestimonialsSection() {
 
         <div className="overflow-hidden">
           <div
-            className={`flex testimonials-track ${!isResetting ? "transition-transform duration-300 ease-in-out" : ""}`}
+            className="flex transition-transform duration-300 ease-in-out"
             style={{
-              transform: `translateX(-${(currentIndex * 100) / slidesPerView}%)`,
+              transform: `translateX(-${
+                currentIndex * (100 / slidesPerView)
+              }%)`,
             }}
           >
-            {infiniteTestimonials.map((testimonial, index) => (
+            {testimonials.map((testimonial) => (
               <div
-                key={`${testimonial.id}-${index}`}
+                key={testimonial.id}
                 className="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-3"
               >
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col h-[400px]">
@@ -183,12 +206,14 @@ export function TestimonialsSection() {
                     <FaQuoteLeft className="w-8 h-8 text-brand" />
 
                     <div className="flex gap-1">
-                      {[...Array(testimonial.rating)].map((_, starIndex) => (
-                        <FaStar
-                          key={starIndex}
-                          className="w-4 h-4 text-yellow-400"
-                        />
-                      ))}
+                      {[...Array(testimonial.rating)].map(
+                        (_, starIndex) => (
+                          <FaStar
+                            key={starIndex}
+                            className="w-4 h-4 text-yellow-400"
+                          />
+                        )
+                      )}
                     </div>
                   </div>
 
@@ -197,17 +222,19 @@ export function TestimonialsSection() {
                   </p>
 
                   <div className="flex items-center gap-3 mt-auto">
-                    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                    <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
                         className="w-full h-full object-cover rounded-full"
                       />
                     </div>
+
                     <div>
                       <h4 className="font-semibold text-gray-900">
                         {testimonial.name}
                       </h4>
+
                       <p className="text-sm text-gray-600">
                         {testimonial.title}
                       </p>
@@ -217,6 +244,24 @@ export function TestimonialsSection() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Dots */}
+        <div className="mt-8 flex items-center justify-center gap-3">
+          {Array.from({ length: maxIndex + 1 }).map(
+            (_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`rounded-full transition-all duration-300 ${
+                  currentIndex === index
+                    ? "h-4 w-4 bg-lime-500 shadow-md shadow-lime-300"
+                    : "h-4 w-4 bg-gray-300 hover:bg-gray-400"
+                }`}
+              />
+            )
+          )}
         </div>
       </div>
     </section>
