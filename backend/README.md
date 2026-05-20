@@ -38,34 +38,10 @@ npm run dev
 
 | Method | Endpoint | Access |
 |--------|----------|--------|
-| POST | `/api/auth/create-account` | Public (Postman — see below) |
-| POST | `/api/auth/login` | Public (website login) |
+| GET | `/api/auth/has-admin` | Public |
+| POST | `/api/auth/register` | Public (first admin only) |
+| POST | `/api/auth/login` | Public |
 | GET | `/api/auth/me` | Private |
-
-### Create admin via Postman
-
-**First admin** (no admins in database yet):
-
-```json
-POST /api/auth/create-account
-{
-  "name": "Sri",
-  "new_user_email": "admin@example.com",
-  "password": "yourpassword"
-}
-```
-
-**Additional admins** (requires an existing admin email):
-
-```json
-POST /api/auth/create-account
-{
-  "admin_email": "admin@example.com",
-  "name": "New Admin",
-  "new_user_email": "newadmin@example.com",
-  "password": "yourpassword"
-}
-```
 | GET | `/api/blogs` | Public |
 | POST | `/api/blogs` | Admin |
 | PUT | `/api/blogs/:id` | Admin |

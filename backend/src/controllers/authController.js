@@ -20,70 +20,65 @@ const formatUser = (user) => ({
   role: user.role,
 });
 
-const normalizeEmail = (email) => String(email).trim().toLowerCase();
+/**
+ * @route   GET /api/auth/has-admin
+ * @desc    Check if any admin user exists
+ * @access  Public
+ */
+const hasAdmin = async (req, res) => {
+  const count = await User.countDocuments({ role: "admin" });
+  return sendSuccess(res, 200, "Admin status retrieved", { hasAdmin: count > 0 });
+};
 
 /**
- * @route   POST /api/auth/create-account
- * @desc    Create admin account (Postman / API only)
- * @access  Public — requires existing admin_email when admins already exist
+ * @route   POST /api/auth/register
+ * @desc    Create first admin user
+ * @access  Public (only when no admin exists)
  */
-const createAccount = async (req, res) => {
-  const { admin_email, name, new_user_email, password } = req.body;
+const register = async (req, res) => {
+  const { name, email, password } = req.body;
 
-  if (!name || !new_user_email || !password) {
-    return sendError(res, 400, "name, new_user_email, and password are required");
+  if (!name || !email || !password) {
+    return sendError(res, 400, "Name, email, and password are required");
   }
 
-  if (!isValidEmail(new_user_email)) {
-    return sendError(res, 400, "Invalid new_user_email format");
+  if (!isValidEmail(email)) {
+    return sendError(res, 400, "Invalid email format");
   }
 
   if (password.length < 6) {
     return sendError(res, 400, "Password must be at least 6 characters");
   }
 
-  const adminCount = await User.countDocuments({ role: "admin" });
-
-  if (adminCount > 0) {
-    if (!admin_email) {
-      return sendError(res, 400, "admin_email is required to create new accounts");
-    }
-
-    if (!isValidEmail(admin_email)) {
-      return sendError(res, 400, "Invalid admin_email format");
-    }
-
-    const requestingAdmin = await User.findOne({
-      email: normalizeEmail(admin_email),
-      role: "admin",
-    });
-
-    if (!requestingAdmin) {
-      return sendError(res, 403, "admin_email is not a valid admin account");
-    }
+  const existingAdmin = await User.findOne({ role: "admin" });
+  if (existingAdmin) {
+    return sendError(res, 400, "Admin already exists. Please log in.");
   }
 
-  const email = normalizeEmail(new_user_email);
-  const emailTaken = await User.findOne({ email });
+  const emailTaken = await User.findOne({ email: email.toLowerCase() });
   if (emailTaken) {
-    return sendError(res, 400, "new_user_email is already registered");
+    return sendError(res, 400, "Email is already registered");
   }
 
   const user = await User.create({
-    name: String(name).trim(),
+    name,
     email,
     password,
     role: "admin",
   });
 
-  return sendSuccess(res, 201, "Admin account created successfully", {
+  const token = generateToken(user._id);
+  setAuthCookie(res, token);
+
+  return sendSuccess(res, 201, "User created successfully", {
     user: formatUser(user),
+    token,
   });
 };
 
 /**
  * @route   POST /api/auth/login
- * @desc    Admin login (website)
+ * @desc    Admin login
  * @access  Public
  */
 const login = async (req, res) => {
@@ -97,13 +92,9 @@ const login = async (req, res) => {
     return sendError(res, 400, "Invalid email format");
   }
 
-  const user = await User.findOne({ email: normalizeEmail(email) }).select("+password");
+  const user = await User.findOne({ email: email.toLowerCase() }).select("+password");
 
-  if (!user || user.role !== "admin") {
-    return sendError(res, 401, "Invalid email or password");
-  }
-
-  if (!(await user.matchPassword(password))) {
+  if (!user || !(await user.matchPassword(password))) {
     return sendError(res, 401, "Invalid email or password");
   }
 
@@ -118,17 +109,13 @@ const login = async (req, res) => {
 
 /**
  * @route   GET /api/auth/me
- * @desc    Get logged-in admin
+ * @desc    Get logged-in user
  * @access  Private
  */
 const getMe = async (req, res) => {
-  if (req.user.role !== "admin") {
-    return sendError(res, 403, "Not authorized as admin");
-  }
-
   return sendSuccess(res, 200, "User profile retrieved", {
     user: formatUser(req.user),
   });
 };
 
-module.exports = { createAccount, login, getMe };
+module.exports = { hasAdmin, register, login, getMe };
