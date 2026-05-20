@@ -9,22 +9,38 @@ export const metadata = createPageMetadata(
   "Thank you for contacting Crusoe Tech."
 );
 
-export default function ThankYouPage() {
+interface ThankYouPageProps {
+  searchParams: { type?: string };
+}
+
+export default function ThankYouPage({ searchParams }: ThankYouPageProps) {
+  const isApplication = searchParams.type === "application";
+
   return (
     <PageContainer>
       <PageHeader
         title="Thank You"
-        description="Your submission has been received."
+        description={
+          isApplication
+            ? "Your application has been received."
+            : "Your submission has been received."
+        }
       />
       <p className="text-gray-600">
-        We will get back to you shortly. This is a confirmation page placeholder.
+        {isApplication
+          ? "Our team will review your application and get back to you if your profile is a match for this role."
+          : "We will get back to you shortly."}
       </p>
-      <Link
-        href={ROUTES.home}
-        className="mt-6 inline-block text-sm font-medium text-gray-900 underline"
-      >
-        Return to homepage
-      </Link>
+      <div className="mt-6 flex flex-wrap gap-4 text-sm font-medium">
+        {isApplication && (
+          <Link href={ROUTES.careers} className="text-brand underline hover:no-underline">
+            View more positions
+          </Link>
+        )}
+        <Link href={ROUTES.home} className="text-gray-900 underline">
+          Return to homepage
+        </Link>
+      </div>
     </PageContainer>
   );
 }

@@ -15,7 +15,8 @@ export function MainLayout({ children }: MainLayoutProps) {
   const isFullBleedHero =
     pathname === "/" ||
     pathname === ROUTES.testimonials ||
-    pathname === ROUTES.services;
+    pathname === ROUTES.services ||
+    pathname === ROUTES.careers;
 
   return (
     <div className="flex min-h-screen flex-col">

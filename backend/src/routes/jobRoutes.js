@@ -1,6 +1,8 @@
 const express = require("express");
 const {
   getJobs,
+  getPublishedJobs,
+  getJobById,
   createJob,
   updateJob,
   deleteJob,
@@ -10,6 +12,8 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
+router.get("/public", asyncHandler(getPublishedJobs));
+router.get("/:id", asyncHandler(getJobById));
 router.get("/", asyncHandler(getJobs));
 router.post("/", protect, adminOnly, asyncHandler(createJob));
 router.put("/:id", protect, adminOnly, asyncHandler(updateJob));

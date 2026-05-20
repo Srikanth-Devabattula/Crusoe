@@ -7,6 +7,16 @@ export const jobService = {
     return response.data;
   },
 
+  getPublished: async () => {
+    const response = await api.get<ApiResponse<Job[]>>("/jobs/public");
+    return response.data;
+  },
+
+  getById: async (id: string) => {
+    const response = await api.get<ApiResponse<Job>>(`/jobs/${id}`);
+    return response.data;
+  },
+
   create: async (data: JobFormData) => {
     const response = await api.post<ApiResponse<Job>>("/jobs", data);
     return response.data;

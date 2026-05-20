@@ -3,9 +3,7 @@ import type { ApiResponse } from "@/types";
 
 export const applicationService = {
   submit: async (formData: FormData) => {
-    const response = await api.post<ApiResponse>("/applications", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const response = await api.post<ApiResponse>("/applications", formData);
     return response.data;
   },
 };

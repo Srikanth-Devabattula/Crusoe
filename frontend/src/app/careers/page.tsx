@@ -1,23 +1,17 @@
-import { PageContainer } from "@/components/common/PageContainer";
-import { PageHeader } from "@/components/common/PageHeader";
-import { Section } from "@/components/common/Section";
+import { CareersHero } from "@/components/careers/CareersHero";
+import { CareersJobsList } from "@/components/careers/CareersJobsList";
 import { createPageMetadata } from "@/lib/createPageMetadata";
 
 export const metadata = createPageMetadata(
   "Careers",
-  "Join our team — view open positions."
+  "Join our team — explore open positions at Crusoe Tech."
 );
 
 export default function CareersPage() {
   return (
-    <PageContainer>
-      <PageHeader
-        title="Careers"
-        description="Build your career with Crusoe Tech."
-      />
-      <Section title="Open Positions">
-        <p className="text-gray-600">Job listings placeholder.</p>
-      </Section>
-    </PageContainer>
+    <>
+      <CareersHero />
+      <CareersJobsList />
+    </>
   );
 }

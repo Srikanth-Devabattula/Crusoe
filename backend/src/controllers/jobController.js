@@ -6,6 +6,21 @@ const getJobs = async (req, res) => {
   return sendSuccess(res, 200, "Jobs retrieved", jobs);
 };
 
+const getPublishedJobs = async (req, res) => {
+  const jobs = await Job.find({ published: true }).sort({ createdAt: -1 });
+  return sendSuccess(res, 200, "Published jobs retrieved", jobs);
+};
+
+const getJobById = async (req, res) => {
+  const job = await Job.findOne({ _id: req.params.id, published: true });
+
+  if (!job) {
+    return sendError(res, 404, "Job not found");
+  }
+
+  return sendSuccess(res, 200, "Job retrieved", job);
+};
+
 const validateJobBody = (body, isUpdate = false) => {
   const {
     title,
@@ -115,4 +130,11 @@ const deleteJob = async (req, res) => {
   return sendSuccess(res, 200, "Job deleted successfully");
 };
 
-module.exports = { getJobs, createJob, updateJob, deleteJob };
+module.exports = {
+  getJobs,
+  getPublishedJobs,
+  getJobById,
+  createJob,
+  updateJob,
+  deleteJob,
+};

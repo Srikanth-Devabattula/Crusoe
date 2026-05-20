@@ -1,4 +1,5 @@
 const Application = require("../models/Application");
+const Job = require("../models/Job");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { isValidEmail } = require("../utils/validators");
 
@@ -21,6 +22,11 @@ const submitApplication = async (req, res) => {
 
     if (!req.file) {
       return sendError(res, 400, "Resume file is required");
+    }
+
+    const job = await Job.findOne({ _id: jobId, published: true });
+    if (!job) {
+      return sendError(res, 404, "This position is not available");
     }
 
     const application = await Application.create({
