@@ -16,7 +16,9 @@ export function MainLayout({ children }: MainLayoutProps) {
     pathname === "/" ||
     pathname === ROUTES.testimonials ||
     pathname === ROUTES.services ||
-    pathname === ROUTES.careers;
+    pathname === ROUTES.careers ||
+    pathname === ROUTES.blog ||
+    pathname.startsWith(`${ROUTES.blog}/`);
 
   return (
     <div className="flex min-h-screen flex-col">

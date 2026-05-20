@@ -11,15 +11,36 @@ export interface User {
   role: "admin" | "user";
 }
 
+export type BlogCategory =
+  | "technology"
+  | "engineering"
+  | "company-news"
+  | "insights"
+  | "product";
+
 export interface Blog {
   _id: string;
   title: string;
   slug: string;
   content: string;
-  excerpt?: string;
+  excerpt: string;
+  category: BlogCategory;
+  coverImage?: string;
+  featured: boolean;
   published: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface BlogFormData {
+  title: string;
+  slug?: string;
+  excerpt: string;
+  content: string;
+  category: BlogCategory;
+  coverImage?: string;
+  featured: boolean;
+  published: boolean;
 }
 
 export interface Job {

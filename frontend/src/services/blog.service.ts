@@ -1,5 +1,5 @@
 import api from "@/lib/api";
-import type { ApiResponse, Blog } from "@/types";
+import type { ApiResponse, Blog, BlogCategory, BlogFormData } from "@/types";
 
 export const blogService = {
   getAll: async () => {
@@ -7,12 +7,26 @@ export const blogService = {
     return response.data;
   },
 
-  create: async (data: Partial<Blog>) => {
+  getPublished: async (category?: BlogCategory | "all") => {
+    const params =
+      category && category !== "all" ? { category } : undefined;
+    const response = await api.get<ApiResponse<Blog[]>>("/blogs/public", {
+      params,
+    });
+    return response.data;
+  },
+
+  getBySlug: async (slug: string) => {
+    const response = await api.get<ApiResponse<Blog>>(`/blogs/slug/${slug}`);
+    return response.data;
+  },
+
+  create: async (data: BlogFormData) => {
     const response = await api.post<ApiResponse<Blog>>("/blogs", data);
     return response.data;
   },
 
-  update: async (id: string, data: Partial<Blog>) => {
+  update: async (id: string, data: Partial<BlogFormData>) => {
     const response = await api.put<ApiResponse<Blog>>(`/blogs/${id}`, data);
     return response.data;
   },

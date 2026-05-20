@@ -11,6 +11,7 @@ export const ROUTES = {
   careerJob: (id: string) => `/careers/${id}`,
   testimonials: "/testimonials",
   blog: "/blog",
+  blogPost: (slug: string) => `/blog/${slug}`,
   news: "/news",
   contact: "/contact",
   thankYou: "/thank-you",

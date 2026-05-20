@@ -1,5 +1,13 @@
 const mongoose = require("mongoose");
 
+const BLOG_CATEGORIES = [
+  "technology",
+  "engineering",
+  "company-news",
+  "insights",
+  "product",
+];
+
 const blogSchema = new mongoose.Schema(
   {
     title: {
@@ -13,13 +21,27 @@ const blogSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
+    excerpt: {
+      type: String,
+      default: "",
+      trim: true,
+    },
     content: {
       type: String,
       default: "",
     },
-    excerpt: {
+    category: {
+      type: String,
+      enum: BLOG_CATEGORIES,
+      default: "insights",
+    },
+    coverImage: {
       type: String,
       default: "",
+    },
+    featured: {
+      type: Boolean,
+      default: false,
     },
     published: {
       type: Boolean,
@@ -34,3 +56,4 @@ const blogSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Blog", blogSchema);
+module.exports.BLOG_CATEGORIES = BLOG_CATEGORIES;

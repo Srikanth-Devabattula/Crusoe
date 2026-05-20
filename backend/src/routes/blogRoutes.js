@@ -1,6 +1,8 @@
 const express = require("express");
 const {
   getBlogs,
+  getPublishedBlogs,
+  getBlogBySlug,
   createBlog,
   updateBlog,
   deleteBlog,
@@ -10,7 +12,9 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
-router.get("/", asyncHandler(getBlogs));
+router.get("/public", asyncHandler(getPublishedBlogs));
+router.get("/slug/:slug", asyncHandler(getBlogBySlug));
+router.get("/", protect, adminOnly, asyncHandler(getBlogs));
 router.post("/", protect, adminOnly, asyncHandler(createBlog));
 router.put("/:id", protect, adminOnly, asyncHandler(updateBlog));
 router.delete("/:id", protect, adminOnly, asyncHandler(deleteBlog));

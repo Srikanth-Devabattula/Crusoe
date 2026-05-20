@@ -1,5 +1,4 @@
-import { AdminHeader } from "@/components/admin/AdminHeader";
-import { Section } from "@/components/common/Section";
+import { AdminBlogsContent } from "@/components/admin/AdminBlogsContent";
 import { createPageMetadata } from "@/lib/createPageMetadata";
 
 export const metadata = createPageMetadata(
@@ -8,12 +7,5 @@ export const metadata = createPageMetadata(
 );
 
 export default function AdminBlogsPage() {
-  return (
-    <>
-      <AdminHeader title="Manage Blogs" />
-      <Section title="Blog Posts">
-        <p className="text-sm text-gray-600">Blog management table placeholder.</p>
-      </Section>
-    </>
-  );
+  return <AdminBlogsContent />;
 }

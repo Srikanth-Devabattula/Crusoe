@@ -1,6 +1,5 @@
-import { PageContainer } from "@/components/common/PageContainer";
-import { PageHeader } from "@/components/common/PageHeader";
-import { Section } from "@/components/common/Section";
+import { BlogHero } from "@/components/blog/BlogHero";
+import { BlogListing } from "@/components/blog/BlogListing";
 import { createPageMetadata } from "@/lib/createPageMetadata";
 
 export const metadata = createPageMetadata(
@@ -10,11 +9,9 @@ export const metadata = createPageMetadata(
 
 export default function BlogPage() {
   return (
-    <PageContainer>
-      <PageHeader title="Blog" description="Latest articles and insights." />
-      <Section title="Recent Posts">
-        <p className="text-gray-600">Blog posts list placeholder.</p>
-      </Section>
-    </PageContainer>
+    <>
+      <BlogHero />
+      <BlogListing />
+    </>
   );
 }
