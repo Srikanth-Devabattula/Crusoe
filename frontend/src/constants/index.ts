@@ -1,7 +1,13 @@
-/** Production API — override via NEXT_PUBLIC_API_URL in .env.local */
+/**
+ * API base URL — must match where uploads are stored.
+ * Local dev: http://localhost:5000/api (see frontend/.env.local)
+ * Production: https://crusoe-nhbu.onrender.com/api
+ */
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ??
-  "https://crusoe-nhbu.onrender.com/api";
+  (process.env.NODE_ENV === "production"
+    ? "https://crusoe-nhbu.onrender.com/api"
+    : "http://localhost:5000/api");
 
 export const ROUTES = {
   home: "/",

@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiClock } from "react-icons/fi";
 
+import { CoverImage } from "@/components/common/CoverImage";
 import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
 import { estimateReadTime, formatBlogDate } from "@/lib/blog";
@@ -19,6 +19,14 @@ export function BlogCard({ post, categoryLabel, variant = "default" }: BlogCardP
   const styles = getCategoryStyle(post.category);
   const readTime = estimateReadTime(post.content);
   const coverSrc = getBlogCoverUrl(post.coverImage);
+  const gradientFallback = (
+    <div
+      className="absolute inset-0"
+      style={{
+        background: `linear-gradient(to bottom right, ${styles.accent}33, ${styles.bg}, #eef4e8)`,
+      }}
+    />
+  );
 
   return (
     <Link
@@ -35,21 +43,16 @@ export function BlogCard({ post, categoryLabel, variant = "default" }: BlogCardP
         )}
       >
         {coverSrc ? (
-          <Image
+          <CoverImage
             src={coverSrc}
             alt=""
             fill
-            unoptimized
             sizes="(max-width: 640px) 100vw, 400px"
-            className="object-cover object-center transition duration-500 group-hover:scale-[1.02]"
+            imageClassName="transition duration-500 group-hover:scale-[1.02]"
+            fallback={gradientFallback}
           />
         ) : (
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom right, ${styles.accent}33, ${styles.bg}, #eef4e8)`,
-            }}
-          />
+          gradientFallback
         )}
         <span
           className="absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-semibold shadow-sm"

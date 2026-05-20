@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -10,6 +9,7 @@ import {
 } from "react-icons/hi";
 
 import { BlogCard } from "@/components/blog/BlogCard";
+import { CoverImage } from "@/components/common/CoverImage";
 import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
 import { useBlogCategories } from "@/hooks/useBlogCategories";
@@ -134,15 +134,14 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
       <div className="hero-container pb-12 lg:pb-16">
         <figure className="mx-auto max-w-3xl overflow-hidden rounded-[20px] border border-[#E8EEF5] bg-slate-50/80 shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
           {coverSrc ? (
-            <Image
+            <CoverImage
               src={coverSrc}
               alt=""
               width={960}
               height={540}
-              unoptimized
               priority
               sizes="(max-width: 768px) 100vw, 768px"
-              className="mx-auto block h-auto w-full max-h-[280px] object-contain object-center sm:max-h-[320px] lg:max-h-[360px]"
+              imageClassName="mx-auto block h-auto w-full max-h-[280px] object-contain sm:max-h-[320px] lg:max-h-[360px]"
             />
           ) : (
             <div

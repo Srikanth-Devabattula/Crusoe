@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiClock } from "react-icons/fi";
 
+import { CoverImage } from "@/components/common/CoverImage";
 import { getNewsCategoryStyle } from "@/data/newsCategories";
 import { ROUTES } from "@/constants";
 import { estimateNewsReadTime, formatNewsDate } from "@/lib/news";
@@ -18,6 +18,14 @@ export function NewsCard({ item, categoryLabel }: NewsCardProps) {
   const styles = getNewsCategoryStyle(item.category);
   const readTime = estimateNewsReadTime(item.content);
   const coverSrc = getNewsCoverUrl(item.coverImage);
+  const gradientFallback = (
+    <div
+      className="absolute inset-0"
+      style={{
+        background: `linear-gradient(to bottom right, ${styles.accent}33, ${styles.bg}, #eef4e8)`,
+      }}
+    />
+  );
 
   return (
     <Link
@@ -26,21 +34,16 @@ export function NewsCard({ item, categoryLabel }: NewsCardProps) {
     >
       <div className="relative h-48 w-full shrink-0 overflow-hidden">
         {coverSrc ? (
-          <Image
+          <CoverImage
             src={coverSrc}
             alt=""
             fill
-            unoptimized
             sizes="(max-width: 640px) 100vw, 400px"
-            className="object-cover object-center transition duration-500 group-hover:scale-[1.02]"
+            imageClassName="transition duration-500 group-hover:scale-[1.02]"
+            fallback={gradientFallback}
           />
         ) : (
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom right, ${styles.accent}33, ${styles.bg}, #eef4e8)`,
-            }}
-          />
+          gradientFallback
         )}
         <span
           className="absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-semibold shadow-sm"

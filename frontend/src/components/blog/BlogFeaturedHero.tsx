@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiClock } from "react-icons/fi";
 
+import { CoverImage } from "@/components/common/CoverImage";
 import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
 import { estimateReadTime, formatBlogDate } from "@/lib/blog";
@@ -27,15 +27,23 @@ export function BlogFeaturedHero({ post, categoryLabel }: BlogFeaturedHeroProps)
         >
           <div className="relative flex min-h-[200px] items-center justify-center bg-slate-50/80 sm:min-h-[240px] lg:min-h-[280px]">
             {coverSrc ? (
-              <Image
+              <CoverImage
                 src={coverSrc}
                 alt=""
                 width={800}
                 height={500}
-                unoptimized
                 priority
                 sizes="(max-width: 1024px) 100vw, 55vw"
-                className="h-auto max-h-[200px] w-full object-contain object-center p-3 sm:max-h-[240px] lg:max-h-[280px]"
+                className="relative flex min-h-[200px] items-center justify-center p-3 sm:min-h-[240px] lg:min-h-[280px]"
+                imageClassName="h-auto max-h-[200px] w-full object-contain sm:max-h-[240px] lg:max-h-[280px]"
+                fallback={
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: `linear-gradient(to bottom right, ${styles.accent}33, ${styles.bg}, #eef4e8)`,
+                    }}
+                  />
+                }
               />
             ) : (
               <div
