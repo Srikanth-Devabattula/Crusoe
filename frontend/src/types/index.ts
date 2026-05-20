@@ -44,6 +44,39 @@ export interface BlogFormData {
   published: boolean;
 }
 
+export interface NewsCategoryItem {
+  _id: string;
+  name: string;
+  slug: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface News {
+  _id: string;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt: string;
+  category: string;
+  coverImage?: string;
+  featured: boolean;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NewsFormData {
+  title: string;
+  slug?: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  coverImage?: string;
+  featured: boolean;
+  published: boolean;
+}
+
 export interface Job {
   _id: string;
   title: string;

@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, Briefcase, ClipboardList, LogOut } from "lucide-react";
+import {
+  LayoutDashboard,
+  FileText,
+  Newspaper,
+  Briefcase,
+  ClipboardList,
+  LogOut,
+} from "lucide-react";
 import { cn } from "@/lib/cn";
 import { ROUTES } from "@/constants";
 import { useAuth } from "@/contexts/AuthContext";
@@ -10,6 +17,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const adminLinks = [
   { href: ROUTES.admin.dashboard, label: "Dashboard", icon: LayoutDashboard },
   { href: ROUTES.admin.blogs, label: "Blogs", icon: FileText },
+  { href: ROUTES.admin.news, label: "News", icon: Newspaper },
   { href: ROUTES.admin.jobs, label: "Jobs", icon: Briefcase },
   {
     href: ROUTES.admin.applications,

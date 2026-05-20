@@ -18,7 +18,9 @@ export function MainLayout({ children }: MainLayoutProps) {
     pathname === ROUTES.services ||
     pathname === ROUTES.careers ||
     pathname === ROUTES.blog ||
-    pathname.startsWith(`${ROUTES.blog}/`);
+    pathname.startsWith(`${ROUTES.blog}/`) ||
+    pathname === ROUTES.news ||
+    pathname.startsWith(`${ROUTES.news}/`);
 
   return (
     <div className="flex min-h-screen flex-col">

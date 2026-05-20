@@ -2,27 +2,27 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiClock } from "react-icons/fi";
 
-import { getCategoryStyle } from "@/data/blogCategories";
+import { getNewsCategoryStyle } from "@/data/newsCategories";
 import { ROUTES } from "@/constants";
-import { estimateReadTime, formatBlogDate } from "@/lib/blog";
-import { getBlogCoverUrl } from "@/lib/uploads";
-import type { Blog } from "@/types";
+import { estimateNewsReadTime, formatNewsDate } from "@/lib/news";
+import { getNewsCoverUrl } from "@/lib/uploads";
+import type { News } from "@/types";
 
-interface BlogFeaturedHeroProps {
-  post: Blog;
+interface NewsFeaturedHeroProps {
+  item: News;
   categoryLabel: string;
 }
 
-export function BlogFeaturedHero({ post, categoryLabel }: BlogFeaturedHeroProps) {
-  const styles = getCategoryStyle(post.category);
-  const readTime = estimateReadTime(post.content);
-  const coverSrc = getBlogCoverUrl(post.coverImage);
+export function NewsFeaturedHero({ item, categoryLabel }: NewsFeaturedHeroProps) {
+  const styles = getNewsCategoryStyle(item.category);
+  const readTime = estimateNewsReadTime(item.content);
+  const coverSrc = getNewsCoverUrl(item.coverImage);
 
   return (
     <section className="bg-white pb-4 pt-2 sm:pb-6">
       <div className="hero-container">
         <Link
-          href={ROUTES.blogPost(post.slug)}
+          href={ROUTES.newsArticle(item.slug)}
           className="group relative grid overflow-hidden rounded-[24px] border border-[#E8EEF5] bg-white shadow-[0_16px_50px_rgba(15,23,42,0.08)] transition hover:border-brand/30 lg:grid-cols-[1.15fr_1fr]"
         >
           <div className="relative flex min-h-[200px] items-center justify-center bg-slate-50/80 sm:min-h-[240px] lg:min-h-[280px]">
@@ -45,9 +45,6 @@ export function BlogFeaturedHero({ post, categoryLabel }: BlogFeaturedHeroProps)
                 }}
               />
             )}
-            {coverSrc && (
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/20 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-white/30" />
-            )}
             <span className="absolute left-5 top-5 rounded-full bg-brand px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
               Featured
             </span>
@@ -60,12 +57,12 @@ export function BlogFeaturedHero({ post, categoryLabel }: BlogFeaturedHeroProps)
             >
               {categoryLabel}
             </span>
-            <p className="mt-4 text-sm text-slate-500">{formatBlogDate(post.createdAt)}</p>
+            <p className="mt-4 text-sm text-slate-500">{formatNewsDate(item.createdAt)}</p>
             <h2 className="mt-2 text-2xl font-bold leading-tight text-slate-900 transition-colors group-hover:text-brand sm:text-3xl lg:text-4xl">
-              {post.title}
+              {item.title}
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600 line-clamp-4 sm:text-lg">
-              {post.excerpt}
+              {item.excerpt}
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-4">
               <span className="flex items-center gap-1.5 text-sm text-slate-500">
@@ -73,11 +70,8 @@ export function BlogFeaturedHero({ post, categoryLabel }: BlogFeaturedHeroProps)
                 {readTime} min read
               </span>
               <span className="inline-flex items-center gap-2 text-sm font-semibold text-brand">
-                Read featured article
-                <FiArrowRight
-                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                  aria-hidden
-                />
+                Read story
+                <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
               </span>
             </div>
           </div>

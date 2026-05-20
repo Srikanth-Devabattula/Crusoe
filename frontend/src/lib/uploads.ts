@@ -20,3 +20,14 @@ export function getBlogCoverUrl(coverImage?: string): string | null {
   const filename = coverImage.replace(/^\/+/, "").split("/").pop() ?? coverImage;
   return `${getUploadsBaseUrl()}/uploads/blog-covers/${encodeURIComponent(filename)}`;
 }
+
+export function getNewsCoverUrl(coverImage?: string): string | null {
+  if (!coverImage?.trim()) return null;
+
+  if (/^https?:\/\//i.test(coverImage)) {
+    return coverImage;
+  }
+
+  const filename = coverImage.replace(/^\/+/, "").split("/").pop() ?? coverImage;
+  return `${getUploadsBaseUrl()}/uploads/news-covers/${encodeURIComponent(filename)}`;
+}

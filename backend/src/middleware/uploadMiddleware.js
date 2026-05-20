@@ -4,8 +4,9 @@ const fs = require("fs");
 
 const resumeDir = path.join(__dirname, "../uploads/resumes");
 const blogCoverDir = path.join(__dirname, "../uploads/blog-covers");
+const newsCoverDir = path.join(__dirname, "../uploads/news-covers");
 
-for (const dir of [resumeDir, blogCoverDir]) {
+for (const dir of [resumeDir, blogCoverDir, newsCoverDir]) {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
@@ -56,4 +57,16 @@ const uploadBlogCover = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-module.exports = { uploadResume, uploadBlogCover, blogCoverDir };
+const uploadNewsCover = multer({
+  storage: createStorage(newsCoverDir),
+  fileFilter: imageFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
+
+module.exports = {
+  uploadResume,
+  uploadBlogCover,
+  uploadNewsCover,
+  blogCoverDir,
+  newsCoverDir,
+};

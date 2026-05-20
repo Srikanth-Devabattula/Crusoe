@@ -13,6 +13,7 @@ export const ROUTES = {
   blog: "/blog",
   blogPost: (slug: string) => `/blog/${slug}`,
   news: "/news",
+  newsArticle: (slug: string) => `/news/${slug}`,
   contact: "/contact",
   thankYou: "/thank-you",
   admin: {
@@ -21,6 +22,7 @@ export const ROUTES = {
     blogs: "/admin/blogs",
     jobs: "/admin/jobs",
     applications: "/admin/applications",
+    news: "/admin/news",
   },
 } as const;
 
