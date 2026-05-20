@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -9,6 +10,7 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui/Button";
 import { BLOG_CATEGORIES, BLOG_CATEGORY_LABELS } from "@/data/blogCategories";
 import { getApiErrorMessage } from "@/lib/api-error";
+import { getBlogCoverUrl } from "@/lib/uploads";
 import { blogService } from "@/services";
 import type { Blog, BlogCategory } from "@/types";
 
@@ -86,45 +88,91 @@ export function AdminBlogForm({
   onCancelEdit,
 }: AdminBlogFormProps) {
   const isEditing = Boolean(editingBlog);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [coverRemoved, setCoverRemoved] = useState(false);
 
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogSchema),
     defaultValues,
   });
 
+  const existingCoverUrl = useMemo(() => {
+    if (!editingBlog?.coverImage || coverRemoved) return null;
+    return getBlogCoverUrl(editingBlog.coverImage);
+  }, [editingBlog, coverRemoved]);
+
+  const displayPreview = coverPreview ?? existingCoverUrl;
+
+  useEffect(() => {
+    if (!coverFile) {
+      setCoverPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(coverFile);
+    setCoverPreview(objectUrl);
+    setCoverRemoved(false);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [coverFile]);
+
   useEffect(() => {
     if (editingBlog) {
+      const isExternal = /^https?:\/\//i.test(editingBlog.coverImage ?? "");
       form.reset({
         title: editingBlog.title,
         slug: editingBlog.slug,
         excerpt: editingBlog.excerpt ?? "",
         content: editingBlog.content ?? "",
         category: editingBlog.category ?? "insights",
-        coverImage: editingBlog.coverImage ?? "",
+        coverImage: isExternal ? editingBlog.coverImage ?? "" : "",
         featured: editingBlog.featured ?? false,
         published: editingBlog.published,
       });
+      setCoverFile(null);
+      setCoverRemoved(false);
     } else {
       form.reset(defaultValues);
+      setCoverFile(null);
+      setCoverRemoved(false);
     }
   }, [editingBlog, form]);
 
   const onSubmit = async (values: BlogFormValues) => {
-    const payload = {
-      ...values,
+    const externalUrl = values.coverImage?.trim() ?? "";
+    const coverChanged = Boolean(coverFile) || coverRemoved || Boolean(externalUrl);
+
+    const payload: BlogFormValues = {
+      title: values.title,
+      excerpt: values.excerpt,
+      content: values.content,
+      category: values.category,
+      featured: values.featured,
+      published: values.published,
       slug: values.slug?.trim() || undefined,
-      coverImage: values.coverImage?.trim() || "",
+    };
+
+    if (coverChanged) {
+      payload.coverImage = coverFile ? "" : coverRemoved ? "" : externalUrl;
+    }
+
+    const options = {
+      coverFile,
+      removeCoverImage: coverRemoved && !coverFile,
     };
 
     try {
       if (isEditing && editingBlog) {
-        await blogService.update(editingBlog._id, payload);
+        await blogService.update(editingBlog._id, payload, options);
         toast.success("Blog updated");
       } else {
-        await blogService.create(payload);
+        await blogService.create(payload, options);
         toast.success("Blog created");
       }
       form.reset(defaultValues);
+      setCoverFile(null);
+      setCoverRemoved(false);
       onSuccess();
     } catch (error) {
       toast.error(getApiErrorMessage(error));
@@ -167,15 +215,48 @@ export function AdminBlogForm({
         </Field>
 
         <Field
-          label="Cover image URL"
-          hint="Optional. Use a full https:// image URL for the card and hero."
+          label="Cover image"
+          hint="Upload JPG, PNG, WebP, or GIF (max 5MB), or paste an external https:// URL. Upload takes priority over URL."
           error={form.formState.errors.coverImage?.message}
         >
-          <input
-            {...form.register("coverImage")}
-            className={inputClass}
-            placeholder="https://example.com/image.jpg"
-          />
+          <div className="space-y-3">
+            <input
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"
+              onChange={(e) => setCoverFile(e.target.files?.[0] ?? null)}
+              className="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-brand/10 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-brand hover:file:bg-brand/20"
+            />
+            <input
+              {...form.register("coverImage")}
+              className={inputClass}
+              placeholder="Or paste image URL: https://example.com/image.jpg"
+              disabled={Boolean(coverFile)}
+            />
+            {displayPreview && (
+              <div className="relative aspect-[16/9] max-h-48 overflow-hidden rounded-lg border border-gray-200">
+                <Image
+                  src={displayPreview}
+                  alt="Cover preview"
+                  fill
+                  unoptimized
+                  className="object-cover"
+                />
+              </div>
+            )}
+            {displayPreview && (
+              <button
+                type="button"
+                onClick={() => {
+                  setCoverFile(null);
+                  setCoverRemoved(true);
+                  form.setValue("coverImage", "");
+                }}
+                className="text-sm font-medium text-red-600 hover:underline"
+              >
+                Remove cover image
+              </button>
+            )}
+          </div>
         </Field>
 
         <Field label="Excerpt" required error={form.formState.errors.excerpt?.message}>

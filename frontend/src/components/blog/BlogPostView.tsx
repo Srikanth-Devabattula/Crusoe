@@ -20,6 +20,7 @@ import {
 } from "@/lib/blog";
 import { cn } from "@/lib/cn";
 import { getApiErrorMessage } from "@/lib/api-error";
+import { getBlogCoverUrl } from "@/lib/uploads";
 import { blogService } from "@/services";
 import type { Blog } from "@/types";
 
@@ -92,6 +93,7 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
 
   const styles = BLOG_CATEGORY_STYLES[post.category];
   const readTime = estimateReadTime(post.content);
+  const coverSrc = getBlogCoverUrl(post.coverImage);
 
   return (
     <article className="bg-white">
@@ -135,9 +137,9 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
 
       <div className="hero-container -mt-4 pb-12 lg:pb-16">
         <div className="relative aspect-[21/9] max-h-[420px] w-full overflow-hidden rounded-[24px] border border-[#E8EEF5] shadow-[0_16px_50px_rgba(15,23,42,0.08)]">
-          {post.coverImage ? (
+          {coverSrc ? (
             <Image
-              src={post.coverImage}
+              src={coverSrc}
               alt=""
               fill
               unoptimized

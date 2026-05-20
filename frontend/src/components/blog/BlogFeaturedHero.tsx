@@ -10,6 +10,7 @@ import {
   formatBlogDate,
   getBlogCoverStyle,
 } from "@/lib/blog";
+import { getBlogCoverUrl } from "@/lib/uploads";
 import { cn } from "@/lib/cn";
 import type { Blog } from "@/types";
 
@@ -20,6 +21,7 @@ interface BlogFeaturedHeroProps {
 export function BlogFeaturedHero({ post }: BlogFeaturedHeroProps) {
   const styles = BLOG_CATEGORY_STYLES[post.category];
   const readTime = estimateReadTime(post.content);
+  const coverSrc = getBlogCoverUrl(post.coverImage);
 
   return (
     <section className="bg-white pb-4 pt-2 sm:pb-6">
@@ -29,9 +31,9 @@ export function BlogFeaturedHero({ post }: BlogFeaturedHeroProps) {
           className="group relative grid overflow-hidden rounded-[24px] border border-[#E8EEF5] bg-white shadow-[0_16px_50px_rgba(15,23,42,0.08)] transition hover:border-brand/30 lg:grid-cols-[1.15fr_1fr]"
         >
           <div className="relative min-h-[220px] sm:min-h-[280px] lg:min-h-[360px]">
-            {post.coverImage ? (
+            {coverSrc ? (
               <Image
-                src={post.coverImage}
+                src={coverSrc}
                 alt=""
                 fill
                 unoptimized

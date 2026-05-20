@@ -10,6 +10,7 @@ import {
   formatBlogDate,
   getBlogCoverStyle,
 } from "@/lib/blog";
+import { getBlogCoverUrl } from "@/lib/uploads";
 import { cn } from "@/lib/cn";
 import type { Blog } from "@/types";
 
@@ -21,6 +22,7 @@ interface BlogCardProps {
 export function BlogCard({ post, variant = "default" }: BlogCardProps) {
   const styles = BLOG_CATEGORY_STYLES[post.category];
   const readTime = estimateReadTime(post.content);
+  const coverSrc = getBlogCoverUrl(post.coverImage);
 
   return (
     <Link
@@ -36,9 +38,9 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
           variant === "compact" ? "h-40 w-full sm:h-auto sm:w-44" : "h-48 w-full"
         )}
       >
-        {post.coverImage ? (
+        {coverSrc ? (
           <Image
-            src={post.coverImage}
+            src={coverSrc}
             alt=""
             fill
             unoptimized

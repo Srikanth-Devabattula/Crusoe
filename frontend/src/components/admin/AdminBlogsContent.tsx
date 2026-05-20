@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { ExternalLink, Pencil, Trash2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 import { AdminBlogForm } from "@/components/admin/AdminBlogForm";
 import { AdminHeader } from "@/components/admin/AdminHeader";
+import { Button } from "@/components/ui/Button";
 import { BLOG_CATEGORY_LABELS } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
 import { getApiErrorMessage } from "@/lib/api-error";
@@ -17,6 +18,7 @@ export function AdminBlogsContent() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
+  const [showForm, setShowForm] = useState(false);
 
   const loadBlogs = useCallback(async () => {
     try {
@@ -33,112 +35,150 @@ export function AdminBlogsContent() {
     loadBlogs();
   }, [loadBlogs]);
 
+  const closeForm = () => {
+    setShowForm(false);
+    setEditingBlog(null);
+  };
+
+  const openNewForm = () => {
+    setEditingBlog(null);
+    setShowForm(true);
+  };
+
+  const openEditForm = (blog: Blog) => {
+    setEditingBlog(blog);
+    setShowForm(true);
+  };
+
   const handleDelete = async (blog: Blog) => {
     if (!confirm(`Delete "${blog.title}"?`)) return;
 
     try {
       await blogService.delete(blog._id);
       toast.success("Blog deleted");
-      if (editingBlog?._id === blog._id) setEditingBlog(null);
+      if (editingBlog?._id === blog._id) closeForm();
       loadBlogs();
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
   };
 
+  if (showForm) {
+    return (
+      <>
+        <AdminHeader title={editingBlog ? "Edit blog post" : "New blog post"} />
+
+        <button
+          type="button"
+          onClick={closeForm}
+          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-gray-900"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden />
+          Back to all posts
+        </button>
+
+        <AdminBlogForm
+          editingBlog={editingBlog}
+          onCancelEdit={closeForm}
+          onSuccess={() => {
+            closeForm();
+            loadBlogs();
+          }}
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <AdminHeader title="Blog posts" />
 
-      <div className="grid gap-8 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-        <AdminBlogForm
-          editingBlog={editingBlog}
-          onCancelEdit={() => setEditingBlog(null)}
-          onSuccess={() => {
-            setEditingBlog(null);
-            loadBlogs();
-          }}
-        />
-
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900">All posts</h2>
-          <p className="mt-1 text-sm text-gray-500">
-            {blogs.length} post{blogs.length === 1 ? "" : "s"}
-          </p>
-
-          {isLoading ? (
-            <p className="mt-6 text-sm text-gray-500">Loading...</p>
-          ) : blogs.length === 0 ? (
-            <p className="mt-6 rounded-lg bg-gray-50 px-4 py-8 text-center text-sm text-gray-500">
-              No posts yet. Create your first article using the form.
+      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">All posts</h2>
+            <p className="mt-1 text-sm text-gray-500">
+              {blogs.length} post{blogs.length === 1 ? "" : "s"}
             </p>
-          ) : (
-            <ul className="mt-6 max-h-[720px] space-y-3 overflow-y-auto pr-1">
-              {blogs.map((blog) => (
-                <li
-                  key={blog._id}
-                  className="rounded-lg border border-gray-100 bg-gray-50/80 p-4"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="font-semibold text-gray-900">{blog.title}</p>
-                      <p className="mt-1 line-clamp-2 text-xs text-gray-600">
-                        {blog.excerpt || "No excerpt"}
-                      </p>
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        <span className="rounded-full bg-gray-200 px-2 py-0.5 text-[10px] font-semibold uppercase text-gray-700">
-                          {BLOG_CATEGORY_LABELS[blog.category] ?? blog.category}
+          </div>
+          <Button type="button" onClick={openNewForm} className="inline-flex items-center gap-2">
+            <Plus className="h-4 w-4" aria-hidden />
+            Add new blog
+          </Button>
+        </div>
+
+        {isLoading ? (
+          <p className="mt-6 text-sm text-gray-500">Loading...</p>
+        ) : blogs.length === 0 ? (
+          <p className="mt-6 rounded-lg bg-gray-50 px-4 py-8 text-center text-sm text-gray-500">
+            No posts yet. Click &quot;Add new blog&quot; to create your first article.
+          </p>
+        ) : (
+          <ul className="mt-6 space-y-3">
+            {blogs.map((blog) => (
+              <li
+                key={blog._id}
+                className="rounded-lg border border-gray-100 bg-gray-50/80 p-4"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-gray-900">{blog.title}</p>
+                    <p className="mt-1 line-clamp-2 text-xs text-gray-600">
+                      {blog.excerpt || "No excerpt"}
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <span className="rounded-full bg-gray-200 px-2 py-0.5 text-[10px] font-semibold uppercase text-gray-700">
+                        {BLOG_CATEGORY_LABELS[blog.category] ?? blog.category}
+                      </span>
+                      {blog.featured && (
+                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-800">
+                          Featured
                         </span>
-                        {blog.featured && (
-                          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-800">
-                            Featured
-                          </span>
-                        )}
-                        <span
-                          className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${
-                            blog.published
-                              ? "bg-green-100 text-green-800"
-                              : "bg-gray-200 text-gray-600"
-                          }`}
-                        >
-                          {blog.published ? "Published" : "Draft"}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex shrink-0 gap-1">
-                      {blog.published && (
-                        <Link
-                          href={ROUTES.blogPost(blog.slug)}
-                          target="_blank"
-                          className="rounded-md p-2 text-gray-600 hover:bg-white hover:text-brand"
-                          aria-label={`View ${blog.title}`}
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Link>
                       )}
-                      <button
-                        type="button"
-                        onClick={() => setEditingBlog(blog)}
-                        className="rounded-md p-2 text-gray-600 hover:bg-white hover:text-gray-900"
-                        aria-label={`Edit ${blog.title}`}
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${
+                          blog.published
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-200 text-gray-600"
+                        }`}
                       >
-                        <Pencil className="h-4 w-4" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(blog)}
-                        className="rounded-md p-2 text-gray-600 hover:bg-white hover:text-red-600"
-                        aria-label={`Delete ${blog.title}`}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                        {blog.published ? "Published" : "Draft"}
+                      </span>
                     </div>
                   </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+                  <div className="flex shrink-0 gap-1">
+                    {blog.published && (
+                      <Link
+                        href={ROUTES.blogPost(blog.slug)}
+                        target="_blank"
+                        className="rounded-md p-2 text-gray-600 hover:bg-white hover:text-brand"
+                        aria-label={`View ${blog.title}`}
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </Link>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => openEditForm(blog)}
+                      className="rounded-md p-2 text-gray-600 hover:bg-white hover:text-gray-900"
+                      aria-label={`Edit ${blog.title}`}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(blog)}
+                      className="rounded-md p-2 text-gray-600 hover:bg-white hover:text-red-600"
+                      aria-label={`Delete ${blog.title}`}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );

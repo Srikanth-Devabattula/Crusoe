@@ -1,7 +1,53 @@
+const fs = require("fs");
+const path = require("path");
+
 const Blog = require("../models/Blog");
 const { BLOG_CATEGORIES } = require("../models/Blog");
+const { blogCoverDir } = require("../middleware/uploadMiddleware");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
+
+const isExternalCover = (cover) => /^https?:\/\//i.test(cover || "");
+
+const isLocalCover = (cover) => Boolean(cover) && !isExternalCover(cover);
+
+const removeLocalCoverFile = (cover) => {
+  if (!isLocalCover(cover)) return;
+  const filePath = path.join(blogCoverDir, path.basename(cover));
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+  }
+};
+
+const parseBlogRequestBody = (body) => ({
+  title: body.title,
+  slug: body.slug,
+  excerpt: body.excerpt,
+  content: body.content,
+  category: body.category,
+  coverImage: body.coverImage,
+  featured: body.featured === true || body.featured === "true",
+  published: body.published === true || body.published === "true",
+  removeCoverImage: body.removeCoverImage === true || body.removeCoverImage === "true",
+});
+
+const resolveCoverImage = (req, existingCover) => {
+  if (req.file) {
+    return { value: req.file.filename, previous: existingCover };
+  }
+
+  if (req.body.removeCoverImage === true || req.body.removeCoverImage === "true") {
+    return { value: "", previous: existingCover };
+  }
+
+  const url = req.body.coverImage !== undefined ? String(req.body.coverImage).trim() : undefined;
+
+  if (url !== undefined) {
+    return { value: url, previous: existingCover };
+  }
+
+  return { value: undefined, previous: existingCover };
+};
 
 const getBlogs = async (req, res) => {
   const blogs = await Blog.find().sort({ createdAt: -1 });
@@ -62,8 +108,13 @@ const validateBlogBody = (body, isUpdate = false) => {
     return "Slug must be lowercase letters, numbers, and hyphens only";
   }
 
-  if (coverImage !== undefined && coverImage && !/^https?:\/\/.+/i.test(coverImage)) {
-    return "Cover image must be a valid http(s) URL";
+  if (
+    coverImage !== undefined &&
+    coverImage &&
+    !/^https?:\/\/.+/i.test(coverImage) &&
+    !/^[a-zA-Z0-9._-]+$/.test(coverImage)
+  ) {
+    return "Cover image must be a valid URL or uploaded file";
   }
 
   return null;
@@ -89,10 +140,17 @@ const clearOtherFeatured = async (blogId) => {
 };
 
 const createBlog = async (req, res) => {
-  const error = validateBlogBody(req.body);
+  const body = parseBlogRequestBody(req.body);
+  const cover = resolveCoverImage(req);
+
+  if (cover.value !== undefined) {
+    body.coverImage = cover.value;
+  }
+
+  const error = validateBlogBody(body);
   if (error) return sendError(res, 400, error);
 
-  const payload = sanitizeBlogBody(req.body);
+  const payload = sanitizeBlogBody(body);
   const baseSlug = payload.slug || slugify(payload.title);
   payload.slug = await uniqueSlug(Blog, baseSlug);
   payload.author = req.user?._id;
@@ -107,10 +165,27 @@ const createBlog = async (req, res) => {
 };
 
 const updateBlog = async (req, res) => {
-  const error = validateBlogBody(req.body, true);
+  const existing = await Blog.findById(req.params.id);
+
+  if (!existing) {
+    return sendError(res, 404, "Blog not found");
+  }
+
+  const body = parseBlogRequestBody(req.body);
+  const cover = resolveCoverImage(req, existing.coverImage);
+
+  if (cover.value !== undefined) {
+    body.coverImage = cover.value;
+  }
+
+  const error = validateBlogBody(body, true);
   if (error) return sendError(res, 400, error);
 
-  const payload = sanitizeBlogBody(req.body);
+  const payload = sanitizeBlogBody(body);
+
+  if (cover.value !== undefined && isLocalCover(cover.previous) && cover.previous !== cover.value) {
+    removeLocalCoverFile(cover.previous);
+  }
 
   if (payload.slug) {
     payload.slug = await uniqueSlug(Blog, payload.slug, req.params.id);
@@ -119,14 +194,10 @@ const updateBlog = async (req, res) => {
     payload.slug = await uniqueSlug(Blog, baseSlug, req.params.id);
   }
 
-  const blog = await Blog.findByIdAndUpdate(req.params.id, payload, {
+  const blog = await Blog.findByIdAndUpdate(existing._id, payload, {
     new: true,
     runValidators: true,
   });
-
-  if (!blog) {
-    return sendError(res, 404, "Blog not found");
-  }
 
   if (blog.featured) {
     await clearOtherFeatured(blog._id);
@@ -141,6 +212,8 @@ const deleteBlog = async (req, res) => {
   if (!blog) {
     return sendError(res, 404, "Blog not found");
   }
+
+  removeLocalCoverFile(blog.coverImage);
 
   return sendSuccess(res, 200, "Blog deleted");
 };
