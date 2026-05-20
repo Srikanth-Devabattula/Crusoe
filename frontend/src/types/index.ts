@@ -25,13 +25,26 @@ export interface Blog {
 export interface Job {
   _id: string;
   title: string;
-  department: string;
+  shortDescription: string;
+  longDescription: string;
+  experience: string;
   location: string;
-  type: string;
-  description: string;
+  department?: string;
+  type: "full-time" | "part-time" | "contract" | "remote";
   published: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface JobFormData {
+  title: string;
+  shortDescription: string;
+  longDescription: string;
+  experience: string;
+  location: string;
+  department?: string;
+  type: Job["type"];
+  published: boolean;
 }
 
 export interface ContactFormData {

@@ -1,5 +1,5 @@
 import api from "@/lib/api";
-import type { ApiResponse, Job } from "@/types";
+import type { ApiResponse, Job, JobFormData } from "@/types";
 
 export const jobService = {
   getAll: async () => {
@@ -7,12 +7,12 @@ export const jobService = {
     return response.data;
   },
 
-  create: async (data: Partial<Job>) => {
+  create: async (data: JobFormData) => {
     const response = await api.post<ApiResponse<Job>>("/jobs", data);
     return response.data;
   },
 
-  update: async (id: string, data: Partial<Job>) => {
+  update: async (id: string, data: Partial<JobFormData>) => {
     const response = await api.put<ApiResponse<Job>>(`/jobs/${id}`, data);
     return response.data;
   },
