@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -9,17 +9,19 @@ import { useAuth } from "@/contexts/AuthContext";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { Button } from "@/components/ui/Button";
 
-const loginSchema = z.object({
+const emailSchema = z.object({
   email: z.string().email("Enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const registerSchema = loginSchema.extend({
-  name: z.string().min(2, "Name must be at least 2 characters"),
+const otpSchema = z.object({
+  otp: z
+    .string()
+    .length(6, "OTP must be 6 digits")
+    .regex(/^\d+$/, "OTP must contain only numbers"),
 });
 
-type LoginValues = z.infer<typeof loginSchema>;
-type RegisterValues = z.infer<typeof registerSchema>;
+type EmailValues = z.infer<typeof emailSchema>;
+type OtpValues = z.infer<typeof otpSchema>;
 
 function Field({
   label,
@@ -40,113 +42,107 @@ function Field({
 }
 
 export function AdminLoginForm() {
-  const { hasAdmin, login, register, checkHasAdmin, isLoading } = useAuth();
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const { sendOtp, verifyOtp } = useAuth();
+  const [step, setStep] = useState<"email" | "otp">("email");
+  const [email, setEmail] = useState("");
 
-  const isRegister = hasAdmin === false;
-
-  useEffect(() => {
-    if (hasAdmin === false) setMode("register");
-    else if (hasAdmin === true) setMode("login");
-  }, [hasAdmin]);
-
-  const loginForm = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+  const emailForm = useForm<EmailValues>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: { email: "" },
   });
 
-  const registerForm = useForm<RegisterValues>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: { name: "", email: "", password: "" },
+  const otpForm = useForm<OtpValues>({
+    resolver: zodResolver(otpSchema),
+    defaultValues: { otp: "" },
   });
 
-  const onLogin = async (data: LoginValues) => {
+  const onSendOtp = async (data: EmailValues) => {
     try {
-      await login(data);
-      toast.success("User logged in successfully");
+      await sendOtp(data.email);
+      setEmail(data.email);
+      setStep("otp");
+      otpForm.reset({ otp: "" });
+      toast.success("OTP sent to your email");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
   };
 
-  const onRegister = async (data: RegisterValues) => {
+  const onVerifyOtp = async (data: OtpValues) => {
     try {
-      await register(data);
-      toast.success("User created successfully");
-      await checkHasAdmin();
+      await verifyOtp({ email, otp: data.otp });
+      toast.success("Logged in successfully");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
   };
 
-  if (isLoading && hasAdmin === null) {
-    return <p className="text-sm text-gray-500">Loading...</p>;
-  }
+  const onResendOtp = async () => {
+    try {
+      await sendOtp(email);
+      toast.success("OTP resent to your email");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
+  };
 
-  if (isRegister || mode === "register") {
+  if (step === "otp") {
     return (
-      <form onSubmit={registerForm.handleSubmit(onRegister)} className="space-y-4">
-        <p className="rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-800">
-          No admin account yet. Create your first admin user below.
+      <form onSubmit={otpForm.handleSubmit(onVerifyOtp)} className="space-y-4">
+        <p className="rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-600">
+          Enter the 6-digit code sent to <span className="font-medium">{email}</span>
         </p>
-        <Field label="Name" error={registerForm.formState.errors.name?.message}>
+        <Field label="OTP" error={otpForm.formState.errors.otp?.message}>
           <input
             type="text"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            {...registerForm.register("name")}
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            maxLength={6}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm tracking-widest"
+            {...otpForm.register("otp")}
           />
         </Field>
-        <Field label="Email" error={registerForm.formState.errors.email?.message}>
-          <input
-            type="email"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            {...registerForm.register("email")}
-          />
-        </Field>
-        <Field label="Password" error={registerForm.formState.errors.password?.message}>
-          <input
-            type="password"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            {...registerForm.register("password")}
-          />
-        </Field>
-        <Button type="submit" className="w-full" disabled={registerForm.formState.isSubmitting}>
-          {registerForm.formState.isSubmitting ? "Creating..." : "Create admin account"}
+        <Button type="submit" className="w-full" disabled={otpForm.formState.isSubmitting}>
+          {otpForm.formState.isSubmitting ? "Verifying..." : "Verify & log in"}
         </Button>
-        {hasAdmin && (
+        <div className="flex flex-col gap-2 text-sm">
           <button
             type="button"
-            className="w-full text-sm text-gray-600 underline"
-            onClick={() => setMode("login")}
+            className="text-gray-600 underline"
+            onClick={onResendOtp}
+            disabled={otpForm.formState.isSubmitting}
           >
-            Already have an account? Log in
+            Resend OTP
           </button>
-        )}
+          <button
+            type="button"
+            className="text-gray-600 underline"
+            onClick={() => {
+              setStep("email");
+              otpForm.reset({ otp: "" });
+            }}
+          >
+            Use a different email
+          </button>
+        </div>
       </form>
     );
   }
 
   return (
-    <form onSubmit={loginForm.handleSubmit(onLogin)} className="space-y-4">
+    <form onSubmit={emailForm.handleSubmit(onSendOtp)} className="space-y-4">
       <p className="rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-600">
-        Admin account exists. Log in with your email and password.
+        Enter your authorized admin email. We will send a one-time code to sign in.
       </p>
-      <Field label="Email" error={loginForm.formState.errors.email?.message}>
+      <Field label="Email" error={emailForm.formState.errors.email?.message}>
         <input
           type="email"
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-          {...loginForm.register("email")}
+          {...emailForm.register("email")}
         />
       </Field>
-      <Field label="Password" error={loginForm.formState.errors.password?.message}>
-        <input
-          type="password"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-          {...loginForm.register("password")}
-        />
-      </Field>
-      <Button type="submit" className="w-full" disabled={loginForm.formState.isSubmitting}>
-        {loginForm.formState.isSubmitting ? "Signing in..." : "Log in"}
+      <Button type="submit" className="w-full" disabled={emailForm.formState.isSubmitting}>
+        {emailForm.formState.isSubmitting ? "Sending..." : "Send OTP"}
       </Button>
     </form>
   );

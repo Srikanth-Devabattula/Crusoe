@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { sendError } = require("../utils/responseHandler");
+const { isAdminEmail } = require("../config/adminEmails");
 
 /**
  * Protect routes — requires valid JWT
@@ -39,10 +40,10 @@ const protect = async (req, res, next) => {
  * Restrict to admin role
  */
 const adminOnly = (req, res, next) => {
-  if (req.user && req.user.role === "admin") {
+  if (req.user && req.user.role === "admin" && isAdminEmail(req.user.email)) {
     next();
   } else {
-    return sendError(res, 403, "Not authorized as admin");
+    return sendError(res, 403, "You don't have access to admin panel");
   }
 };
 

@@ -38,7 +38,8 @@ npm run dev
 
 | Method | Endpoint | Access |
 |--------|----------|--------|
-| POST | `/api/auth/login` | Public |
+| POST | `/api/auth/send-otp` | Public (allowlisted admin emails only) |
+| POST | `/api/auth/verify-otp` | Public |
 | GET | `/api/blogs` | Public |
 | POST | `/api/blogs` | Admin |
 | PUT | `/api/blogs/:id` | Admin |

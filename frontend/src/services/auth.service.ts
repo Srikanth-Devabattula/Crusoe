@@ -1,28 +1,19 @@
 import api from "@/lib/api";
-import type { ApiResponse, LoginFormData, RegisterFormData, User } from "@/types";
+import type { ApiResponse, User, VerifyOtpFormData } from "@/types";
 
 interface AuthData {
   user: User;
   token: string;
 }
 
-interface HasAdminData {
-  hasAdmin: boolean;
-}
-
 export const authService = {
-  hasAdmin: async () => {
-    const response = await api.get<ApiResponse<HasAdminData>>("/auth/has-admin");
+  sendOtp: async (email: string) => {
+    const response = await api.post<ApiResponse>("/auth/send-otp", { email });
     return response.data;
   },
 
-  register: async (data: RegisterFormData) => {
-    const response = await api.post<ApiResponse<AuthData>>("/auth/register", data);
-    return response.data;
-  },
-
-  login: async (data: LoginFormData) => {
-    const response = await api.post<ApiResponse<AuthData>>("/auth/login", data);
+  verifyOtp: async (data: VerifyOtpFormData) => {
+    const response = await api.post<ApiResponse<AuthData>>("/auth/verify-otp", data);
     return response.data;
   },
 
