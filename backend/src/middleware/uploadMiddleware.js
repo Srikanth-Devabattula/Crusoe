@@ -51,14 +51,17 @@ const uploadResume = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
+const memoryStorage = multer.memoryStorage();
+
+/** Blog/news covers stored in MongoDB GridFS (not disk) */
 const uploadBlogCover = multer({
-  storage: createStorage(blogCoverDir),
+  storage: memoryStorage,
   fileFilter: imageFilter,
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 const uploadNewsCover = multer({
-  storage: createStorage(newsCoverDir),
+  storage: memoryStorage,
   fileFilter: imageFilter,
   limits: { fileSize: 5 * 1024 * 1024 },
 });

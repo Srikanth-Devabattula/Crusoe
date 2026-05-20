@@ -1,20 +1,15 @@
-const fs = require("fs");
-const path = require("path");
-
 const News = require("../models/News");
 const NewsCategory = require("../models/NewsCategory");
 const { newsCoverDir } = require("../middleware/uploadMiddleware");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
+const {
+  removeCoverAsset,
+  resolveCoverFromRequest,
+  validateCoverImageValue,
+} = require("../utils/gridfsStorage");
 
-const isExternalCover = (cover) => /^https?:\/\//i.test(cover || "");
-const isLocalCover = (cover) => Boolean(cover) && !isExternalCover(cover);
-
-const removeLocalCoverFile = (cover) => {
-  if (!isLocalCover(cover)) return;
-  const filePath = path.join(newsCoverDir, path.basename(cover));
-  if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-};
+const NEWS_COVER_BUCKET = "news-covers";
 
 const parseNewsRequestBody = (body) => ({
   title: body.title,
@@ -27,17 +22,6 @@ const parseNewsRequestBody = (body) => ({
   published: body.published === true || body.published === "true",
   removeCoverImage: body.removeCoverImage === true || body.removeCoverImage === "true",
 });
-
-const resolveCoverImage = (req, existingCover) => {
-  if (req.file) return { value: req.file.filename, previous: existingCover };
-  if (req.body.removeCoverImage === true || req.body.removeCoverImage === "true") {
-    return { value: "", previous: existingCover };
-  }
-  const url =
-    req.body.coverImage !== undefined ? String(req.body.coverImage).trim() : undefined;
-  if (url !== undefined) return { value: url, previous: existingCover };
-  return { value: undefined, previous: existingCover };
-};
 
 const getNews = async (req, res) => {
   const items = await News.find().sort({ createdAt: -1 });
@@ -81,13 +65,9 @@ const validateNewsBody = (body, isUpdate = false) => {
   if (slug !== undefined && slug !== "" && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
     return "Slug must be lowercase letters, numbers, and hyphens only";
   }
-  if (
-    coverImage !== undefined &&
-    coverImage &&
-    !/^https?:\/\/.+/i.test(coverImage) &&
-    !/^[a-zA-Z0-9._-]+$/.test(coverImage)
-  ) {
-    return "Cover image must be a valid URL or uploaded file";
+  if (coverImage !== undefined && coverImage) {
+    const coverError = validateCoverImageValue(coverImage);
+    if (coverError) return coverError;
   }
   return null;
 };
@@ -114,7 +94,8 @@ const assertCategoryExists = async (slug) =>
 
 const createNews = async (req, res) => {
   const body = parseNewsRequestBody(req.body);
-  const cover = resolveCoverImage(req);
+  const cover = await resolveCoverFromRequest(req, NEWS_COVER_BUCKET, newsCoverDir, null);
+
   if (cover.value !== undefined) body.coverImage = cover.value;
 
   const error = validateNewsBody(body);
@@ -139,7 +120,13 @@ const updateNews = async (req, res) => {
   if (!existing) return sendError(res, 404, "News not found");
 
   const body = parseNewsRequestBody(req.body);
-  const cover = resolveCoverImage(req, existing.coverImage);
+  const cover = await resolveCoverFromRequest(
+    req,
+    NEWS_COVER_BUCKET,
+    newsCoverDir,
+    existing.coverImage
+  );
+
   if (cover.value !== undefined) body.coverImage = cover.value;
 
   const error = validateNewsBody(body, true);
@@ -153,12 +140,8 @@ const updateNews = async (req, res) => {
 
   const payload = sanitizeNewsBody(body);
 
-  if (
-    cover.value !== undefined &&
-    isLocalCover(cover.previous) &&
-    cover.previous !== cover.value
-  ) {
-    removeLocalCoverFile(cover.previous);
+  if (cover.value !== undefined && cover.previous && cover.previous !== cover.value) {
+    await removeCoverAsset(cover.previous, NEWS_COVER_BUCKET, newsCoverDir);
   }
 
   if (payload.slug) {
@@ -180,7 +163,9 @@ const updateNews = async (req, res) => {
 const deleteNews = async (req, res) => {
   const item = await News.findByIdAndDelete(req.params.id);
   if (!item) return sendError(res, 404, "News not found");
-  removeLocalCoverFile(item.coverImage);
+
+  await removeCoverAsset(item.coverImage, NEWS_COVER_BUCKET, newsCoverDir);
+
   return sendSuccess(res, 200, "News deleted");
 };
 

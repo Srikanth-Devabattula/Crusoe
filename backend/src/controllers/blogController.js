@@ -1,23 +1,15 @@
-const fs = require("fs");
-const path = require("path");
-
 const Blog = require("../models/Blog");
 const BlogCategory = require("../models/BlogCategory");
 const { blogCoverDir } = require("../middleware/uploadMiddleware");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
+const {
+  removeCoverAsset,
+  resolveCoverFromRequest,
+  validateCoverImageValue,
+} = require("../utils/gridfsStorage");
 
-const isExternalCover = (cover) => /^https?:\/\//i.test(cover || "");
-
-const isLocalCover = (cover) => Boolean(cover) && !isExternalCover(cover);
-
-const removeLocalCoverFile = (cover) => {
-  if (!isLocalCover(cover)) return;
-  const filePath = path.join(blogCoverDir, path.basename(cover));
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
-  }
-};
+const BLOG_COVER_BUCKET = "blog-covers";
 
 const parseBlogRequestBody = (body) => ({
   title: body.title,
@@ -30,24 +22,6 @@ const parseBlogRequestBody = (body) => ({
   published: body.published === true || body.published === "true",
   removeCoverImage: body.removeCoverImage === true || body.removeCoverImage === "true",
 });
-
-const resolveCoverImage = (req, existingCover) => {
-  if (req.file) {
-    return { value: req.file.filename, previous: existingCover };
-  }
-
-  if (req.body.removeCoverImage === true || req.body.removeCoverImage === "true") {
-    return { value: "", previous: existingCover };
-  }
-
-  const url = req.body.coverImage !== undefined ? String(req.body.coverImage).trim() : undefined;
-
-  if (url !== undefined) {
-    return { value: url, previous: existingCover };
-  }
-
-  return { value: undefined, previous: existingCover };
-};
 
 const getBlogs = async (req, res) => {
   const blogs = await Blog.find().sort({ createdAt: -1 });
@@ -80,8 +54,7 @@ const getBlogBySlug = async (req, res) => {
 };
 
 const validateBlogBody = (body, isUpdate = false) => {
-  const { title, slug, excerpt, content, category, coverImage, featured, published } =
-    body;
+  const { title, slug, excerpt, content, category, coverImage } = body;
 
   if (!isUpdate || title !== undefined) {
     if (!title || !String(title).trim()) {
@@ -111,13 +84,9 @@ const validateBlogBody = (body, isUpdate = false) => {
     return "Slug must be lowercase letters, numbers, and hyphens only";
   }
 
-  if (
-    coverImage !== undefined &&
-    coverImage &&
-    !/^https?:\/\/.+/i.test(coverImage) &&
-    !/^[a-zA-Z0-9._-]+$/.test(coverImage)
-  ) {
-    return "Cover image must be a valid URL or uploaded file";
+  if (coverImage !== undefined && coverImage) {
+    const coverError = validateCoverImageValue(coverImage);
+    if (coverError) return coverError;
   }
 
   return null;
@@ -149,7 +118,12 @@ const assertCategoryExists = async (slug) => {
 
 const createBlog = async (req, res) => {
   const body = parseBlogRequestBody(req.body);
-  const cover = resolveCoverImage(req);
+  const cover = await resolveCoverFromRequest(
+    req,
+    BLOG_COVER_BUCKET,
+    blogCoverDir,
+    null
+  );
 
   if (cover.value !== undefined) {
     body.coverImage = cover.value;
@@ -158,11 +132,9 @@ const createBlog = async (req, res) => {
   const error = validateBlogBody(body);
   if (error) return sendError(res, 400, error);
 
-  if (body.category) {
-    const category = await assertCategoryExists(body.category);
-    if (!category) return sendError(res, 400, "Invalid category");
-    body.category = category.slug;
-  }
+  const category = await assertCategoryExists(body.category);
+  if (!category) return sendError(res, 400, "Invalid category");
+  body.category = category.slug;
 
   const payload = sanitizeBlogBody(body);
   const baseSlug = payload.slug || slugify(payload.title);
@@ -186,7 +158,12 @@ const updateBlog = async (req, res) => {
   }
 
   const body = parseBlogRequestBody(req.body);
-  const cover = resolveCoverImage(req, existing.coverImage);
+  const cover = await resolveCoverFromRequest(
+    req,
+    BLOG_COVER_BUCKET,
+    blogCoverDir,
+    existing.coverImage
+  );
 
   if (cover.value !== undefined) {
     body.coverImage = cover.value;
@@ -203,8 +180,8 @@ const updateBlog = async (req, res) => {
 
   const payload = sanitizeBlogBody(body);
 
-  if (cover.value !== undefined && isLocalCover(cover.previous) && cover.previous !== cover.value) {
-    removeLocalCoverFile(cover.previous);
+  if (cover.value !== undefined && cover.previous && cover.previous !== cover.value) {
+    await removeCoverAsset(cover.previous, BLOG_COVER_BUCKET, blogCoverDir);
   }
 
   if (payload.slug) {
@@ -233,7 +210,7 @@ const deleteBlog = async (req, res) => {
     return sendError(res, 404, "Blog not found");
   }
 
-  removeLocalCoverFile(blog.coverImage);
+  await removeCoverAsset(blog.coverImage, BLOG_COVER_BUCKET, blogCoverDir);
 
   return sendSuccess(res, 200, "Blog deleted");
 };

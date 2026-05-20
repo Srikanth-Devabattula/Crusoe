@@ -14,6 +14,7 @@ const newsCategoryRoutes = require("./routes/newsCategoryRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
+const fileRoutes = require("./routes/fileRoutes");
 const { getCorsOptions } = require("./config/cors");
 const { apiLimiter } = require("./middleware/rateLimitMiddleware");
 const { errorMiddleware, notFound } = require("./middleware/errorMiddleware");
@@ -48,6 +49,7 @@ app.use("/api/news-categories", newsCategoryRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use("/api/files", fileRoutes);
 
 app.get("/", (req, res) => {
   res.json({

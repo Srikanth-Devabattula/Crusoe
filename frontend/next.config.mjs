@@ -21,25 +21,29 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "crusoe-nhbu.onrender.com",
-        pathname: "/uploads/**",
+        pathname: "/**",
       },
       {
         protocol: "http",
         hostname: "localhost",
         port: "5000",
-        pathname: "/uploads/**",
+        pathname: "/**",
       },
       {
         protocol: "http",
         hostname: "127.0.0.1",
         port: "5000",
-        pathname: "/uploads/**",
+        pathname: "/**",
       },
     ],
   },
 
   async rewrites() {
     return [
+      {
+        source: "/api/:path*",
+        destination: `${apiOrigin}/api/:path*`,
+      },
       {
         source: "/uploads/:path*",
         destination: `${apiOrigin}/uploads/:path*`,

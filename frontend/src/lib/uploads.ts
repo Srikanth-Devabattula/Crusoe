@@ -1,9 +1,10 @@
 import { API_BASE_URL } from "@/constants";
 
+const GRIDFS_PREFIX = "gridfs:";
+
 /**
- * Base URL for uploaded files (resumes, blog/news covers).
- * In the browser we use same-origin `/uploads/...` paths proxied by Next.js
- * to the API server — keeps images working in local dev after hot reloads.
+ * Base URL for browser requests (empty = same origin via Next rewrites).
+ * Server-side rendering uses the full API origin.
  */
 export function getUploadsBaseUrl(): string {
   const apiOrigin = API_BASE_URL.replace(/\/api\/?$/, "");
@@ -15,18 +16,25 @@ export function getUploadsBaseUrl(): string {
   return apiOrigin;
 }
 
-function uploadsPath(folder: string, filename: string): string {
-  const base = getUploadsBaseUrl();
-  const path = `/uploads/${folder}/${encodeURIComponent(filename)}`;
-  return base ? `${base}${path}` : path;
+function resolveStoredCover(
+  coverImage: string,
+  bucket: "blog-covers" | "news-covers"
+): string {
+  if (coverImage.startsWith(GRIDFS_PREFIX)) {
+    const fileId = coverImage.slice(GRIDFS_PREFIX.length);
+    return `${getUploadsBaseUrl()}/api/files/${bucket}/${fileId}`;
+  }
+
+  const filename = coverImage.replace(/^\/+/, "").split("/").pop() ?? coverImage;
+  return `${getUploadsBaseUrl()}/uploads/${bucket}/${encodeURIComponent(filename)}`;
 }
 
 /** Public URL for a resume stored on the API server */
 export function getResumeUrl(filename: string): string {
-  return uploadsPath("resumes", filename);
+  return `${getUploadsBaseUrl()}/uploads/resumes/${encodeURIComponent(filename)}`;
 }
 
-/** Resolve blog cover — external URL or file uploaded to the API server */
+/** Blog cover — external URL, MongoDB GridFS, or legacy disk filename */
 export function getBlogCoverUrl(coverImage?: string): string | null {
   if (!coverImage?.trim()) return null;
 
@@ -34,8 +42,7 @@ export function getBlogCoverUrl(coverImage?: string): string | null {
     return coverImage;
   }
 
-  const filename = coverImage.replace(/^\/+/, "").split("/").pop() ?? coverImage;
-  return uploadsPath("blog-covers", filename);
+  return resolveStoredCover(coverImage, "blog-covers");
 }
 
 export function getNewsCoverUrl(coverImage?: string): string | null {
@@ -45,6 +52,5 @@ export function getNewsCoverUrl(coverImage?: string): string | null {
     return coverImage;
   }
 
-  const filename = coverImage.replace(/^\/+/, "").split("/").pop() ?? coverImage;
-  return uploadsPath("news-covers", filename);
+  return resolveStoredCover(coverImage, "news-covers");
 }
