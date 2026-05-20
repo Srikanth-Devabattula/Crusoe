@@ -5,18 +5,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
+import { Mail, ShieldCheck, ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { Button } from "@/components/ui/Button";
 
 const emailSchema = z.object({
-  email: z.string().email("Enter a valid email"),
+  email: z.string().email("Enter a valid email address"),
 });
 
 const otpSchema = z.object({
   otp: z
     .string()
-    .length(6, "OTP must be 6 digits")
+    .length(6, "Enter the 6-digit code")
     .regex(/^\d+$/, "OTP must contain only numbers"),
 });
 
@@ -33,13 +34,16 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <label className="mb-1 block text-sm font-medium text-gray-700">{label}</label>
+    <div>
+      <label className="mb-1.5 block text-sm font-medium text-slate-700">{label}</label>
       {children}
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
-    </>
+      {error && <p className="mt-1.5 text-xs text-red-600">{error}</p>}
+    </div>
   );
 }
+
+const inputClass =
+  "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
 
 export function AdminLoginForm() {
   const { sendOtp, verifyOtp } = useAuth();
@@ -62,7 +66,7 @@ export function AdminLoginForm() {
       setEmail(data.email);
       setStep("otp");
       otpForm.reset({ otp: "" });
-      toast.success("OTP sent to your email");
+      toast.success("Verification code sent");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
@@ -71,7 +75,7 @@ export function AdminLoginForm() {
   const onVerifyOtp = async (data: OtpValues) => {
     try {
       await verifyOtp({ email, otp: data.otp });
-      toast.success("Logged in successfully");
+      toast.success("Welcome back!");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
@@ -80,7 +84,7 @@ export function AdminLoginForm() {
   const onResendOtp = async () => {
     try {
       await sendOtp(email);
-      toast.success("OTP resent to your email");
+      toast.success("New code sent");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
@@ -88,40 +92,60 @@ export function AdminLoginForm() {
 
   if (step === "otp") {
     return (
-      <form onSubmit={otpForm.handleSubmit(onVerifyOtp)} className="space-y-4">
-        <p className="rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-600">
-          Enter the 6-digit code sent to <span className="font-medium">{email}</span>
-        </p>
-        <Field label="OTP" error={otpForm.formState.errors.otp?.message}>
+      <form onSubmit={otpForm.handleSubmit(onVerifyOtp)} className="space-y-5">
+        <div className="flex items-start gap-3 rounded-xl border border-emerald-100 bg-emerald-50/80 px-4 py-3">
+          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+          <p className="text-sm text-emerald-900">
+            Code sent to <span className="font-semibold">{email}</span>. Expires in 5
+            minutes.
+          </p>
+        </div>
+
+        <Field label="Verification code" error={otpForm.formState.errors.otp?.message}>
           <input
             type="text"
             inputMode="numeric"
             autoComplete="one-time-code"
             maxLength={6}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm tracking-widest"
+            placeholder="000000"
+            className={`${inputClass} text-center text-lg tracking-[0.4em]`}
             {...otpForm.register("otp")}
           />
         </Field>
-        <Button type="submit" className="w-full" disabled={otpForm.formState.isSubmitting}>
-          {otpForm.formState.isSubmitting ? "Verifying..." : "Verify & log in"}
+
+        <Button
+          type="submit"
+          className="w-full py-3"
+          disabled={otpForm.formState.isSubmitting}
+        >
+          {otpForm.formState.isSubmitting ? (
+            <span className="inline-flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Verifying...
+            </span>
+          ) : (
+            "Verify & sign in"
+          )}
         </Button>
-        <div className="flex flex-col gap-2 text-sm">
+
+        <div className="flex flex-col gap-2 border-t border-slate-100 pt-4 text-sm">
           <button
             type="button"
-            className="text-gray-600 underline"
+            className="inline-flex items-center justify-center gap-1 text-slate-600 hover:text-slate-900"
             onClick={onResendOtp}
             disabled={otpForm.formState.isSubmitting}
           >
-            Resend OTP
+            Resend code
           </button>
           <button
             type="button"
-            className="text-gray-600 underline"
+            className="inline-flex items-center justify-center gap-1 text-slate-600 hover:text-slate-900"
             onClick={() => {
               setStep("email");
               otpForm.reset({ otp: "" });
             }}
           >
+            <ArrowLeft className="h-4 w-4" />
             Use a different email
           </button>
         </div>
@@ -130,19 +154,37 @@ export function AdminLoginForm() {
   }
 
   return (
-    <form onSubmit={emailForm.handleSubmit(onSendOtp)} className="space-y-4">
-      <p className="rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-600">
-        Enter your authorized admin email. We will send a one-time code to sign in.
-      </p>
-      <Field label="Email" error={emailForm.formState.errors.email?.message}>
+    <form onSubmit={emailForm.handleSubmit(onSendOtp)} className="space-y-5">
+      <div className="flex items-start gap-3 rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+        <Mail className="mt-0.5 h-5 w-5 shrink-0 text-slate-500" />
+        <p className="text-sm text-slate-600">
+          Authorized admins only. Enter your email to receive a secure one-time code.
+        </p>
+      </div>
+
+      <Field label="Work email" error={emailForm.formState.errors.email?.message}>
         <input
           type="email"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          autoComplete="email"
+          placeholder="you@company.com"
+          className={inputClass}
           {...emailForm.register("email")}
         />
       </Field>
-      <Button type="submit" className="w-full" disabled={emailForm.formState.isSubmitting}>
-        {emailForm.formState.isSubmitting ? "Sending..." : "Send OTP"}
+
+      <Button
+        type="submit"
+        className="w-full py-3"
+        disabled={emailForm.formState.isSubmitting}
+      >
+        {emailForm.formState.isSubmitting ? (
+          <span className="inline-flex items-center gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Sending code...
+          </span>
+        ) : (
+          "Send verification code"
+        )}
       </Button>
     </form>
   );

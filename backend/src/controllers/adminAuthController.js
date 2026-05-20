@@ -6,19 +6,16 @@ const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { isValidEmail } = require("../utils/validators");
 const { isAdminEmail, normalizeEmail } = require("../config/adminEmails");
 const { sendEmail } = require("../config/mail");
+const {
+  OTP_EXPIRY_MINUTES,
+  generateOtpCode,
+  hashOtp,
+  verifyOtpHash,
+} = require("../utils/otp");
+const { setAdminTokenCookie, clearAdminTokenCookie } = require("../utils/adminCookie");
 
-const OTP_EXPIRY_MINUTES = 10;
 const ACCESS_DENIED_MESSAGE = "You don't have access to admin panel";
-
-const setAuthCookie = (res, token) => {
-  const isProduction = process.env.NODE_ENV === "production";
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-};
+const MAX_OTP_ATTEMPTS = 5;
 
 const formatUser = (user) => ({
   _id: user._id,
@@ -26,8 +23,6 @@ const formatUser = (user) => ({
   email: user.email,
   role: user.role,
 });
-
-const generateOtpCode = () => String(crypto.randomInt(100000, 1000000));
 
 const ensureAdminAccess = (email) => {
   if (!isValidEmail(email)) {
@@ -40,9 +35,7 @@ const ensureAdminAccess = (email) => {
 };
 
 /**
- * @route   POST /api/auth/send-otp
- * @desc    Send OTP to allowlisted admin email
- * @access  Public
+ * @route   POST /api/admin/send-otp
  */
 const sendOtp = async (req, res) => {
   const { email } = req.body;
@@ -60,27 +53,38 @@ const sendOtp = async (req, res) => {
   const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
   await Otp.deleteMany({ email: access.email });
-  await Otp.create({ email: access.email, code, expiresAt });
+  await Otp.create({
+    email: access.email,
+    codeHash: hashOtp(code),
+    expiresAt,
+  });
 
   try {
     await sendEmail({
       to: access.email,
-      subject: "Crusoe Tech Admin Login OTP",
-      text: `Your admin login OTP is ${code}. It expires in ${OTP_EXPIRY_MINUTES} minutes.`,
-      html: `<p>Your admin login OTP is <strong>${code}</strong>.</p><p>It expires in ${OTP_EXPIRY_MINUTES} minutes.</p>`,
+      subject: "Crusoe Tech — Admin login code",
+      text: `Your admin login code is ${code}. It expires in ${OTP_EXPIRY_MINUTES} minutes. Do not share this code.`,
+      html: `
+        <div style="font-family:sans-serif;max-width:480px;margin:0 auto;">
+          <h2 style="color:#111827;">Admin login</h2>
+          <p>Your one-time verification code:</p>
+          <p style="font-size:28px;font-weight:700;letter-spacing:6px;color:#111827;">${code}</p>
+          <p style="color:#6b7280;font-size:14px;">Expires in ${OTP_EXPIRY_MINUTES} minutes. If you did not request this, ignore this email.</p>
+        </div>
+      `,
     });
   } catch (error) {
-    console.error("[Auth] Failed to send OTP email:", error.message);
-    return sendError(res, 500, "Failed to send OTP. Please try again later.");
+    console.error("[AdminAuth] OTP email failed:", error.message);
+    return sendError(res, 500, "Failed to send OTP. Check SMTP configuration.");
   }
 
-  return sendSuccess(res, 200, "OTP sent to your email");
+  return sendSuccess(res, 200, "OTP sent to your email", {
+    expiresInMinutes: OTP_EXPIRY_MINUTES,
+  });
 };
 
 /**
- * @route   POST /api/auth/verify-otp
- * @desc    Verify OTP and log in admin
- * @access  Public
+ * @route   POST /api/admin/verify-otp
  */
 const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
@@ -101,11 +105,21 @@ const verifyOtp = async (req, res) => {
 
   const record = await Otp.findOne({
     email: access.email,
-    code: normalizedOtp,
     expiresAt: { $gt: new Date() },
   });
 
   if (!record) {
+    return sendError(res, 401, "Invalid or expired OTP");
+  }
+
+  if (record.attempts >= MAX_OTP_ATTEMPTS) {
+    await Otp.deleteMany({ email: access.email });
+    return sendError(res, 429, "Too many attempts. Request a new OTP.");
+  }
+
+  if (!verifyOtpHash(normalizedOtp, record.codeHash)) {
+    record.attempts += 1;
+    await record.save();
     return sendError(res, 401, "Invalid or expired OTP");
   }
 
@@ -126,27 +140,33 @@ const verifyOtp = async (req, res) => {
   }
 
   const token = generateToken(user._id);
-  setAuthCookie(res, token);
+  setAdminTokenCookie(res, token);
 
-  return sendSuccess(res, 200, "User logged in successfully", {
+  return sendSuccess(res, 200, "Logged in successfully", {
     user: formatUser(user),
     token,
   });
 };
 
 /**
- * @route   GET /api/auth/me
- * @desc    Get logged-in user
- * @access  Private
+ * @route   GET /api/admin/me
  */
 const getMe = async (req, res) => {
-  if (!isAdminEmail(req.user.email)) {
+  if (!isAdminEmail(req.user.email) || req.user.role !== "admin") {
     return sendError(res, 403, ACCESS_DENIED_MESSAGE);
   }
 
-  return sendSuccess(res, 200, "User profile retrieved", {
+  return sendSuccess(res, 200, "Admin profile retrieved", {
     user: formatUser(req.user),
   });
 };
 
-module.exports = { sendOtp, verifyOtp, getMe };
+/**
+ * @route   POST /api/admin/logout
+ */
+const logout = async (req, res) => {
+  clearAdminTokenCookie(res);
+  return sendSuccess(res, 200, "Logged out successfully");
+};
+
+module.exports = { sendOtp, verifyOtp, getMe, logout };

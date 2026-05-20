@@ -1,5 +1,6 @@
+/** Only these emails may access the admin panel */
 const ADMIN_EMAILS = [
-  "srikanthdevabathula@mail.com",
+  "srikanthdevabathula@gmail.com",
   "srikanth01107@gmail.com",
 ];
 
