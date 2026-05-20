@@ -13,4 +13,17 @@ export const applicationService = {
     );
     return response.data;
   },
+
+  delete: async (id: string) => {
+    const response = await api.delete<ApiResponse>(`/applications/${id}`);
+    return response.data;
+  },
+
+  deleteMany: async (ids: string[]) => {
+    const response = await api.post<ApiResponse<{ deletedCount: number }>>(
+      "/applications/admin/bulk-delete",
+      { ids }
+    );
+    return response.data;
+  },
 };
