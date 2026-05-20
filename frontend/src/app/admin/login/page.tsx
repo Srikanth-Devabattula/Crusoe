@@ -23,7 +23,7 @@ function LoginPageContent() {
       <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
         <h1 className="text-2xl font-semibold text-gray-900">Admin Login</h1>
         <p className="mt-2 text-sm text-gray-600">
-          Sign in with email and password, or create the first admin account.
+          Sign in with your admin email and password.
         </p>
         {statusMessage && (
           <p className="mt-4 rounded-md bg-green-50 px-3 py-2 text-sm text-green-800">
