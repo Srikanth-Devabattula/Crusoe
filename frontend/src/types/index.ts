@@ -106,8 +106,26 @@ export interface ContactFormData {
   name: string;
   email: string;
   phone?: string;
+  company?: string;
+  service?: string;
   subject: string;
   message: string;
+}
+
+export type ContactStatus = "new" | "read" | "replied";
+
+export interface ContactSubmission {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  service?: string;
+  subject: string;
+  message: string;
+  status: ContactStatus;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ApplicationFormData {

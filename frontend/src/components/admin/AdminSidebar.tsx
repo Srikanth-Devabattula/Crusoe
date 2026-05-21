@@ -8,6 +8,7 @@ import {
   Newspaper,
   Briefcase,
   ClipboardList,
+  MessageSquare,
   LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
@@ -23,6 +24,11 @@ const adminLinks = [
     href: ROUTES.admin.applications,
     label: "Applications",
     icon: ClipboardList,
+  },
+  {
+    href: ROUTES.admin.contacts,
+    label: "Contact enquiries",
+    icon: MessageSquare,
   },
 ];
 

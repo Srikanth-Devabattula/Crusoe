@@ -16,6 +16,7 @@ export function MainLayout({ children }: MainLayoutProps) {
     pathname === "/" ||
     pathname === ROUTES.testimonials ||
     pathname === ROUTES.services ||
+    pathname === ROUTES.contact ||
     pathname === ROUTES.careers ||
     pathname === ROUTES.blog ||
     pathname.startsWith(`${ROUTES.blog}/`) ||

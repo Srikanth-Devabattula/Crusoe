@@ -170,7 +170,7 @@ export function AdminJobForm({ onSuccess, editingJob, onCancelEdit }: AdminJobFo
           <input
             type="text"
             className={inputClass}
-            placeholder="e.g. Bengaluru, India · Hybrid"
+            placeholder="e.g. Visakhapatnam / Hyderabad, India · Hybrid"
             {...form.register("location")}
           />
         </Field>

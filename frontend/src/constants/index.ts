@@ -28,6 +28,7 @@ export const ROUTES = {
     blogs: "/admin/blogs",
     jobs: "/admin/jobs",
     applications: "/admin/applications",
+    contacts: "/admin/contacts",
     news: "/admin/news",
   },
 } as const;

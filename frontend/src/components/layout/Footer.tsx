@@ -8,6 +8,7 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { ROUTES, SITE_NAME } from "@/constants";
+import { CONTACT_EMAIL, contactInfoBlocks } from "@/data/contactPage";
 
 const quickLinks = [
   { href: ROUTES.home, label: "Home" },
@@ -28,28 +29,30 @@ const services = [
 const linkClass =
   "text-sm text-[#5b6472] transition-colors duration-300 hover:text-brand";
 
+const footerOfficeHeadings: Record<string, string> = {
+  vizag: "Head Office",
+  hyderabad: "Hyderabad",
+};
+
 export function Footer() {
   const year = new Date().getFullYear();
+  const [headOffice, hyderabadOffice] = contactInfoBlocks;
 
   return (
     <footer className="relative overflow-hidden border-t border-[#e7efe0]">
-      {/* Base gradient */}
       <div
         className="absolute inset-0 bg-[linear-gradient(165deg,#ffffff_0%,#f8fbf4_42%,#f0f7ea_100%)]"
         aria-hidden
       />
 
-      {/* Dot grid */}
       <div className="absolute inset-0 opacity-[0.07]" aria-hidden>
         <div className="h-full w-full bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:18px_18px]" />
       </div>
 
-      {/* Brand mesh */}
       <div className="absolute inset-0 opacity-[0.035]" aria-hidden>
         <div className="h-full w-full bg-[radial-gradient(#6CBF2A_1px,transparent_1px)] [background-size:20px_20px]" />
       </div>
 
-      {/* Glow accents */}
       <div
         className="absolute -left-24 top-0 h-[280px] w-[280px] rounded-full bg-brand/[0.12] blur-3xl"
         aria-hidden
@@ -130,47 +133,53 @@ export function Footer() {
 
             <div>
               <h3 className="mb-4 text-sm font-bold uppercase tracking-[0.08em] text-gray-900">
-                Head Office
+                {footerOfficeHeadings[headOffice.id] ?? headOffice.title}
               </h3>
               <div className="mb-2.5 flex items-center gap-2">
                 <FaPhone className="h-3.5 w-3.5 shrink-0 text-brand" />
-                <Link href="tel:+919948059533" className={linkClass}>
-                  +91 9948059533
+                <Link href={headOffice.tel} className={linkClass}>
+                  {headOffice.phone.replace(/^\+91/, "+91 ")}
                 </Link>
               </div>
               <div className="mb-3 flex items-center gap-2">
                 <FaEnvelope className="h-3.5 w-3.5 shrink-0 text-brand" />
-                <Link href="mailto:info@crusoetec.com" className={linkClass}>
-                  info@crusoetec.com
+                <Link href={`mailto:${CONTACT_EMAIL}`} className={linkClass}>
+                  {CONTACT_EMAIL}
                 </Link>
               </div>
               <div className="flex items-start gap-2">
                 <FaMapMarkerAlt className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
-                <p className="text-sm leading-relaxed text-[#5b6472]">
-                  A-201, Tech Park, Bengaluru,
-                  <br />
-                  Karnataka 560100, India
-                </p>
+                <Link
+                  href={headOffice.directionsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${linkClass} leading-relaxed`}
+                >
+                  {headOffice.address}
+                </Link>
               </div>
             </div>
 
             <div>
               <h3 className="mb-4 text-sm font-bold uppercase tracking-[0.08em] text-gray-900">
-                Hyderabad
+                {footerOfficeHeadings[hyderabadOffice.id] ?? hyderabadOffice.title}
               </h3>
               <div className="mb-3 flex items-center gap-2">
                 <FaPhone className="h-3.5 w-3.5 shrink-0 text-brand" />
-                <Link href="tel:+918179467755" className={linkClass}>
-                  +91 8179467755
+                <Link href={hyderabadOffice.tel} className={linkClass}>
+                  {hyderabadOffice.phone.replace(/^\+91/, "+91 ")}
                 </Link>
               </div>
               <div className="flex items-start gap-2">
                 <FaMapMarkerAlt className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
-                <p className="text-sm leading-relaxed text-[#5b6472]">
-                  Plot No.27 Gachibowli, Behind Radisson
-                  <br />
-                  Hotel, Hyderabad India 500032
-                </p>
+                <Link
+                  href={hyderabadOffice.directionsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${linkClass} leading-relaxed`}
+                >
+                  {hyderabadOffice.address}
+                </Link>
               </div>
             </div>
           </div>
