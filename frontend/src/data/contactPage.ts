@@ -1,5 +1,5 @@
-export const CONTACT_HERO_IMAGE = "/images/service1.png";
-export const CONTACT_CTA_IMAGE = "/images/service1.png";
+export const CONTACT_HERO_IMAGE = "/images/hero/contact.png";
+export const CONTACT_CTA_IMAGE = "/images/global/contactlast.png";
 
 export const WHATSAPP_URL = "https://wa.me/919948059533";
 export const CONTACT_EMAIL = "info@crusoetec.com";

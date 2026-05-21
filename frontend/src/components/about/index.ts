@@ -1,0 +1,9 @@
+export { AboutHero } from "./AboutHero";
+export { AboutStorySection } from "./AboutStorySection";
+export { AboutMissionVision } from "./AboutMissionVision";
+export { AboutLeadership } from "./AboutLeadership";
+export { AboutCoreValues } from "./AboutCoreValues";
+export { AboutTimeline } from "./AboutTimeline";
+export { AboutCulture } from "./AboutCulture";
+export { AboutStatsStrip } from "./AboutStatsStrip";
+export { AboutCtaSection } from "./AboutCtaSection";

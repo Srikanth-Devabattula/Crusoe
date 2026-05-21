@@ -136,12 +136,12 @@ export function ContactHero() {
               />
               <motion.div
                 className="relative h-full w-full"
-                animate={{ y: [0, -10, 0] }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                // animate={{ y: [0, -10, 0] }}
+                // transition={{
+                //   duration: 5,
+                //   repeat: Infinity,
+                //   ease: "easeInOut",
+                // }}
               >
                 <Image
                   src={CONTACT_HERO_IMAGE}
