@@ -85,15 +85,15 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 px-3 pt-4 sm:px-5",
+          "fixed inset-x-0 top-0 z-50 w-full",
           navVisible
             ? "translate-y-0"
             : "-translate-y-full",
           "transition-transform duration-300 ease-in-out"
         )}
       >
-        <nav className="mx-auto w-[90%] max-w-[1760px] rounded-[28px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.1)]">
-          <div className="flex h-16 items-center justify-between gap-2 px-3 sm:h-[4.5rem] sm:gap-3 sm:px-4 lg:gap-2 lg:px-3 xl:gap-4 xl:px-5">
+        <nav className="w-full border-b border-[#e8edf3] bg-[#EFF4F9] shadow-[0_4px_20px_rgba(8,21,38,0.08)]">
+          <div className="mx-auto flex h-16 w-full max-w-[1760px] items-center justify-between gap-2 px-4 sm:h-[4.5rem] sm:gap-3 sm:px-6 lg:gap-2 lg:px-6 xl:gap-4 xl:px-8">
           {/* Logo */}
           <Link
             href={ROUTES.home}
@@ -102,10 +102,10 @@ export function Navbar() {
             <Image
               src="/images/global/logo.png"
               alt="Crusoe Tech"
-              width={220}
-              height={70}
+              width={260}
+              height={82}
               priority
-              className="h-auto w-[118px] sm:w-[132px] lg:w-[128px] xl:w-[150px] 2xl:w-[180px]"
+              className="h-auto w-[148px] sm:w-[168px] lg:w-[165px] xl:w-[192px] 2xl:w-[220px]"
             />
           </Link>
 
@@ -161,7 +161,7 @@ export function Navbar() {
           {/* Mobile Toggle */}
           <button
             type="button"
-            className="ml-auto grid size-11 shrink-0 place-items-center rounded-2xl border border-[#e8edf3] bg-[#FDFEFF] text-[#081526] transition-colors hover:bg-[#f2f6fa] sm:size-12 lg:hidden"
+            className="ml-auto grid size-11 shrink-0 place-items-center rounded-2xl border border-[#e8edf3] bg-[#E8EEF5] text-[#081526] transition-colors hover:bg-[#dfe7f0] sm:size-12 lg:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={
               mobileOpen ? "Close menu" : "Open menu"
@@ -179,14 +179,14 @@ export function Navbar() {
         {/* Mobile Menu */}
         <div
           className={cn(
-            "mx-auto w-[90%] max-w-[1760px] overflow-hidden rounded-[28px] transition-all duration-300 lg:hidden",
+            "w-full overflow-hidden border-b border-[#e8edf3] bg-[#EFF4F9] transition-all duration-300 lg:hidden",
             mobileOpen
-              ? "mt-3 max-h-[1000px] border border-[#e8edf3] bg-[#FDFEFF] shadow-[0_8px_24px_rgba(8,21,38,0.08)]"
-              : "pointer-events-none mt-0 max-h-0 border-0 bg-transparent p-0 opacity-0 shadow-none"
+              ? "max-h-[1000px] shadow-[0_8px_24px_rgba(8,21,38,0.06)]"
+              : "pointer-events-none max-h-0 border-b-0 opacity-0 shadow-none"
           )}
           aria-hidden={!mobileOpen}
         >
-          <div className="p-4">
+          <div className="mx-auto max-w-[1760px] p-4 sm:px-6 lg:px-8">
             <ul className="flex flex-col gap-2">
               {navLinks.map((link) => {
                 const isActive =
