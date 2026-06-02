@@ -5,8 +5,17 @@ const {
   login,
   getMe,
 } = require("../controllers/authController");
+const {
+  requestOTP,
+  verifyOTP,
+  resendOTP,
+} = require("../controllers/otpController");
 const { protect } = require("../middleware/authMiddleware");
-const { authLimiter } = require("../middleware/rateLimitMiddleware");
+const {
+  authLimiter,
+  otpRequestLimiter,
+  otpVerifyLimiter,
+} = require("../middleware/rateLimitMiddleware");
 const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
@@ -15,5 +24,9 @@ router.get("/has-admin", asyncHandler(hasAdmin));
 router.post("/register", authLimiter, asyncHandler(register));
 router.post("/login", authLimiter, asyncHandler(login));
 router.get("/me", protect, asyncHandler(getMe));
+
+router.post("/request-otp", otpRequestLimiter, asyncHandler(requestOTP));
+router.post("/verify-otp", otpVerifyLimiter, asyncHandler(verifyOTP));
+router.post("/resend-otp", otpRequestLimiter, asyncHandler(resendOTP));
 
 module.exports = router;

@@ -18,6 +18,10 @@ const fileRoutes = require("./routes/fileRoutes");
 const { getCorsOptions } = require("./config/cors");
 const { apiLimiter } = require("./middleware/rateLimitMiddleware");
 const { errorMiddleware, notFound } = require("./middleware/errorMiddleware");
+const {
+  runStartupCleanup,
+  startCleanupScheduler,
+} = require("./services/otpCleanupService");
 
 const app = express();
 
@@ -27,7 +31,7 @@ app.set("trust proxy", 1);
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
-  })
+  }),
 );
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
@@ -75,8 +79,18 @@ app.get("/api/health", (req, res) => {
         connected: dbConnected,
         name: mongoose.connection.name || null,
       },
+      features: {
+        otpAuth: true,
+        emailService: true,
+        rateLimiting: true,
+      },
     },
   });
+});
+
+mongoose.connection.once("open", async () => {
+  await runStartupCleanup();
+  startCleanupScheduler();
 });
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
