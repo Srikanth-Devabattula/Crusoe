@@ -93,7 +93,7 @@ export function Navbar() {
         )}
       >
         <nav className="w-full border-b border-[#e8edf3] bg-[#EFF4F9] shadow-[0_4px_20px_rgba(8,21,38,0.08)]">
-          <div className="mx-auto flex h-16 w-full max-w-[1760px] items-center justify-between gap-2 px-4 sm:h-[4.5rem] sm:gap-3 sm:px-6 lg:gap-2 lg:px-6 xl:gap-4 xl:px-8">
+          <div className="mx-auto flex h-16 w-full max-w-[1760px] items-center justify-between gap-1 px-4 sm:h-[4.5rem] sm:gap-2 sm:px-5 lg:gap-1 lg:px-4 desktop:gap-3 desktop:px-6 2xl:px-8">
           {/* Logo */}
           <Link
             href={ROUTES.home}
@@ -105,7 +105,7 @@ export function Navbar() {
               width={260}
               height={82}
               priority
-              className="h-auto w-[148px] sm:w-[168px] lg:w-[165px] xl:w-[192px] 2xl:w-[220px]"
+              className="h-auto w-[148px] sm:w-[160px] lg:w-[140px] desktop:w-[180px] 2xl:w-[220px]"
             />
           </Link>
 
@@ -123,7 +123,7 @@ export function Navbar() {
                     <Link
                       href={link.href}
                       className={cn(
-                        "group relative inline-flex h-10 shrink-0 items-center gap-0.5 whitespace-nowrap px-2 text-[10px] font-bold uppercase tracking-[0.04em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 lg:px-2 lg:text-[10px] xl:h-11 xl:px-2.5 xl:text-[11px] xl:tracking-[0.06em] 2xl:px-4 2xl:text-[13px] 2xl:tracking-[0.08em]",
+                        "group relative inline-flex h-9 shrink-0 items-center gap-0.5 whitespace-nowrap px-1.5 text-[11px] font-bold uppercase tracking-[0.03em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 desktop:h-10 desktop:px-2 desktop:text-[11px] desktop:tracking-[0.05em] 2xl:px-4 2xl:text-[13px] 2xl:tracking-[0.08em]",
                         isActive
                           ? "text-brand"
                           : "text-slate-700 hover:text-brand"
@@ -148,7 +148,7 @@ export function Navbar() {
           {/* CTA */}
           <Link
             href={ROUTES.contact}
-            className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap rounded-2xl bg-brand px-3.5 py-2 text-[11px] font-semibold text-white shadow-[0_10px_30px_rgba(108,191,42,0.35)] transition-all duration-300 hover:scale-[1.03] hover:bg-brand-dark lg:inline-flex xl:gap-2 xl:px-5 xl:py-2.5 xl:text-[13px] 2xl:px-6 2xl:py-3 2xl:text-[14px]"
+            className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-xl bg-brand px-3 py-2 text-[11px] font-semibold text-white shadow-[0_10px_30px_rgba(108,191,42,0.35)] transition-all duration-300 hover:scale-[1.03] hover:bg-brand-dark lg:inline-flex desktop:gap-2 desktop:rounded-2xl desktop:px-5 desktop:py-2.5 desktop:text-[13px] 2xl:px-6 2xl:py-3 2xl:text-[14px]"
           >
             Get In Touch
 

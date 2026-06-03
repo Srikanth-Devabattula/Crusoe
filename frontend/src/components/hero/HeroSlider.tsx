@@ -57,7 +57,7 @@ export function HeroSlider() {
           onSlideChange={(swiper) => {
             setActiveIndex(swiper.realIndex);
           }}
-          className="hero-swiper !overflow-visible w-full rounded-[28px] sm:rounded-[32px]"
+          className="hero-swiper !overflow-visible w-full rounded-[24px] sm:rounded-[28px] desktop:rounded-[32px]"
         >
           {HERO_SLIDES.map((slide, index) => (
             <SwiperSlide key={slide.id}>
@@ -71,7 +71,7 @@ export function HeroSlider() {
         total={HERO_SLIDES.length}
         activeIndex={activeIndex}
         onSelect={goTo}
-        className="mt-6 sm:mt-8"
+        className="mt-4 sm:mt-6 desktop:mt-8"
       />
     </motion.div>
   );

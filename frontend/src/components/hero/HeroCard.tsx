@@ -21,7 +21,7 @@ export function HeroCard({ slide, isActive = false, className }: HeroCardProps) 
   return (
     <motion.article
       className={cn(
-        "hero-card-inner group relative aspect-[4/3] h-full min-h-[400px] w-full overflow-hidden rounded-[28px] shadow-hero-card transition-transform duration-500 ease-out sm:aspect-[16/11] sm:min-h-[440px] sm:rounded-[32px] lg:aspect-[16/10] lg:min-h-[480px] xl:min-h-[520px]",
+        "hero-card-inner group relative aspect-[4/3] h-full min-h-[360px] w-full overflow-hidden rounded-[24px] shadow-hero-card transition-transform duration-500 ease-out sm:min-h-[380px] sm:rounded-[28px] lg:aspect-auto lg:min-h-[420px] lg:rounded-[26px] desktop:aspect-[16/10] desktop:min-h-[440px] desktop:rounded-[32px] 2xl:min-h-[520px]",
         isActive && "shadow-[0_28px_90px_rgba(108,191,42,0.15)]",
         className
       )}
@@ -49,7 +49,7 @@ export function HeroCard({ slide, isActive = false, className }: HeroCardProps) 
         animate={isActive ? { opacity: 1 } : { opacity: 0.94 }}
       >
         <motion.div
-          className="flex max-w-[62%] flex-1 flex-col justify-center p-6 sm:max-w-[56%] sm:p-8 lg:max-w-[50%] lg:p-9 xl:p-10"
+          className="flex max-w-[68%] flex-1 flex-col justify-center p-5 sm:max-w-[58%] sm:p-7 lg:max-w-[56%] lg:py-6 lg:px-7 desktop:max-w-[52%] desktop:p-9 2xl:p-10"
           initial={{ opacity: 0, x: -12 }}
           animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0.9, x: 0 }}
           transition={{ duration: 0.45 }}
@@ -58,7 +58,7 @@ export function HeroCard({ slide, isActive = false, className }: HeroCardProps) 
             {slide.number} / {String(total).padStart(2, "0")}
           </span>
 
-          <div className="mt-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/80 p-2 shadow-sm backdrop-blur-sm sm:h-14 sm:w-14">
+          <div className="mt-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white/80 p-2 shadow-sm backdrop-blur-sm sm:mt-5 sm:h-12 sm:w-12 sm:rounded-2xl desktop:h-14 desktop:w-14">
             <Image
               src={slide.icon}
               alt=""
@@ -68,24 +68,24 @@ export function HeroCard({ slide, isActive = false, className }: HeroCardProps) 
             />
           </div>
 
-          <h3 className="text-heading mt-4 text-xl sm:text-2xl lg:text-[1.5rem]">
+          <h3 className="text-heading mt-3 text-lg sm:mt-4 sm:text-xl lg:text-base desktop:mt-4 desktop:text-2xl">
             {slide.title}
           </h3>
 
           <span className="mt-3 block h-1 w-12 rounded-full bg-brand" aria-hidden />
 
-          <p className="text-description mt-4 lg:max-w-md">
+          <p className="text-description mt-3 text-xs leading-relaxed sm:mt-4 sm:text-sm lg:mt-3 lg:pr-2 lg:text-[13px] desktop:mt-4 desktop:max-w-md desktop:text-base">
             {slide.description}
           </p>
 
           <motion.div
-            className="mt-6 sm:mt-8"
+            className="mt-4 sm:mt-6 desktop:mt-8"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
             <Link
               href={slide.href}
-              className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-xs font-semibold text-white shadow-hero-cta transition-colors hover:bg-brand-dark sm:px-6 sm:text-[13px] lg:text-xs"
+              className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[11px] font-semibold text-white shadow-hero-cta transition-colors hover:bg-brand-dark sm:px-5 sm:py-3 sm:text-xs desktop:px-6 desktop:text-[13px]"
             >
               Learn More
               <ArrowRight className="h-4 w-4" strokeWidth={2.5} />

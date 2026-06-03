@@ -159,6 +159,21 @@ export interface LoginFormData {
   password: string;
 }
 
+export interface OtpRequestData {
+  email: string;
+}
+
+export interface OtpVerifyFormData {
+  email: string;
+  otp: string;
+}
+
+export interface OtpSentData {
+  email: string;
+  expiresIn: number;
+  message?: string;
+}
+
 export interface RegisterFormData {
   name: string;
   email: string;

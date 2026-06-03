@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import { authService } from "@/services";
 import { clearAuth, getStoredToken, getStoredUser, saveAuth } from "@/lib/auth-storage";
-import type { LoginFormData, RegisterFormData, User } from "@/types";
+import type { OtpRequestData, OtpVerifyFormData, RegisterFormData, User } from "@/types";
 
 interface AuthContextValue {
   user: User | null;
@@ -20,7 +20,9 @@ interface AuthContextValue {
   hasAdmin: boolean | null;
   statusMessage: string | null;
   checkHasAdmin: () => Promise<void>;
-  login: (data: LoginFormData) => Promise<void>;
+  requestOtp: (data: OtpRequestData) => Promise<{ expiresIn: number; message?: string }>;
+  verifyOtp: (data: OtpVerifyFormData) => Promise<void>;
+  resendOtp: (data: OtpRequestData) => Promise<{ expiresIn: number; message?: string }>;
   register: (data: RegisterFormData) => Promise<void>;
   logout: () => void;
   clearStatusMessage: () => void;
@@ -77,15 +79,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkHasAdmin();
   }, [loadSession, checkHasAdmin]);
 
-  const login = async (data: LoginFormData) => {
-    const res = await authService.login(data);
+  const requestOtp = async (data: OtpRequestData) => {
+    const res = await authService.requestOtp(data);
+    if (!res.success || !res.data) {
+      throw new Error(res.message || "Failed to send verification code");
+    }
+    return {
+      expiresIn: res.data.expiresIn,
+      message: res.data.message,
+    };
+  };
+
+  const verifyOtp = async (data: OtpVerifyFormData) => {
+    const res = await authService.verifyOtp(data);
     if (!res.data?.token || !res.data?.user) {
-      throw new Error(res.message || "Login failed");
+      throw new Error(res.message || "Verification failed");
+    }
+    if (res.data.user.role !== "admin") {
+      clearAuth();
+      throw new Error("This account is not authorized for admin access.");
     }
     saveAuth(res.data.token, res.data.user);
     setUser(res.data.user);
-    setStatusMessage(res.message || "User logged in successfully");
+    setStatusMessage(res.message || "Logged in successfully");
     router.push("/admin/dashboard");
+  };
+
+  const resendOtp = async (data: OtpRequestData) => {
+    const res = await authService.resendOtp(data);
+    if (!res.success || !res.data) {
+      throw new Error(res.message || "Failed to resend verification code");
+    }
+    return {
+      expiresIn: res.data.expiresIn,
+      message: res.data.message,
+    };
   };
 
   const register = async (data: RegisterFormData) => {
@@ -117,7 +145,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hasAdmin,
         statusMessage,
         checkHasAdmin,
-        login,
+        requestOtp,
+        verifyOtp,
+        resendOtp,
         register,
         logout,
         clearStatusMessage: () => setStatusMessage(null),

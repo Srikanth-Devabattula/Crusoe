@@ -111,7 +111,7 @@ body {
 
 .hero-swiper .swiper-wrapper,
 .hero-swiper .swiper-slide {
-  @apply h-full;
+  @apply h-auto;
 }
 
 .hero-swiper .swiper-slide-active .hero-card-inner {

@@ -22,7 +22,7 @@ const fadeUp = {
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-white pb-14 pt-[7.5rem] sm:pb-16 sm:pt-[8.5rem] lg:pb-28 lg:pt-[9.5rem]">
+    <section className="relative overflow-hidden bg-white pb-14 pt-[7.5rem] sm:pb-16 sm:pt-[8.5rem] lg:pb-16 lg:pt-[8rem] desktop:pb-28 desktop:pt-[9.5rem]">
       <HeroBackground />
 
       <motion.div
@@ -31,14 +31,14 @@ export function HeroSection() {
         animate="visible"
       >
         <motion.div
-          className="grid items-center gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1.15fr)] lg:gap-6 xl:gap-8"
+          className="grid items-center gap-6 sm:gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-5 desktop:grid-cols-[minmax(0,1.05fr)_minmax(0,1.15fr)] desktop:gap-8"
           variants={{
             hidden: {},
             visible: { transition: { staggerChildren: 0.12 } },
           }}
         >
           <motion.div
-            className="relative order-1 w-full min-w-0 lg:order-2 lg:pl-2 xl:pl-4"
+            className="relative order-1 w-full min-w-0 lg:order-2 lg:justify-self-stretch desktop:pl-2"
             custom={0.12}
             variants={fadeUp}
           >
@@ -46,18 +46,20 @@ export function HeroSection() {
           </motion.div>
 
           <motion.div
-            className="order-2 w-full text-center lg:order-1 lg:pr-2 lg:text-left xl:pr-4"
+            className="order-2 w-full max-w-none text-center lg:order-1 lg:max-w-[22rem] lg:pr-2 lg:text-left desktop:max-w-none desktop:pr-4"
             custom={0.2}
             variants={fadeUp}
           >
             <motion.div custom={0.05} variants={fadeUp}>
-              <AnimatedBadge>Software Quality, Engineered to Perfection.</AnimatedBadge>
+              <AnimatedBadge className="[&>div]:px-3 [&>div]:py-1.5 [&>div]:text-[10px] desktop:[&>div]:px-4 desktop:[&>div]:py-2 desktop:[&>div]:text-[11px]">
+                Software Quality, Engineered to Perfection.
+              </AnimatedBadge>
             </motion.div>
 
             <motion.h1
               custom={0.12}
               variants={fadeUp}
-              className="text-heading mt-6 text-[32px] leading-[1.08] sm:text-[44px] lg:text-[38px] xl:text-[46px] 2xl:text-[50px]"
+              className="text-heading mt-5 text-[30px] leading-[1.1] sm:mt-6 sm:text-[36px] lg:mt-4 lg:text-[30px] lg:leading-[1.12] desktop:mt-6 desktop:text-[44px] desktop:leading-[1.08] 2xl:text-[50px]"
             >
               Building Reliable Software.{" "}
               <span className="text-brand">Delivering Real Impact.</span>
@@ -66,7 +68,7 @@ export function HeroSection() {
             <motion.p
               custom={0.2}
               variants={fadeUp}
-              className="text-description mt-5 lg:max-w-2xl xl:max-w-none"
+              className="text-description mt-4 text-sm sm:mt-5 sm:text-base lg:mt-3 lg:max-w-[20rem] desktop:mt-5 desktop:max-w-2xl desktop:text-base 2xl:max-w-none"
             >
               We deliver quality assurance, test automation, CAD customization
               and software tooling solutions that drive performance, reliability
@@ -76,7 +78,7 @@ export function HeroSection() {
             <motion.div
               custom={0.28}
               variants={fadeUp}
-              className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start"
+              className="mt-6 flex flex-col items-center justify-center gap-3 sm:mt-8 sm:flex-row sm:gap-4 lg:mt-5 lg:justify-start desktop:mt-8"
             >
               <CTAButton href={ROUTES.services} variant="primary">
                 Explore Our Services

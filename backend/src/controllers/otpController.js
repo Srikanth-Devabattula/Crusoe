@@ -5,6 +5,21 @@ const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { isValidEmail } = require("../utils/validators");
 const { sendOTPEmail } = require("../services/otpEmailService");
 
+const isEmailDeliveryError = (error) => {
+  const message = String(error?.message || "");
+  const code = error?.code;
+
+  return (
+    message.includes("SMTP") ||
+    /timeout|timed out|ETIMEDOUT|ESOCKET|ECONNREFUSED|ENOTFOUND|ECONNRESET/i.test(
+      message
+    ) ||
+    ["ETIMEDOUT", "ESOCKET", "ECONNREFUSED", "ENOTFOUND", "ECONNRESET", "EAUTH"].includes(
+      code
+    )
+  );
+};
+
 const setAuthCookie = (res, token) => {
   const isProduction = process.env.NODE_ENV === "production";
   res.cookie("token", token, {
@@ -77,7 +92,7 @@ const requestOTP = async (req, res) => {
   } catch (error) {
     console.error("OTP request error:", error);
 
-    if (error.message.includes("SMTP")) {
+    if (isEmailDeliveryError(error)) {
       return sendError(
         res,
         503,
@@ -252,6 +267,15 @@ const resendOTP = async (req, res) => {
     });
   } catch (error) {
     console.error("OTP resend error:", error);
+
+    if (isEmailDeliveryError(error)) {
+      return sendError(
+        res,
+        503,
+        "Email service temporarily unavailable. Please try again later.",
+      );
+    }
+
     return sendError(res, 500, "Failed to resend OTP. Please try again.");
   }
 };
