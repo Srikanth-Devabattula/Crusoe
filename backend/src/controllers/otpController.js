@@ -11,6 +11,8 @@ const isEmailDeliveryError = (error) => {
 
   return (
     message.includes("SMTP") ||
+    message.includes("Resend") ||
+    message.includes("Email is not configured") ||
     /timeout|timed out|ETIMEDOUT|ESOCKET|ECONNREFUSED|ENOTFOUND|ECONNRESET/i.test(
       message
     ) ||
@@ -90,7 +92,7 @@ const requestOTP = async (req, res) => {
       message: "Please check your email for the verification code",
     });
   } catch (error) {
-    console.error("OTP request error:", error);
+    console.error("OTP request error:", error.message || error);
 
     if (isEmailDeliveryError(error)) {
       return sendError(

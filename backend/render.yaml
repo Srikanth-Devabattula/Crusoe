@@ -24,3 +24,7 @@ services:
         sync: false
       - key: SMTP_PASS
         sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM
+        sync: false

@@ -67,9 +67,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/health", (req, res) => {
-  const { isSmtpConfigured } = require("./config/mail");
+  const { isEmailConfigured, getEmailProvider } = require("./config/mail");
   const dbConnected = mongoose.connection.readyState === 1;
-  const smtpConfigured = isSmtpConfigured();
+  const emailProvider = getEmailProvider();
 
   res.status(dbConnected ? 200 : 503).json({
     success: dbConnected,
@@ -83,8 +83,8 @@ app.get("/api/health", (req, res) => {
       },
       features: {
         otpAuth: true,
-        emailService: smtpConfigured,
-        smtpConfigured,
+        emailService: isEmailConfigured(),
+        emailProvider,
         rateLimiting: true,
       },
     },
