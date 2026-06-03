@@ -1,10 +1,8 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { sendError } = require("../utils/responseHandler");
+const { PERMISSION_KEYS } = require("../constants/permissions");
 
-/**
- * Protect routes — requires valid JWT
- */
 const protect = async (req, res, next) => {
   let token;
 
@@ -23,27 +21,56 @@ const protect = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.id).select("-password");
+    const user = await User.findById(decoded.id);
 
-    if (!req.user) {
+    if (!user) {
       return sendError(res, 401, "Not authorized, user not found");
     }
 
+    req.user = user;
     next();
   } catch {
     return sendError(res, 401, "Not authorized, token failed");
   }
 };
 
-/**
- * Restrict to admin role
- */
-const adminOnly = (req, res, next) => {
-  if (req.user && req.user.role === "admin") {
-    next();
-  } else {
-    return sendError(res, 403, "Not authorized as admin");
-  }
+const userHasPermission = (user, permission) => {
+  if (!user) return false;
+  if (user.role === "admin") return true;
+  if (!PERMISSION_KEYS.includes(permission)) return false;
+  return Boolean(user.permissions?.[permission]);
 };
 
-module.exports = { protect, adminOnly };
+const staffHasAnyPermission = (user) => {
+  if (!user) return false;
+  if (user.role === "admin") return true;
+  return PERMISSION_KEYS.some((key) => user.permissions?.[key]);
+};
+
+/**
+ * Full admin only (e.g. user management).
+ */
+const superAdminOnly = (req, res, next) => {
+  if (req.user?.role === "admin") {
+    return next();
+  }
+  return sendError(res, 403, "Only administrators can perform this action");
+};
+
+/**
+ * Admin or staff with the given section permission.
+ */
+const requirePermission = (permission) => (req, res, next) => {
+  if (userHasPermission(req.user, permission)) {
+    return next();
+  }
+  return sendError(res, 403, "You do not have access to this section");
+};
+
+module.exports = {
+  protect,
+  superAdminOnly,
+  requirePermission,
+  userHasPermission,
+  staffHasAnyPermission,
+};

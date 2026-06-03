@@ -7,7 +7,7 @@ const {
   updateJob,
   deleteJob,
 } = require("../controllers/jobController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
+const { protect, requirePermission } = require("../middleware/authMiddleware");
 const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
@@ -15,8 +15,8 @@ const router = express.Router();
 router.get("/public", asyncHandler(getPublishedJobs));
 router.get("/:id", asyncHandler(getJobById));
 router.get("/", asyncHandler(getJobs));
-router.post("/", protect, adminOnly, asyncHandler(createJob));
-router.put("/:id", protect, adminOnly, asyncHandler(updateJob));
-router.delete("/:id", protect, adminOnly, asyncHandler(deleteJob));
+router.post("/", protect, requirePermission("jobs"), asyncHandler(createJob));
+router.put("/:id", protect, requirePermission("jobs"), asyncHandler(updateJob));
+router.delete("/:id", protect, requirePermission("jobs"), asyncHandler(deleteJob));
 
 module.exports = router;

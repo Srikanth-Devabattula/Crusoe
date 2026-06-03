@@ -13,12 +13,8 @@ const setAuthCookie = (res, token) => {
   });
 };
 
-const formatUser = (user) => ({
-  _id: user._id,
-  name: user.name,
-  email: user.email,
-  role: user.role,
-});
+const { formatUser } = require("../utils/formatUser");
+const { staffHasAnyPermission } = require("../middleware/authMiddleware");
 
 /**
  * @route   GET /api/auth/has-admin
@@ -96,6 +92,14 @@ const login = async (req, res) => {
 
   if (!user || !(await user.matchPassword(password))) {
     return sendError(res, 401, "Invalid email or password");
+  }
+
+  if (user.role === "staff" && !staffHasAnyPermission(user)) {
+    return sendError(
+      res,
+      403,
+      "Your account has no section access. Contact an administrator.",
+    );
   }
 
   const token = generateToken(user._id);

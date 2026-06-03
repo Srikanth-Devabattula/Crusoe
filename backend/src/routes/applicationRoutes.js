@@ -5,7 +5,7 @@ const {
   deleteApplication,
   deleteApplicationsBulk,
 } = require("../controllers/applicationController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
+const { protect, requirePermission } = require("../middleware/authMiddleware");
 const { uploadResume } = require("../middleware/uploadMiddleware");
 const asyncHandler = require("../utils/asyncHandler");
 
@@ -14,21 +14,21 @@ const router = express.Router();
 router.get(
   "/admin",
   protect,
-  adminOnly,
+  requirePermission("applications"),
   asyncHandler(getAdminApplications)
 );
 
 router.post(
   "/admin/bulk-delete",
   protect,
-  adminOnly,
+  requirePermission("applications"),
   asyncHandler(deleteApplicationsBulk)
 );
 
 router.delete(
   "/:id",
   protect,
-  adminOnly,
+  requirePermission("applications"),
   asyncHandler(deleteApplication)
 );
 

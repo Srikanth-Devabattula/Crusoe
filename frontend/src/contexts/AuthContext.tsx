@@ -11,7 +11,14 @@ import {
 import { useRouter } from "next/navigation";
 import { authService } from "@/services";
 import { clearAuth, getStoredToken, getStoredUser, saveAuth } from "@/lib/auth-storage";
-import type { OtpRequestData, OtpVerifyFormData, RegisterFormData, User } from "@/types";
+import { getDefaultAdminPath } from "@/lib/admin-permissions";
+import type {
+  LoginFormData,
+  OtpRequestData,
+  OtpVerifyFormData,
+  RegisterFormData,
+  User,
+} from "@/types";
 
 interface AuthContextValue {
   user: User | null;
@@ -23,7 +30,9 @@ interface AuthContextValue {
   requestOtp: (data: OtpRequestData) => Promise<{ expiresIn: number; message?: string }>;
   verifyOtp: (data: OtpVerifyFormData) => Promise<void>;
   resendOtp: (data: OtpRequestData) => Promise<{ expiresIn: number; message?: string }>;
+  login: (data: LoginFormData) => Promise<void>;
   register: (data: RegisterFormData) => Promise<void>;
+  hasPermission: (permission: import("@/types").AdminPermission) => boolean;
   logout: () => void;
   clearStatusMessage: () => void;
 }
@@ -102,7 +111,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     saveAuth(res.data.token, res.data.user);
     setUser(res.data.user);
     setStatusMessage(res.message || "Logged in successfully");
-    router.push("/admin/dashboard");
+    router.push(getDefaultAdminPath(res.data.user));
+  };
+
+  const login = async (data: LoginFormData) => {
+    const res = await authService.login(data);
+    if (!res.data?.token || !res.data?.user) {
+      throw new Error(res.message || "Login failed");
+    }
+    saveAuth(res.data.token, res.data.user);
+    setUser(res.data.user);
+    setStatusMessage(res.message || "Logged in successfully");
+    router.push(getDefaultAdminPath(res.data.user));
   };
 
   const resendOtp = async (data: OtpRequestData) => {
@@ -125,7 +145,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(res.data.user);
     setHasAdmin(true);
     setStatusMessage(res.message || "User created successfully");
-    router.push("/admin/dashboard");
+    router.push(getDefaultAdminPath(res.data.user));
+  };
+
+  const hasPermission = (permission: import("@/types").AdminPermission) => {
+    if (!user) return false;
+    if (user.role === "admin") return true;
+    return Boolean(user.permissions?.[permission]);
   };
 
   const logout = () => {
@@ -148,7 +174,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         requestOtp,
         verifyOtp,
         resendOtp,
+        login,
         register,
+        hasPermission,
         logout,
         clearStatusMessage: () => setStatusMessage(null),
       }}

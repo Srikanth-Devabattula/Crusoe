@@ -32,12 +32,7 @@ const setAuthCookie = (res, token) => {
   });
 };
 
-const formatUser = (user) => ({
-  _id: user._id,
-  name: user.name,
-  email: user.email,
-  role: user.role,
-});
+const { formatUser } = require("../utils/formatUser");
 
 /**
  * @route   POST /api/auth/request-otp
@@ -63,7 +58,7 @@ const requestOTP = async (req, res) => {
         name: email.split("@")[0],
         email: email.toLowerCase(),
         password: "temp-password-will-be-updated",
-        role: "user",
+        role: "staff",
       });
     }
 

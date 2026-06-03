@@ -1,0 +1,72 @@
+import type { AdminPermission, User } from "@/types";
+import { ROUTES } from "@/constants";
+
+export const ADMIN_PERMISSIONS: Array<{
+  key: AdminPermission;
+  label: string;
+}> = [
+  { key: "blogs", label: "Blogs" },
+  { key: "news", label: "News" },
+  { key: "jobs", label: "Jobs" },
+  { key: "applications", label: "Applications" },
+  { key: "contacts", label: "Contact enquiries" },
+];
+
+export const EMPTY_PERMISSIONS: Record<AdminPermission, boolean> = {
+  blogs: false,
+  news: false,
+  jobs: false,
+  applications: false,
+  contacts: false,
+};
+
+export function isAdmin(user: User | null): boolean {
+  return user?.role === "admin";
+}
+
+export function hasPermission(
+  user: User | null,
+  permission: AdminPermission
+): boolean {
+  if (!user) return false;
+  if (user.role === "admin") return true;
+  return Boolean(user.permissions?.[permission]);
+}
+
+export function getDefaultAdminPath(user: User | null): string {
+  if (!user) return ROUTES.admin.login;
+  if (user.role === "admin") return ROUTES.admin.users;
+
+  for (const { key } of ADMIN_PERMISSIONS) {
+    const href = PERMISSION_ROUTES[key];
+    if (hasPermission(user, key)) return href;
+  }
+
+  return ROUTES.admin.login;
+}
+
+export const PERMISSION_ROUTES: Record<AdminPermission, string> = {
+  blogs: ROUTES.admin.blogs,
+  news: ROUTES.admin.news,
+  jobs: ROUTES.admin.jobs,
+  applications: ROUTES.admin.applications,
+  contacts: ROUTES.admin.contacts,
+};
+
+export function getPermissionForPath(pathname: string): AdminPermission | "users" | null {
+  if (pathname.startsWith(ROUTES.admin.users)) return "users";
+  for (const [key, href] of Object.entries(PERMISSION_ROUTES)) {
+    if (pathname === href || pathname.startsWith(`${href}/`)) {
+      return key as AdminPermission;
+    }
+  }
+  return null;
+}
+
+export function canAccessPath(user: User | null, pathname: string): boolean {
+  if (!user) return false;
+  const required = getPermissionForPath(pathname);
+  if (!required) return true;
+  if (required === "users") return user.role === "admin";
+  return hasPermission(user, required);
+}

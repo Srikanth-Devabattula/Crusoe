@@ -1,19 +1,26 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants";
+import { canAccessPath, getDefaultAdminPath } from "@/lib/admin-permissions";
 
 export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.replace(ROUTES.admin.login);
+      return;
     }
-  }, [isAuthenticated, isLoading, router]);
+
+    if (!isLoading && user && pathname.startsWith("/admin") && !canAccessPath(user, pathname)) {
+      router.replace(getDefaultAdminPath(user));
+    }
+  }, [isAuthenticated, isLoading, pathname, router, user]);
 
   if (isLoading) {
     return (
@@ -23,6 +30,12 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
 
   if (!isAuthenticated) {
     return null;
+  }
+
+  if (user && pathname.startsWith("/admin") && !canAccessPath(user, pathname)) {
+    return (
+      <p className="py-12 text-center text-sm text-gray-500">Redirecting...</p>
+    );
   }
 
   return <>{children}</>;

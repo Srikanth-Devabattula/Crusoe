@@ -1,11 +1,6 @@
-import { AdminDashboardContent } from "@/components/admin/AdminDashboardContent";
-import { createPageMetadata } from "@/lib/createPageMetadata";
-
-export const metadata = createPageMetadata(
-  "Dashboard",
-  "Admin dashboard overview."
-);
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/constants";
 
 export default function AdminDashboardPage() {
-  return <AdminDashboardContent />;
+  redirect(ROUTES.admin.users);
 }

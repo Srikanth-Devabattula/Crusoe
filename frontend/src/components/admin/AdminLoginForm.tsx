@@ -27,9 +27,17 @@ const otpSchema = z.object({
     .regex(/^\d{6}$/, "Code must be 6 digits"),
 });
 
+const passwordLoginSchema = z.object({
+  email: z.string().email("Enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
 type EmailValues = z.infer<typeof emailSchema>;
 type RegisterValues = z.infer<typeof registerSchema>;
 type OtpValues = z.infer<typeof otpSchema>;
+type PasswordLoginValues = z.infer<typeof passwordLoginSchema>;
+
+type LoginMode = "otp" | "password";
 
 const RESEND_COOLDOWN_SEC = 60;
 
@@ -58,8 +66,17 @@ function formatTime(seconds: number) {
 }
 
 export function AdminLoginForm() {
-  const { hasAdmin, requestOtp, verifyOtp, resendOtp, register, checkHasAdmin, isLoading } =
-    useAuth();
+  const {
+    hasAdmin,
+    requestOtp,
+    verifyOtp,
+    resendOtp,
+    login,
+    register,
+    checkHasAdmin,
+    isLoading,
+  } = useAuth();
+  const [loginMode, setLoginMode] = useState<LoginMode>("otp");
   const [step, setStep] = useState<"email" | "otp">("email");
   const [pendingEmail, setPendingEmail] = useState("");
   const [otpExpiresIn, setOtpExpiresIn] = useState(0);
@@ -80,6 +97,11 @@ export function AdminLoginForm() {
   const registerForm = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: { name: "", email: "", password: "" },
+  });
+
+  const passwordForm = useForm<PasswordLoginValues>({
+    resolver: zodResolver(passwordLoginSchema),
+    defaultValues: { email: "", password: "" },
   });
 
   const tickCountdown = useCallback(() => {
@@ -124,6 +146,15 @@ export function AdminLoginForm() {
       setResendCooldown(RESEND_COOLDOWN_SEC);
       otpForm.reset({ otp: "" });
       toast.success(result.message || "New verification code sent");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
+  };
+
+  const onPasswordLogin = async (data: PasswordLoginValues) => {
+    try {
+      await login(data);
+      toast.success("Logged in successfully");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
@@ -256,22 +287,83 @@ export function AdminLoginForm() {
   }
 
   return (
-    <form onSubmit={emailForm.handleSubmit(onRequestOtp)} className="space-y-4">
-      <p className="rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-600">
-        Enter your admin email. We&apos;ll send a one-time verification code to sign in.
-      </p>
-      <Field label="Email" error={emailForm.formState.errors.email?.message}>
-        <input
-          type="email"
-          autoComplete="email"
-          placeholder="admin@company.com"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-          {...emailForm.register("email")}
-        />
-      </Field>
-      <Button type="submit" className="w-full" disabled={emailForm.formState.isSubmitting}>
-        {emailForm.formState.isSubmitting ? "Sending code..." : "Send verification code"}
-      </Button>
-    </form>
+    <div className="space-y-4">
+      <div className="flex rounded-lg border border-gray-200 p-1">
+        <button
+          type="button"
+          onClick={() => {
+            setLoginMode("otp");
+            setStep("email");
+          }}
+          className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+            loginMode === "otp"
+              ? "bg-gray-900 text-white"
+              : "text-gray-600 hover:bg-gray-100"
+          }`}
+        >
+          Admin (OTP)
+        </button>
+        <button
+          type="button"
+          onClick={() => setLoginMode("password")}
+          className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+            loginMode === "password"
+              ? "bg-gray-900 text-white"
+              : "text-gray-600 hover:bg-gray-100"
+          }`}
+        >
+          Team (password)
+        </button>
+      </div>
+
+      {loginMode === "password" ? (
+        <form onSubmit={passwordForm.handleSubmit(onPasswordLogin)} className="space-y-4">
+          <p className="rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-600">
+            Sign in with the email and password created by your administrator.
+          </p>
+          <Field label="Email" error={passwordForm.formState.errors.email?.message}>
+            <input
+              type="email"
+              autoComplete="email"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+              {...passwordForm.register("email")}
+            />
+          </Field>
+          <Field label="Password" error={passwordForm.formState.errors.password?.message}>
+            <input
+              type="password"
+              autoComplete="current-password"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+              {...passwordForm.register("password")}
+            />
+          </Field>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={passwordForm.formState.isSubmitting}
+          >
+            {passwordForm.formState.isSubmitting ? "Signing in..." : "Sign in"}
+          </Button>
+        </form>
+      ) : (
+        <form onSubmit={emailForm.handleSubmit(onRequestOtp)} className="space-y-4">
+          <p className="rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-600">
+            Enter your admin email. We&apos;ll send a one-time verification code to sign in.
+          </p>
+          <Field label="Email" error={emailForm.formState.errors.email?.message}>
+            <input
+              type="email"
+              autoComplete="email"
+              placeholder="admin@company.com"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+              {...emailForm.register("email")}
+            />
+          </Field>
+          <Button type="submit" className="w-full" disabled={emailForm.formState.isSubmitting}>
+            {emailForm.formState.isSubmitting ? "Sending code..." : "Send verification code"}
+          </Button>
+        </form>
+      )}
+    </div>
   );
 }

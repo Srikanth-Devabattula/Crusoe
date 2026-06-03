@@ -6,28 +6,28 @@ const {
   deleteContact,
   deleteContactsBulk,
 } = require("../controllers/contactController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
+const { protect, requirePermission } = require("../middleware/authMiddleware");
 const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
-router.get("/admin", protect, adminOnly, asyncHandler(getAdminContacts));
+router.get("/admin", protect, requirePermission("contacts"), asyncHandler(getAdminContacts));
 
 router.post(
   "/admin/bulk-delete",
   protect,
-  adminOnly,
+  requirePermission("contacts"),
   asyncHandler(deleteContactsBulk)
 );
 
 router.patch(
   "/:id/status",
   protect,
-  adminOnly,
+  requirePermission("contacts"),
   asyncHandler(updateContactStatus)
 );
 
-router.delete("/:id", protect, adminOnly, asyncHandler(deleteContact));
+router.delete("/:id", protect, requirePermission("contacts"), asyncHandler(deleteContact));
 
 router.post("/", asyncHandler(submitContact));
 

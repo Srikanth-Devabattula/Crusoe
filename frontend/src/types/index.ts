@@ -4,11 +4,41 @@ export interface ApiResponse<T = unknown> {
   data?: T;
 }
 
+export type AdminPermission =
+  | "blogs"
+  | "news"
+  | "jobs"
+  | "applications"
+  | "contacts";
+
+export type AdminPermissions = Record<AdminPermission, boolean>;
+
 export interface User {
   _id: string;
   name: string;
   email: string;
-  role: "admin" | "user";
+  role: "admin" | "staff";
+  permissions?: AdminPermissions;
+}
+
+export interface AdminUserRecord extends User {
+  passwordPlain?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CreateAdminUserPayload {
+  name: string;
+  email: string;
+  password: string;
+  permissions: AdminPermissions;
+}
+
+export interface UpdateAdminUserPayload {
+  name?: string;
+  email?: string;
+  password?: string;
+  permissions?: AdminPermissions;
 }
 
 export interface BlogCategoryItem {

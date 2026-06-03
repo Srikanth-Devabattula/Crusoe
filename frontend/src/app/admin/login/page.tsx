@@ -4,17 +4,17 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import { ROUTES } from "@/constants";
+import { getDefaultAdminPath } from "@/lib/admin-permissions";
 
 function LoginPageContent() {
-  const { isAuthenticated, isLoading, statusMessage, clearStatusMessage } = useAuth();
+  const { user, isAuthenticated, isLoading, statusMessage, clearStatusMessage } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      router.replace(ROUTES.admin.dashboard);
+    if (!isLoading && isAuthenticated && user) {
+      router.replace(getDefaultAdminPath(user));
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, router, user]);
 
   useEffect(() => () => clearStatusMessage(), [clearStatusMessage]);
 
@@ -23,8 +23,7 @@ function LoginPageContent() {
       <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
         <h1 className="text-2xl font-semibold text-gray-900">Admin Login</h1>
         <p className="mt-2 text-sm text-gray-600">
-          Sign in with a one-time code sent to your admin email, or create the first admin
-          account.
+          Administrators use a one-time email code. Team members use email and password.
         </p>
         {statusMessage && (
           <p className="mt-4 rounded-md bg-green-50 px-3 py-2 text-sm text-green-800">

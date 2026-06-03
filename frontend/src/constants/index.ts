@@ -25,6 +25,7 @@ export const ROUTES = {
   admin: {
     login: "/admin/login",
     dashboard: "/admin/dashboard",
+    users: "/admin/users",
     blogs: "/admin/blogs",
     jobs: "/admin/jobs",
     applications: "/admin/applications",

@@ -4,13 +4,13 @@ const {
   createCategory,
   deleteCategory,
 } = require("../controllers/blogCategoryController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
+const { protect, requirePermission } = require("../middleware/authMiddleware");
 const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
 router.get("/", asyncHandler(getCategories));
-router.post("/", protect, adminOnly, asyncHandler(createCategory));
-router.delete("/:id", protect, adminOnly, asyncHandler(deleteCategory));
+router.post("/", protect, requirePermission("blogs"), asyncHandler(createCategory));
+router.delete("/:id", protect, requirePermission("blogs"), asyncHandler(deleteCategory));
 
 module.exports = router;
