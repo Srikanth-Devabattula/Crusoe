@@ -26,7 +26,7 @@ export function AboutStorySection() {
     <section
       id="our-story"
       aria-label="Our story"
-      className="section-padding scroll-mt-24 bg-white"
+      className="section-padding scroll-mt-24 bg-transparent"
     >
       <div className="hero-container">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-16">
@@ -92,7 +92,7 @@ export function AboutStorySection() {
                     variants={fadeUp}
                     custom={index * 0.05}
                     whileHover={{ y: -4 }}
-                    className="rounded-3xl border border-[#e7efe0] bg-white p-4 text-center shadow-[0_8px_24px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-[0_12px_32px_rgba(108,191,42,0.1)] sm:p-5"
+                    className="rounded-3xl border border-[#e7efe0] bg-white p-4 text-center shadow-[0_8px_24px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-[0_12px_32px_rgba(126, 168, 73,0.1)] sm:p-5"
                   >
                     <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-2xl bg-brand/10 text-brand">
                       <Icon className="h-5 w-5" aria-hidden />

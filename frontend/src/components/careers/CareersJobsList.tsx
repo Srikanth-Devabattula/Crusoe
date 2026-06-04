@@ -31,7 +31,7 @@ export function CareersJobsList() {
   }, [loadJobs]);
 
   return (
-    <section id="open-positions" className="bg-white py-14 sm:py-16 lg:py-20">
+    <section id="open-positions" className="bg-transparent py-14 sm:py-16 lg:py-20">
       <div className="hero-container">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">

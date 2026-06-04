@@ -14,7 +14,7 @@ export function AboutLeadership() {
     <section
       id="leadership"
       aria-label="Leadership"
-      className="section-padding scroll-mt-24 bg-white"
+      className="section-padding scroll-mt-24 bg-transparent"
     >
       <div className="hero-container">
         <motion.div
@@ -50,7 +50,7 @@ export function AboutLeadership() {
               variants={fadeUp}
               custom={index * 0.06}
               whileHover={{ y: -6 }}
-              className="group overflow-hidden rounded-[32px] border border-[#e7efe0] bg-white p-5 text-center shadow-[0_12px_40px_rgba(15,23,42,0.05)] transition-shadow hover:border-brand/25 hover:shadow-[0_16px_48px_rgba(108,191,42,0.12)] sm:p-6"
+              className="group overflow-hidden rounded-[32px] border border-[#e7efe0] bg-white p-5 text-center shadow-[0_12px_40px_rgba(15,23,42,0.05)] transition-shadow hover:border-brand/25 hover:shadow-[0_16px_48px_rgba(126, 168, 73,0.12)] sm:p-6"
             >
               <div className="relative mx-auto h-28 w-28 overflow-hidden rounded-2xl sm:h-32 sm:w-32">
                 <Image

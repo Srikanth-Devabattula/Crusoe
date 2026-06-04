@@ -69,7 +69,7 @@ export function WhyChooseUsSection() {
     <section
       id="why-choose-us"
       aria-label="Why choose us"
-      className="relative overflow-hidden bg-[#f7f9fc] py-16 sm:py-20 lg:py-24"
+      className="relative overflow-hidden bg-transparent py-8 sm:py-10 lg:py-12"
     >
       <div className="absolute inset-0 opacity-[0.08]">
         <div className="h-full w-full bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:18px_18px]" />
@@ -80,10 +80,10 @@ export function WhyChooseUsSection() {
           <div className="absolute -left-20 top-1/2 h-[320px] w-[320px] -translate-y-1/2 rounded-full bg-brand/[0.10] blur-3xl" />
 
           <div className="absolute inset-0 opacity-[0.04]">
-            <div className="h-full w-full bg-[radial-gradient(#6CBF2A_1px,transparent_1px)] [background-size:18px_18px]" />
+            <div className="h-full w-full bg-[radial-gradient(#7EA849_1px,transparent_1px)] [background-size:18px_18px]" />
           </div>
 
-          <div className="relative grid min-w-0 gap-10 px-6 py-8 sm:gap-12 sm:px-8 sm:py-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(120px,0.42fr)_minmax(300px,1.1fr)] lg:items-center lg:gap-5 lg:px-8 lg:py-10 desktop:grid-cols-[minmax(0,1fr)_minmax(160px,0.55fr)_minmax(340px,1.2fr)] desktop:gap-7 desktop:px-10 desktop:py-12 xl:grid-cols-[minmax(0,1fr)_minmax(240px,0.75fr)_minmax(400px,1.35fr)] xl:gap-12 xl:px-12 xl:py-14 2xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.8fr)_minmax(440px,1.4fr)] 2xl:gap-14 2xl:px-14">
+          <div className="relative grid min-w-0 gap-8 px-5 py-6 sm:gap-9 sm:px-6 sm:py-7 lg:grid-cols-[minmax(0,0.95fr)_minmax(120px,0.42fr)_minmax(300px,1.1fr)] lg:items-center lg:gap-5 lg:px-6 lg:py-7 desktop:grid-cols-[minmax(0,1fr)_minmax(160px,0.55fr)_minmax(340px,1.2fr)] desktop:gap-6 desktop:px-8 desktop:py-8 xl:grid-cols-[minmax(0,1fr)_minmax(240px,0.75fr)_minmax(400px,1.35fr)] xl:gap-8 xl:px-9 xl:py-9 2xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.8fr)_minmax(440px,1.4fr)] 2xl:gap-10 2xl:px-10 2xl:py-10">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -116,14 +116,14 @@ export function WhyChooseUsSection() {
                   Vision
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-[#5b6472] lg:text-xs lg:leading-relaxed desktop:mt-2.5 desktop:text-[15px] desktop:leading-relaxed">
-                  Become a Top-Tier Technology &amp; Services Company catering to
-                  the leading Global Software &amp; Engineering Companies.
+                  Become a Top-Tier Technology &amp; Services Company catering
+                  to the leading Global Software &amp; Engineering Companies.
                 </p>
               </div>
 
               <Link
                 href="/about"
-                className="group mt-7 inline-flex items-center gap-2.5 rounded-[18px] bg-brand px-6 py-3.5 text-[15px] font-semibold text-white shadow-[0_14px_34px_rgba(108,191,42,0.28)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(108,191,42,0.38)] desktop:mt-10 desktop:gap-3 desktop:rounded-[20px] desktop:px-8 desktop:py-5 desktop:text-[17px]"
+                className="group mt-7 inline-flex items-center gap-2.5 rounded-[18px] bg-brand px-6 py-3.5 text-[15px] font-semibold text-white shadow-[0_14px_34px_rgba(126, 168, 73,0.28)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(126, 168, 73,0.38)] desktop:mt-10 desktop:gap-3 desktop:rounded-[20px] desktop:px-8 desktop:py-5 desktop:text-[17px]"
               >
                 Know More About Us
                 <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -138,7 +138,7 @@ export function WhyChooseUsSection() {
               custom={0.08}
               className="relative flex min-w-0 items-center justify-center"
             >
-              <div className="absolute h-[280px] w-[280px] rounded-full bg-[radial-gradient(circle_at_center,rgba(108,191,42,0.16),transparent_68%)] sm:h-[320px] sm:w-[320px] lg:h-[220px] lg:w-[220px] desktop:h-[320px] desktop:w-[320px] xl:h-[480px] xl:w-[480px] 2xl:h-[520px] 2xl:w-[520px]" />
+              <div className="absolute h-[280px] w-[280px] rounded-full bg-[radial-gradient(circle_at_center,rgba(126, 168, 73,0.16),transparent_68%)] sm:h-[320px] sm:w-[320px] lg:h-[220px] lg:w-[220px] desktop:h-[320px] desktop:w-[320px] xl:h-[480px] xl:w-[480px] 2xl:h-[520px] 2xl:w-[520px]" />
               <div className="absolute h-[280px] w-[280px] rounded-full border border-brand/10 sm:h-[320px] sm:w-[320px] lg:h-[220px] lg:w-[220px] desktop:h-[320px] desktop:w-[320px] xl:h-[480px] xl:w-[480px] 2xl:h-[520px] 2xl:w-[520px]" />
               <div className="absolute hidden h-[380px] w-[380px] rounded-full border border-brand/10 desktop:block xl:h-[440px] xl:w-[440px]" />
               <div className="absolute hidden h-[300px] w-[300px] rounded-full border border-brand/10 desktop:block xl:h-[360px] xl:w-[360px]" />
@@ -153,11 +153,11 @@ export function WhyChooseUsSection() {
                 className="relative z-10"
               >
                 <Image
-                  src="/images/services/whychooseus1.png"
+                  src="/images/services/whychoose1.png"
                   alt="Why choose us"
                   width={800}
                   height={800}
-                  className="h-auto w-full max-w-[220px] object-contain drop-shadow-[0_40px_70px_rgba(108,191,42,0.22)] sm:max-w-[260px] lg:max-w-[140px] desktop:max-w-[200px] xl:max-w-[320px] 2xl:max-w-[420px]"
+                  className="h-auto w-full max-w-[220px] object-contain drop-shadow-[0_40px_70px_rgba(126, 168, 73,0.22)] sm:max-w-[260px] lg:max-w-[140px] desktop:max-w-[200px] xl:max-w-[320px] 2xl:max-w-[420px]"
                 />
               </motion.div>
             </motion.div>

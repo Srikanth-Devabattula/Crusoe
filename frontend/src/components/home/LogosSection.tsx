@@ -7,7 +7,7 @@ import { PARTNER_LOGOS } from "@/data/partnerLogos";
 
 function LogoCard({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="flex h-[72px] w-[148px] shrink-0 items-center justify-center rounded-2xl border border-[#edf2e7] bg-white px-5 shadow-[0_4px_20px_rgba(15,23,42,0.05)] transition-shadow duration-300 hover:shadow-[0_8px_28px_rgba(108,191,42,0.12)] sm:h-20 sm:w-[172px]">
+    <div className="flex h-[72px] w-[148px] shrink-0 items-center justify-center rounded-2xl border border-[#edf2e7] bg-white px-5 shadow-[0_4px_20px_rgba(15,23,42,0.05)] transition-shadow duration-300 hover:shadow-[0_8px_28px_rgba(126, 168, 73,0.12)] sm:h-20 sm:w-[172px]">
       <Image
         src={src}
         alt={alt}
@@ -41,10 +41,10 @@ export function LogosSection() {
     <section
       id="logos"
       aria-label="Partner logos"
-      className="relative overflow-hidden bg-white py-10 sm:py-12 lg:py-14"
+      className="relative overflow-hidden bg-transparent py-10 sm:py-12 lg:py-14"
     >
       <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(108,191,42,0.08),transparent_55%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(126, 168, 73,0.08),transparent_55%)]"
         aria-hidden
       />
 
@@ -63,10 +63,6 @@ export function LogosSection() {
             Companies That{" "}
             <span className="text-brand">Trust Crusoe</span>
           </h2>
-          <p className="text-description mx-auto mt-3 max-w-2xl">
-            Partnering with innovative teams across industries to deliver
-            reliable software and lasting impact.
-          </p>
         </motion.div>
 
         <motion.div
@@ -76,15 +72,6 @@ export function LogosSection() {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="relative"
         >
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-14 bg-gradient-to-r from-white via-white/90 to-transparent sm:w-24"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-14 bg-gradient-to-l from-white via-white/90 to-transparent sm:w-24"
-            aria-hidden
-          />
-
           <div className="logos-marquee-viewport overflow-hidden py-2 motion-reduce:hidden">
             <div className="logos-marquee-track flex w-max gap-8 sm:gap-10 lg:gap-12">
               <LogoMarqueeSet />

@@ -10,25 +10,25 @@ const services = [
     title: "Engineering Services",
     description:
       "Advanced engineering solutions focused on product innovation, system optimization and scalable technology implementation for modern businesses.",
-    image: "/images/services/service-1.png",
+    image: "/images/services/service1.png",
   },
   {
     title: "Software Development",
     description:
       "Custom software applications built with modern technologies to deliver secure, scalable and high-performance digital experiences.",
-    image: "/images/services/service-2.png",
+    image: "/images/services/service2.png",
   },
   {
     title: "Software QA",
     description:
       "Comprehensive quality assurance and automated testing services to ensure reliability, performance and seamless user experiences.",
-    image: "/images/services/service-3.png",
+    image: "/images/services/service3.png",
   },
   {
     title: "CAD Testing",
     description:
       "Specialized CAD validation and testing services designed to improve design accuracy, workflow efficiency and manufacturing quality.",
-    image: "/images/services/service-4.png",
+    image: "/images/services/service4.png",
   },
 ];
 
@@ -53,7 +53,7 @@ export function OurServicesSection() {
     <section
       id="our-services"
       aria-label="Our services"
-      className="relative overflow-hidden bg-[#f7f9fc] py-16 sm:py-20 lg:py-24"
+      className="relative overflow-hidden bg-transparent py-16 sm:py-20 lg:py-24"
     >
       {/* dotted background */}
       <div className="absolute inset-0 opacity-[0.08]">
@@ -129,19 +129,18 @@ export function OurServicesSection() {
               className="group relative flex h-full flex-col overflow-hidden rounded-[30px] border border-[#edf2e7] bg-white p-5 shadow-[0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:border-brand/20 hover:shadow-[0_20px_60px_rgba(15,23,42,0.10)]"
             >
               {/* glow */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(108,191,42,0.05),transparent_68%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(126, 168, 73,0.05),transparent_68%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
               {/* image */}
-              <div className="relative overflow-hidden rounded-[22px] bg-[#f6f8f2]">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(108,191,42,0.06),transparent_70%)]" />
-
+              <div className="relative h-[220px] overflow-hidden rounded-[22px] bg-[#f6f8f2]">
                 <Image
                   src={service.image}
                   alt={service.title}
-                  width={500}
-                  height={500}
-                  className="relative z-10 h-[220px] w-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.04]"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                  className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 />
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(126, 168, 73,0.08),transparent_70%)]" />
               </div>
 
               {/* content */}

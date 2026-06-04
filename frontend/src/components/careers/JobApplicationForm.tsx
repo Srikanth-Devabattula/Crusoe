@@ -125,7 +125,7 @@ export function JobApplicationForm({ jobId, jobTitle }: JobApplicationFormProps)
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-6 w-full rounded-2xl bg-brand px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(108,191,42,0.35)] transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+        className="mt-6 w-full rounded-2xl bg-brand px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(126, 168, 73,0.35)] transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
       >
         {isSubmitting ? "Submitting..." : "Submit application"}
       </button>

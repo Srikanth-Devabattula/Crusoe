@@ -87,14 +87,14 @@ export function AchievementsSection() {
   });
 
   return (
-    <section className="relative overflow-hidden bg-[#f7f9fc] py-10 sm:py-12 lg:py-14">
+    <section className="relative overflow-hidden bg-transparent py-10 sm:py-12 lg:py-14">
       {/* background dots */}
       <div className="absolute inset-0 opacity-[0.08]">
         <div className="h-full w-full bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:18px_18px]" />
       </div>
 
       {/* green gradient */}
-      <div className="absolute right-0 top-0 h-full w-[45%] bg-[radial-gradient(circle_at_top_right,rgba(108,191,42,0.16),transparent_70%)]" />
+      <div className="absolute right-0 top-0 h-full w-[45%] bg-[radial-gradient(circle_at_top_right,rgba(126, 168, 73,0.16),transparent_70%)]" />
 
       <div className="hero-container relative z-10">
         <motion.div

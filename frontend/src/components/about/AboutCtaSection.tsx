@@ -13,7 +13,7 @@ import { FloatingOrb } from "./AboutDecor";
 
 export function AboutCtaSection() {
   return (
-    <section aria-label="Get started" className="section-padding bg-white pb-16 lg:pb-20">
+    <section aria-label="Get started" className="section-padding bg-transparent pb-16 lg:pb-20">
       <div className="hero-container">
         <motion.div
           initial="hidden"
@@ -44,7 +44,7 @@ export function AboutCtaSection() {
               </p>
               <Link
                 href={ROUTES.contact}
-                className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4 text-base font-semibold text-white shadow-[0_14px_34px_rgba(108,191,42,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-[0_20px_44px_rgba(108,191,42,0.38)] sm:w-auto"
+                className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4 text-base font-semibold text-white shadow-[0_14px_34px_rgba(126, 168, 73,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-[0_20px_44px_rgba(126, 168, 73,0.38)] sm:w-auto"
               >
                 Start a Conversation
                 <FiArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />

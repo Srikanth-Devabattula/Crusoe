@@ -34,7 +34,7 @@ export function HeroPagination({
           className={cn(
             "h-2 rounded-full transition-all duration-300",
             activeIndex === index
-              ? "w-8 bg-brand shadow-[0_0_12px_rgba(108,191,42,0.5)]"
+              ? "w-8 bg-brand shadow-[0_0_12px_rgba(126, 168, 73,0.5)]"
               : "w-2 bg-gray-300 hover:bg-gray-400"
           )}
         />

@@ -131,7 +131,7 @@ export function AdminNewsContent() {
                       )}
                       <span
                         className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${
-                          item.published ? "bg-green-100 text-green-800" : "bg-gray-200 text-gray-600"
+                          item.published ? "bg-brand-muted/60 text-green-800" : "bg-gray-200 text-gray-600"
                         }`}
                       >
                         {item.published ? "Published" : "Draft"}

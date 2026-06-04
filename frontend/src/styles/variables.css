@@ -3,6 +3,11 @@
 :root {
   --color-primary: #171717;
   --color-muted: #6b7280;
+  --color-brand: #7ea849;
+  --color-brand-dark: #6b913a;
+  --color-brand-light: #9bbf6e;
+  --color-brand-muted: #e8f0dc;
+  --color-brand-rgb: 126, 168, 73;
   --color-navbar: #fdfeff;
   --color-navbar-border: #e8edf3;
   --color-navbar-hover: #f2f6fa;

@@ -19,7 +19,7 @@ export function BlogFeaturedHero({ post, categoryLabel }: BlogFeaturedHeroProps)
   const coverSrc = getBlogCoverUrl(post.coverImage);
 
   return (
-    <section className="bg-white pb-4 pt-2 sm:pb-6">
+    <section className="bg-transparent pb-4 pt-2 sm:pb-6">
       <div className="hero-container">
         <Link
           href={ROUTES.blogPost(post.slug)}

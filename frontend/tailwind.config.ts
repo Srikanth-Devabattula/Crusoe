@@ -12,7 +12,7 @@ const config: Config = {
     "bg-[#F3F7FC]",
     "bg-[#F5F0FB]",
     "bg-[#FBF7EE]",
-    "text-[#6DBB2D]",
+    "text-[#7EA849]",
     "text-[#4A7DDB]",
     "text-[#8B5CF6]",
     "text-[#D4A017]",
@@ -29,11 +29,11 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         brand: {
-          DEFAULT: "#6CBF2A",
-          dark: "#5cad22",
-          light: "#8fd44a",
-          muted: "#E8F5DC",
-          glow: "rgba(108, 191, 42, 0.35)",
+          DEFAULT: "#7EA849",
+          dark: "#6B913A",
+          light: "#9BBF6E",
+          muted: "#E8F0DC",
+          glow: "rgba(126, 168, 73, 0.35)",
         },
         nav: {
           DEFAULT: "var(--color-navbar)",
@@ -44,12 +44,12 @@ const config: Config = {
       boxShadow: {
         "hero-card":
           "0 24px 80px rgba(15, 23, 42, 0.08), 0 8px 24px rgba(15, 23, 42, 0.04)",
-        "hero-cta": "0 10px 30px rgba(108, 191, 42, 0.25)",
+        "hero-cta": "0 10px 30px rgba(126, 168, 73, 0.25)",
         "hero-glass": "inset 0 1px 0 rgba(255, 255, 255, 0.8)",
       },
       backgroundImage: {
         "hero-mesh":
-          "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(108, 191, 42, 0.08), transparent 50%), radial-gradient(ellipse 60% 40% at 80% 20%, rgba(108, 191, 42, 0.06), transparent 45%), radial-gradient(ellipse 50% 50% at 50% 100%, rgba(148, 163, 184, 0.06), transparent 50%)",
+          "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(126, 168, 73, 0.08), transparent 50%), radial-gradient(ellipse 60% 40% at 80% 20%, rgba(126, 168, 73, 0.06), transparent 45%), radial-gradient(ellipse 50% 50% at 50% 100%, rgba(148, 163, 184, 0.06), transparent 50%)",
       },
       keyframes: {
         "float-slow": {

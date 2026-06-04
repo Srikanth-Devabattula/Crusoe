@@ -56,7 +56,7 @@ export function AboutStatsStrip() {
   const isInView = useInView(sectionRef, { once: true, amount: 0.35 });
 
   return (
-    <section aria-label="Company statistics" className="section-padding bg-white pb-8 lg:pb-12">
+    <section aria-label="Company statistics" className="section-padding bg-transparent pb-8 lg:pb-12">
       <div className="hero-container">
         <motion.div
           ref={sectionRef}

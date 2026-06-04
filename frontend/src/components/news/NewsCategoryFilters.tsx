@@ -36,7 +36,7 @@ export function NewsCategoryFilters({
             className={cn(
               "rounded-full px-4 py-2 text-sm font-semibold transition",
               isActive
-                ? "bg-brand text-white shadow-[0_8px_24px_rgba(108,191,42,0.28)]"
+                ? "bg-brand text-white shadow-[0_8px_24px_rgba(126, 168, 73,0.28)]"
                 : "border border-[#E8EEF5] bg-white text-slate-700 hover:border-brand/30 hover:text-brand"
             )}
           >

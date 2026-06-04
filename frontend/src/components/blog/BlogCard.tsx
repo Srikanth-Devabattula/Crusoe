@@ -32,7 +32,7 @@ export function BlogCard({ post, categoryLabel, variant = "default" }: BlogCardP
     <Link
       href={ROUTES.blogPost(post.slug)}
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-[20px] border border-[#E8EEF5] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_12px_40px_rgba(108,191,42,0.12)]",
+        "group flex h-full flex-col overflow-hidden rounded-[20px] border border-[#E8EEF5] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_12px_40px_rgba(126, 168, 73,0.12)]",
         variant === "compact" && "sm:flex-row"
       )}
     >

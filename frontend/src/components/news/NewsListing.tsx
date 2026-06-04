@@ -65,7 +65,7 @@ export function NewsListing() {
         <NewsFeaturedHero item={featured} categoryLabel={getLabel(featured.category)} />
       )}
 
-      <section className="bg-white py-12 sm:py-16 lg:py-20">
+      <section className="bg-transparent py-12 sm:py-16 lg:py-20">
         <div className="hero-container">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">

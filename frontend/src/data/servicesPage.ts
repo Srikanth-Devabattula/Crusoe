@@ -31,7 +31,7 @@ export const servicesList: ServiceItem[] = [
     image: "/images/services-page/service1.png",
     accent: "green",
     bgColor: "#F3F8EE",
-    accentColor: "#6DBB2D",
+    accentColor: "#7EA849",
   },
   {
     id: "automated-testing",

@@ -11,7 +11,7 @@ import { OfficeMapEmbed } from "./OfficeMapEmbed";
 
 export function ContactOfficesSection() {
   return (
-    <section aria-label="Our offices" className="section-padding bg-white">
+    <section aria-label="Our offices" className="section-padding bg-transparent">
       <div className="hero-container">
         <motion.div
           initial="hidden"
@@ -42,7 +42,7 @@ export function ContactOfficesSection() {
               variants={fadeUp}
               custom={index * 0.08}
               whileHover={{ y: -4 }}
-              className="overflow-hidden rounded-[32px] border border-[#e7efe0] bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.05)] transition-shadow duration-300 hover:shadow-[0_16px_48px_rgba(108,191,42,0.1)] sm:p-6"
+              className="overflow-hidden rounded-[32px] border border-[#e7efe0] bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.05)] transition-shadow duration-300 hover:shadow-[0_16px_48px_rgba(126, 168, 73,0.1)] sm:p-6"
             >
               <div className="mb-4 flex items-center gap-2">
                 <FiMapPin className="h-4 w-4 text-brand" aria-hidden />

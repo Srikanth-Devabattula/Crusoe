@@ -3,7 +3,7 @@ import type { CategoryStyle } from "@/data/blogCategories";
 export const KNOWN_NEWS_CATEGORY_STYLES: Record<string, CategoryStyle> = {
   announcements: { bg: "#FBF7EE", text: "#5c4a12", accent: "#D4A017" },
   "press-release": { bg: "#F3F7FC", text: "#1e3a5f", accent: "#4A7DDB" },
-  "company-update": { bg: "#F3F8EE", text: "#2d4a1c", accent: "#6DBB2D" },
+  "company-update": { bg: "#F3F8EE", text: "#2d4a1c", accent: "#7EA849" },
   events: { bg: "#F5F0FB", text: "#4c1d95", accent: "#8B5CF6" },
   industry: { bg: "#F0F9FF", text: "#0c4a6e", accent: "#0284c7" },
 };

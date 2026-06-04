@@ -149,7 +149,7 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
     <section
       id="testimonials"
       aria-label="Testimonials"
-      className={`section-padding ${variant === "page" ? "bg-[#f8faf6]" : "bg-gray-50"}`}
+      className="section-padding bg-transparent"
     >
       <div className="hero-container">
         <div className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between lg:mb-12">
@@ -263,7 +263,7 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
                 aria-label={`Go to slide ${index + 1}`}
                 className={`rounded-full transition-all duration-300 ${
                   currentIndex === index
-                    ? "h-4 w-4 bg-lime-500 shadow-md shadow-lime-300"
+                    ? "h-4 w-4 bg-brand shadow-md shadow-lime-300"
                     : "h-4 w-4 bg-gray-300 hover:bg-gray-400"
                 }`}
               />

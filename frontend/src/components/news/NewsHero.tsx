@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 import { AnimatedBadge } from "@/components/common/AnimatedBadge";
-import { HERO_BG_IMAGE } from "@/data/heroSlides";
+import { PageHeroOverlay } from "@/components/common/PageHeroOverlay";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -17,12 +17,8 @@ const fadeUp = {
 
 export function NewsHero() {
   return (
-    <section className="relative overflow-hidden bg-[#eef4e8]">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <Image src={HERO_BG_IMAGE} alt="" fill priority sizes="100vw" className="object-cover object-center opacity-90" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/92 via-white/75 to-white/55" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-[#eef4e8]/90" />
-      </div>
+    <section className="relative overflow-hidden bg-transparent">
+      <PageHeroOverlay />
 
       <motion.div
         className="hero-container relative z-10 pb-8 pt-[5.25rem] sm:pb-10 sm:pt-[5.75rem] lg:pb-12 lg:pt-[6.25rem]"

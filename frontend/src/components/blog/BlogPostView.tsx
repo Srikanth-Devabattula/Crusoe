@@ -93,7 +93,7 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
 
   return (
     <article className="bg-white">
-      <div className="relative overflow-hidden bg-[#eef4e8] pt-[5.25rem] sm:pt-[5.75rem] lg:pt-[6.25rem]">
+      <div className="relative overflow-hidden bg-transparent pt-[5.25rem] sm:pt-[5.75rem] lg:pt-[6.25rem]">
         <div className="hero-container pb-10 lg:pb-14">
           <Link
             href={ROUTES.blog}

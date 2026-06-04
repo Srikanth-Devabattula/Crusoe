@@ -31,7 +31,7 @@ export function AboutMissionVision() {
                 variants={fadeUp}
                 custom={index * 0.08}
                 whileHover={{ y: -6 }}
-                className="group rounded-[32px] border border-[#e7efe0] bg-[linear-gradient(145deg,#ffffff_0%,#f6fbf2_100%)] p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0_20px_56px_rgba(108,191,42,0.12)] sm:p-10"
+                className="group rounded-[32px] border border-[#e7efe0] bg-[linear-gradient(145deg,#ffffff_0%,#f6fbf2_100%)] p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0_20px_56px_rgba(126, 168, 73,0.12)] sm:p-10"
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
                   <Icon className="h-7 w-7" aria-hidden />

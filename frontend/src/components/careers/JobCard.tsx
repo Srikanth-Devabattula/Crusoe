@@ -14,7 +14,7 @@ export function JobCard({ job }: JobCardProps) {
   return (
     <Link
       href={ROUTES.careerJob(job._id)}
-      className="group flex h-full flex-col rounded-[20px] border border-[#E8EEF5] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_12px_40px_rgba(108,191,42,0.12)] sm:p-7"
+      className="group flex h-full flex-col rounded-[20px] border border-[#E8EEF5] bg-white p-6 shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_12px_40px_rgba(126, 168, 73,0.12)] sm:p-7"
     >
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold text-brand">

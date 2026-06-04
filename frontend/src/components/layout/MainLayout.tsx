@@ -27,7 +27,13 @@ export function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className={isFullBleedHero ? "flex-1" : "flex-1 pt-[72px] sm:pt-[78px] lg:pt-[84px] xl:pt-[88px]"}>
+      <main
+        className={
+          isFullBleedHero
+            ? "site-main-bg relative flex-1"
+            : "site-main-bg relative flex-1 pt-[72px] sm:pt-[78px] lg:pt-[84px] xl:pt-[88px]"
+        }
+      >
         {children}
       </main>
       <Footer />

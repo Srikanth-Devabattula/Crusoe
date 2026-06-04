@@ -12,7 +12,7 @@ export function AnimatedBadge({ children, className }: AnimatedBadgeProps) {
   return (
     <div className={`relative inline-flex overflow-hidden rounded-full p-[2px] ${className ?? ""}`}>
       <motion.span
-        className="absolute inset-[-120%] bg-[conic-gradient(from_0deg,transparent_0deg,#6CBF2A_70deg,transparent_140deg,transparent_220deg,#6CBF2A_290deg,transparent_360deg)]"
+        className="absolute inset-[-120%] bg-[conic-gradient(from_0deg,transparent_0deg,#7EA849_70deg,transparent_140deg,transparent_220deg,#7EA849_290deg,transparent_360deg)]"
         animate={{ rotate: 360 }}
         transition={{
           duration: 3,
@@ -25,7 +25,7 @@ export function AnimatedBadge({ children, className }: AnimatedBadgeProps) {
         <Sparkles className="h-4 w-4 shrink-0 text-brand" strokeWidth={2} />
         <span>{children}</span>
         <motion.span
-          className="size-2 shrink-0 rounded-full bg-brand shadow-[0_0_8px_rgba(108,191,42,0.55)]"
+          className="size-2 shrink-0 rounded-full bg-brand shadow-[0_0_8px_rgba(126, 168, 73,0.55)]"
           animate={{ opacity: [1, 1, 0, 0] }}
           transition={{
             duration: 2,

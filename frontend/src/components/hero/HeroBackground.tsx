@@ -1,10 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-
-import { HERO_BG_IMAGE } from "@/data/heroSlides";
+import { motion } from "framer-motion";
 
 const PARTICLES = [
   { size: 5, top: "14%", left: "10%", delay: 0 },
@@ -15,36 +11,17 @@ const PARTICLES = [
 ];
 
 export function HeroBackground() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 40]);
-
   return (
-    <motion.div
-      ref={ref}
+    <div
       className="pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden
     >
-      <motion.div style={{ y: parallaxY }} className="absolute inset-0">
-        <Image
-          src={HERO_BG_IMAGE}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </motion.div>
-
-      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/35" />
 
       {PARTICLES.map((p, i) => (
         <motion.span
           key={i}
-          className="absolute rounded-full bg-brand/40 shadow-[0_0_8px_rgba(108,191,42,0.35)]"
+          className="absolute rounded-full bg-brand/40 shadow-[0_0_8px_rgba(126, 168, 73,0.35)]"
           style={{
             width: p.size,
             height: p.size,
@@ -63,6 +40,6 @@ export function HeroBackground() {
           }}
         />
       ))}
-    </motion.div>
+    </div>
   );
 }

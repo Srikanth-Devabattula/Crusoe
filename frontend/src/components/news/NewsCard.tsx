@@ -30,7 +30,7 @@ export function NewsCard({ item, categoryLabel }: NewsCardProps) {
   return (
     <Link
       href={ROUTES.newsArticle(item.slug)}
-      className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-[#E8EEF5] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_12px_40px_rgba(108,191,42,0.12)]"
+      className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-[#E8EEF5] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_12px_40px_rgba(126, 168, 73,0.12)]"
     >
       <div className="relative h-48 w-full shrink-0 overflow-hidden">
         {coverSrc ? (

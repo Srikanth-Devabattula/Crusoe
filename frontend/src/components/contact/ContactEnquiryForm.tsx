@@ -191,7 +191,7 @@ export function ContactEnquiryForm() {
           disabled={submitting}
           whileHover={{ scale: submitting ? 1 : 1.02 }}
           whileTap={{ scale: submitting ? 1 : 0.98 }}
-          className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-brand to-brand-light px-6 py-4 text-base font-semibold text-white shadow-[0_14px_34px_rgba(108,191,42,0.32)] transition-shadow duration-300 hover:shadow-[0_20px_44px_rgba(108,191,42,0.4)] disabled:cursor-not-allowed disabled:opacity-70"
+          className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-brand to-brand-light px-6 py-4 text-base font-semibold text-white shadow-[0_14px_34px_rgba(126, 168, 73,0.32)] transition-shadow duration-300 hover:shadow-[0_20px_44px_rgba(126, 168, 73,0.4)] disabled:cursor-not-allowed disabled:opacity-70"
         >
           <FiSend className="h-5 w-5" aria-hidden />
           {submitting ? "Sending..." : "Send Enquiry"}

@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { AnimatedBadge } from "@/components/common/AnimatedBadge";
 import { ROUTES } from "@/constants";
-import { HERO_BG_IMAGE } from "@/data/heroSlides";
+import { PageHeroOverlay } from "@/components/common/PageHeroOverlay";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -19,19 +18,8 @@ const fadeUp = {
 
 export function CareersHero() {
   return (
-    <section className="relative overflow-hidden bg-[#eef4e8]">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <Image
-          src={HERO_BG_IMAGE}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-90"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/92 via-white/75 to-white/55" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-[#eef4e8]/90" />
-      </div>
+    <section className="relative overflow-hidden bg-transparent">
+      <PageHeroOverlay />
 
       <motion.div
         className="hero-container relative z-10 pb-10 pt-[5.25rem] sm:pb-12 sm:pt-[5.75rem] lg:pb-14 lg:pt-[6.25rem]"
@@ -71,7 +59,7 @@ export function CareersHero() {
           >
             <a
               href="#open-positions"
-              className="inline-flex items-center justify-center rounded-2xl bg-brand px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(108,191,42,0.35)] transition hover:bg-brand-dark sm:text-base"
+              className="inline-flex items-center justify-center rounded-2xl bg-brand px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(126, 168, 73,0.35)] transition hover:bg-brand-dark sm:text-base"
             >
               View open positions
             </a>

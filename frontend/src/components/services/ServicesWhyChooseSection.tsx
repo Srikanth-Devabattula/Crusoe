@@ -69,7 +69,7 @@ export function ServicesWhyChooseSection() {
                   variants={fadeUp}
                   custom={index * 0.06}
                   whileHover={{ y: -4 }}
-                  className="group rounded-[20px] border border-[#E8EEF5] bg-white p-5 shadow-[0_8px_30px_rgba(15,23,42,0.05)] backdrop-blur-sm transition-all duration-300 hover:border-brand/30 hover:shadow-[0_12px_40px_rgba(108,191,42,0.12)] sm:p-6"
+                  className="group rounded-[20px] border border-[#E8EEF5] bg-white p-5 shadow-[0_8px_30px_rgba(15,23,42,0.05)] backdrop-blur-sm transition-all duration-300 hover:border-brand/30 hover:shadow-[0_12px_40px_rgba(126, 168, 73,0.12)] sm:p-6"
                 >
                   {/* Icon */}
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors duration-300 group-hover:bg-brand/20">

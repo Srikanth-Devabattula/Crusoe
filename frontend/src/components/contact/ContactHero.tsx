@@ -8,8 +8,8 @@ import { FiArrowRight } from "react-icons/fi";
 
 import { AnimatedBadge } from "@/components/common/AnimatedBadge";
 import { CTAButton } from "@/components/hero/CTAButton";
+import { PageHeroOverlay } from "@/components/common/PageHeroOverlay";
 import { CONTACT_HERO_IMAGE, WHATSAPP_URL } from "@/data/contactPage";
-import { HERO_BG_IMAGE } from "@/data/heroSlides";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -44,20 +44,10 @@ function FloatingOrb({
 
 export function ContactHero() {
   return (
-    <section className="relative overflow-hidden bg-[#eef4e8]">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <Image
-          src={HERO_BG_IMAGE}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-90"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/92 via-white/75 to-white/55" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-[#eef4e8]/90" />
-        <div className="absolute inset-0 opacity-[0.06] [background-image:radial-gradient(#6CBF2A_1px,transparent_1px)] [background-size:20px_20px]" />
-      </div>
+    <section className="relative overflow-hidden bg-transparent">
+      <PageHeroOverlay>
+        <div className="absolute inset-0 opacity-[0.06] [background-image:radial-gradient(#7EA849_1px,transparent_1px)] [background-size:20px_20px]" />
+      </PageHeroOverlay>
 
       <motion.div
         className="hero-container relative z-10 pb-8 pt-[5.25rem] sm:pb-10 sm:pt-[5.75rem] lg:pb-12 lg:pt-[6.25rem]"
@@ -119,7 +109,7 @@ export function ContactHero() {
                 aria-hidden
               />
               <FloatingOrb
-                className="absolute left-[8%] top-[18%] h-3 w-3 rounded-full bg-brand shadow-[0_0_12px_rgba(108,191,42,0.5)] sm:h-4 sm:w-4"
+                className="absolute left-[8%] top-[18%] h-3 w-3 rounded-full bg-brand shadow-[0_0_12px_rgba(126, 168, 73,0.5)] sm:h-4 sm:w-4"
                 delay={0}
               />
               <FloatingOrb

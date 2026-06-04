@@ -27,7 +27,7 @@ export function FloatingOrb({
 export function DottedPattern({ className }: { className?: string }) {
   return (
     <div
-      className={`absolute inset-0 opacity-[0.06] [background-image:radial-gradient(#6CBF2A_1px,transparent_1px)] [background-size:20px_20px] ${className ?? ""}`}
+      className={`absolute inset-0 opacity-[0.06] [background-image:radial-gradient(#7EA849_1px,transparent_1px)] [background-size:20px_20px] ${className ?? ""}`}
       aria-hidden
     />
   );

@@ -30,7 +30,7 @@ export function VideoTestimonialsSection() {
   return (
     <section
       aria-label="Video testimonials"
-      className="section-padding bg-white"
+      className="section-padding bg-transparent"
     >
       <div className="hero-container">
         <p className="mb-8 text-[18px] font-semibold uppercase tracking-wider text-brand sm:mb-10">

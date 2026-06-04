@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 import { FiArrowRight, FiUsers } from "react-icons/fi";
 
 import { AnimatedBadge } from "@/components/common/AnimatedBadge";
+import { PageHeroOverlay } from "@/components/common/PageHeroOverlay";
 import { ABOUT_IMAGE } from "@/data/aboutPage";
-import { HERO_BG_IMAGE } from "@/data/heroSlides";
 
 import { DottedPattern, FloatingOrb } from "./AboutDecor";
 
@@ -22,20 +22,10 @@ const fadeUp = {
 
 export function AboutHero() {
   return (
-    <section className="relative overflow-hidden bg-[#eef4e8]">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <Image
-          src={HERO_BG_IMAGE}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-90"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/92 via-white/75 to-white/55" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-[#eef4e8]/90" />
+    <section className="relative overflow-hidden bg-transparent">
+      <PageHeroOverlay>
         <DottedPattern />
-      </div>
+      </PageHeroOverlay>
 
       <motion.div
         className="hero-container relative z-10 pb-8 pt-[5.25rem] sm:pb-10 sm:pt-[5.75rem] lg:pb-12 lg:pt-[6.25rem]"
@@ -71,7 +61,7 @@ export function AboutHero() {
             >
               <Link
                 href="#our-journey"
-                className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-brand px-6 py-3.5 text-[13px] font-semibold text-white shadow-hero-cta transition-all duration-300 hover:bg-brand-dark hover:shadow-[0_14px_36px_rgba(108,191,42,0.35)] sm:px-7 sm:py-4 lg:text-xs"
+                className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-brand px-6 py-3.5 text-[13px] font-semibold text-white shadow-hero-cta transition-all duration-300 hover:bg-brand-dark hover:shadow-[0_14px_36px_rgba(126, 168, 73,0.35)] sm:px-7 sm:py-4 lg:text-xs"
               >
                 Our Journey
                 <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -101,7 +91,7 @@ export function AboutHero() {
                 aria-hidden
               />
               <FloatingOrb
-                className="absolute left-[6%] top-[20%] h-3 w-3 rounded-full bg-brand shadow-[0_0_12px_rgba(108,191,42,0.5)] sm:h-4 sm:w-4"
+                className="absolute left-[6%] top-[20%] h-3 w-3 rounded-full bg-brand shadow-[0_0_12px_rgba(126, 168, 73,0.5)] sm:h-4 sm:w-4"
               />
               <FloatingOrb
                 className="absolute right-[10%] top-[25%] h-5 w-5 rounded-full bg-white shadow-md ring-2 ring-brand/20 sm:h-6 sm:w-6"

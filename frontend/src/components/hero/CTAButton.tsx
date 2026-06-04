@@ -17,7 +17,7 @@ interface CTAButtonProps {
 
 const variantStyles: Record<CTAButtonVariant, string> = {
   primary:
-    "bg-brand text-white shadow-hero-cta hover:bg-brand-dark hover:shadow-[0_14px_36px_rgba(108,191,42,0.35)]",
+    "bg-brand text-white shadow-hero-cta hover:bg-brand-dark hover:shadow-[0_14px_36px_rgba(126, 168, 73,0.35)]",
   secondary:
     "border border-gray-200 bg-white text-brand shadow-sm hover:border-brand/30 hover:bg-brand-muted/40",
 };

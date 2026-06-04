@@ -22,7 +22,7 @@ export function HeroCard({ slide, isActive = false, className }: HeroCardProps) 
     <motion.article
       className={cn(
         "hero-card-inner group relative aspect-[4/3] h-full min-h-[360px] w-full overflow-hidden rounded-[24px] shadow-hero-card transition-transform duration-500 ease-out sm:min-h-[380px] sm:rounded-[28px] lg:aspect-auto lg:min-h-[420px] lg:rounded-[26px] desktop:aspect-[16/10] desktop:min-h-[440px] desktop:rounded-[32px] 2xl:min-h-[520px]",
-        isActive && "shadow-[0_28px_90px_rgba(108,191,42,0.15)]",
+        isActive && "shadow-[0_28px_90px_rgba(126, 168, 73,0.15)]",
         className
       )}
       whileHover={{ y: -4 }}

@@ -91,7 +91,7 @@ export function AdminJobsContent() {
                       <span
                         className={`mt-2 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
                           job.published
-                            ? "bg-green-100 text-green-800"
+                            ? "bg-brand-muted/60 text-green-800"
                             : "bg-gray-200 text-gray-600"
                         }`}
                       >

@@ -73,7 +73,7 @@ export function JobDetailView({ jobId }: JobDetailViewProps) {
   }
 
   return (
-    <div className="bg-white py-10 sm:py-14 lg:py-16">
+    <div className="bg-transparent py-10 sm:py-14 lg:py-16">
       <div className="hero-container">
         <Link
           href={ROUTES.careers}

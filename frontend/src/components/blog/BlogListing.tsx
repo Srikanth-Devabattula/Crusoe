@@ -72,7 +72,7 @@ export function BlogListing() {
         />
       )}
 
-      <section className="bg-white py-12 sm:py-16 lg:py-20">
+      <section className="bg-transparent py-12 sm:py-16 lg:py-20">
         <div className="hero-container">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>

@@ -21,7 +21,7 @@ export function AboutTimeline() {
     <section
       id="our-journey"
       aria-label="Our journey"
-      className="section-padding scroll-mt-24 bg-white"
+      className="section-padding scroll-mt-24 bg-transparent"
     >
       <div className="hero-container">
         <motion.div
@@ -62,7 +62,7 @@ export function AboutTimeline() {
                   className="relative pl-12 lg:pl-0"
                 >
                   <div
-                    className="absolute left-2 top-6 z-10 flex h-5 w-5 items-center justify-center rounded-full border-4 border-white bg-brand shadow-[0_0_0_4px_rgba(108,191,42,0.25)] lg:left-1/2 lg:-translate-x-1/2"
+                    className="absolute left-2 top-6 z-10 flex h-5 w-5 items-center justify-center rounded-full border-4 border-white bg-brand shadow-[0_0_0_4px_rgba(126, 168, 73,0.25)] lg:left-1/2 lg:-translate-x-1/2"
                     aria-hidden
                   />
 
@@ -75,7 +75,7 @@ export function AboutTimeline() {
                   >
                     <motion.article
                       whileHover={{ y: -4 }}
-                      className={`rounded-3xl border border-[#e7efe0] bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0_16px_48px_rgba(108,191,42,0.1)] sm:p-6 ${
+                      className={`rounded-3xl border border-[#e7efe0] bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0_16px_48px_rgba(126, 168, 73,0.1)] sm:p-6 ${
                         isLeft ? "lg:ml-auto" : "lg:mr-auto"
                       } max-w-md`}
                     >

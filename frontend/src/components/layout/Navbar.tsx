@@ -93,7 +93,7 @@ export function Navbar() {
         )}
       >
         <nav className="w-full border-b border-[#e8edf3] bg-[#EFF4F9] shadow-[0_4px_20px_rgba(8,21,38,0.08)]">
-          <div className="mx-auto flex h-16 w-full max-w-[1760px] items-center justify-between gap-1 px-4 sm:h-[4.5rem] sm:gap-2 sm:px-5 lg:gap-1 lg:px-4 desktop:gap-3 desktop:px-6 2xl:px-8">
+          <div className="mx-auto flex h-16 w-full max-w-[1760px] items-center justify-between gap-1 px-4 sm:h-[4.5rem] sm:gap-2 sm:px-5 lg:gap-4 lg:px-3 xl:gap-5 xl:px-4 desktop:gap-6 desktop:px-6 2xl:gap-8 2xl:px-8">
           {/* Logo */}
           <Link
             href={ROUTES.home}
@@ -102,16 +102,16 @@ export function Navbar() {
             <Image
               src="/images/global/logo.png"
               alt="Crusoe Tech"
-              width={260}
-              height={82}
+              width={280}
+              height={88}
               priority
-              className="h-auto w-[148px] sm:w-[160px] lg:w-[140px] desktop:w-[180px] 2xl:w-[220px]"
+              className="h-auto w-[200px] sm:w-[216px] lg:w-[168px] xl:w-[190px] desktop:w-[242px] 2xl:w-[292px]"
             />
           </Link>
 
           {/* Desktop Menu — from 1024px; hamburger below */}
-          <div className="hidden min-w-0 flex-1 justify-center lg:flex">
-            <ul className="flex items-center gap-0.5 lg:gap-0.5 xl:gap-1">
+          <div className="hidden min-w-0 flex-1 justify-center lg:flex lg:px-2 xl:px-4">
+            <ul className="flex min-w-0 flex-1 items-center justify-center gap-1 lg:gap-1.5 xl:gap-2 desktop:gap-2.5 2xl:gap-3">
               {navLinks.map((link) => {
                 const isActive =
                   pathname === link.href ||
@@ -123,7 +123,7 @@ export function Navbar() {
                     <Link
                       href={link.href}
                       className={cn(
-                        "group relative inline-flex h-9 shrink-0 items-center gap-0.5 whitespace-nowrap px-1.5 text-[11px] font-bold uppercase tracking-[0.03em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 desktop:h-10 desktop:px-2 desktop:text-[11px] desktop:tracking-[0.05em] 2xl:px-4 2xl:text-[13px] 2xl:tracking-[0.08em]",
+                        "group relative inline-flex h-9 shrink-0 items-center gap-0.5 whitespace-nowrap px-2 text-[13px] font-bold uppercase tracking-[0.02em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 xl:h-10 xl:px-2.5 xl:text-[14px] xl:tracking-[0.04em] desktop:h-11 desktop:px-3 desktop:text-[16px] desktop:tracking-[0.06em] 2xl:px-4 2xl:tracking-[0.08em]",
                         isActive
                           ? "text-brand"
                           : "text-slate-700 hover:text-brand"
@@ -148,12 +148,12 @@ export function Navbar() {
           {/* CTA */}
           <Link
             href={ROUTES.contact}
-            className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-xl bg-brand px-3 py-2 text-[11px] font-semibold text-white shadow-[0_10px_30px_rgba(108,191,42,0.35)] transition-all duration-300 hover:scale-[1.03] hover:bg-brand-dark lg:inline-flex desktop:gap-2 desktop:rounded-2xl desktop:px-5 desktop:py-2.5 desktop:text-[13px] 2xl:px-6 2xl:py-3 2xl:text-[14px]"
+            className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-brand px-2.5 py-2 text-[11px] font-semibold text-white shadow-[0_10px_30px_rgba(126,168,73,0.35)] transition-all duration-300 hover:scale-[1.03] hover:bg-brand-dark lg:ml-1 lg:inline-flex xl:ml-0 xl:rounded-xl xl:px-3.5 xl:py-2.5 xl:text-[12px] desktop:gap-2 desktop:rounded-2xl desktop:px-5 desktop:py-2.5 desktop:text-[14px] 2xl:px-6 2xl:py-3 2xl:text-[15px]"
           >
             Get In Touch
 
             <ArrowRight
-              className="h-4 w-4"
+              className="size-3.5 xl:size-4 desktop:size-4"
               strokeWidth={2.5}
             />
           </Link>
@@ -200,9 +200,9 @@ export function Navbar() {
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        "relative block rounded-2xl px-4 py-4 text-sm font-bold uppercase tracking-[0.08em] transition-colors duration-300",
+                        "relative block rounded-2xl px-4 py-4 text-[16px] font-bold uppercase tracking-[0.08em] transition-colors duration-300",
                         isActive
-                          ? "bg-[#E8F5DC] text-brand"
+                          ? "bg-[#E8F0DC] text-brand"
                           : "text-slate-700 hover:bg-[#f2f6fa] hover:text-brand"
                       )}
                     >
