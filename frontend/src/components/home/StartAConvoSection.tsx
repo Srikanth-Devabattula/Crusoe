@@ -66,7 +66,7 @@ export function StartAConvoSection() {
               {/* Rocket Image */}
               <div className="relative z-10">
                 <Image
-                  src="/images/global/rocket11.png"
+                  src="/images/global/rocket1111.png"
                   alt="Rocket illustration"
                   width={700}
                   height={700}

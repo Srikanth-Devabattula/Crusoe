@@ -11,8 +11,8 @@ import { ROUTES } from "@/constants";
 
 const navLinks = [
   { href: ROUTES.home, label: "Home" },
-  { href: ROUTES.services, label: "Services" },
   { href: ROUTES.about, label: "About Us" },
+  { href: ROUTES.services, label: "Services" },
   { href: ROUTES.careers, label: "Careers" },
   {
     href: ROUTES.testimonials,
@@ -100,7 +100,7 @@ export function Navbar() {
             className="shrink-0 outline-none"
           >
             <Image
-              src="/images/global/logo.png"
+              src="/images/global/logo1111.png"
               alt="Crusoe Tech"
               width={280}
               height={88}

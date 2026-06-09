@@ -7,7 +7,7 @@ import { PARTNER_LOGOS } from "@/data/partnerLogos";
 
 function LogoCard({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="flex h-[72px] w-[148px] shrink-0 items-center justify-center rounded-2xl border border-[#edf2e7] bg-white px-5 shadow-[0_4px_20px_rgba(15,23,42,0.05)] transition-shadow duration-300 hover:shadow-[0_8px_28px_rgba(126, 168, 73,0.12)] sm:h-20 sm:w-[172px]">
+    <div className="flex h-[72px] w-[148px] shrink-0 items-center justify-center bg-transparent px-5 sm:h-20 sm:w-[172px]">
       <Image
         src={src}
         alt={alt}

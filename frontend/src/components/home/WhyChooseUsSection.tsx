@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -12,6 +11,8 @@ import {
   Target,
   Layers3,
 } from "lucide-react";
+
+import { Globe } from "@/components/ui/globe";
 
 const features = [
   {
@@ -136,7 +137,7 @@ export function WhyChooseUsSection() {
               viewport={{ once: true }}
               variants={fadeUp}
               custom={0.08}
-              className="relative flex min-w-0 items-center justify-center"
+              className="relative flex min-h-[240px] min-w-0 items-center justify-center sm:min-h-[280px] lg:min-h-[200px] desktop:min-h-[260px] xl:min-h-[360px] 2xl:min-h-[440px]"
             >
               <div className="absolute h-[280px] w-[280px] rounded-full bg-[radial-gradient(circle_at_center,rgba(126, 168, 73,0.16),transparent_68%)] sm:h-[320px] sm:w-[320px] lg:h-[220px] lg:w-[220px] desktop:h-[320px] desktop:w-[320px] xl:h-[480px] xl:w-[480px] 2xl:h-[520px] 2xl:w-[520px]" />
               <div className="absolute h-[280px] w-[280px] rounded-full border border-brand/10 sm:h-[320px] sm:w-[320px] lg:h-[220px] lg:w-[220px] desktop:h-[320px] desktop:w-[320px] xl:h-[480px] xl:w-[480px] 2xl:h-[520px] 2xl:w-[520px]" />
@@ -150,15 +151,9 @@ export function WhyChooseUsSection() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="relative z-10"
+                className="relative z-10 h-[240px] w-[240px] drop-shadow-[0_40px_70px_rgba(126,168,73,0.22)] sm:h-[280px] sm:w-[280px] lg:h-[200px] lg:w-[200px] desktop:h-[260px] desktop:w-[260px] xl:h-[360px] xl:w-[360px] 2xl:h-[440px] 2xl:w-[440px]"
               >
-                <Image
-                  src="/images/services/whychoose1.png"
-                  alt="Why choose us"
-                  width={800}
-                  height={800}
-                  className="h-auto w-full max-w-[220px] object-contain drop-shadow-[0_40px_70px_rgba(126, 168, 73,0.22)] sm:max-w-[260px] lg:max-w-[140px] desktop:max-w-[200px] xl:max-w-[320px] 2xl:max-w-[420px]"
-                />
+                <Globe className="size-full max-w-none" />
               </motion.div>
             </motion.div>
 
