@@ -34,7 +34,7 @@ export function AboutCtaSection() {
           />
 
           <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-6 py-10 sm:gap-7 sm:px-10 sm:py-12 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-12 xl:max-w-7xl">
-            <div className="w-full max-w-md text-center lg:max-w-lg lg:shrink-0 lg:text-left">
+            <div className="order-2 w-full max-w-md text-center lg:order-1 lg:max-w-lg lg:shrink-0 lg:text-left">
               <h2 className="text-heading text-[26px] sm:text-[30px] lg:text-[32px]">
                 Ready to Build with <span className="text-brand">Crusoe</span>?
               </h2>
@@ -51,17 +51,15 @@ export function AboutCtaSection() {
               </Link>
             </div>
 
-            <div className="relative flex shrink-0 justify-center lg:justify-end">
-              <div className="relative h-[220px] w-[min(100%,340px)] sm:h-[260px] sm:w-[400px] lg:h-[300px] lg:w-[460px] xl:h-[340px] xl:w-[520px]">
-                <div className="relative h-full w-full">
-                  <Image
-                    src={ABOUT_CTA_IMAGE}
-                    alt="Build with Crusoe"
-                    fill
-                    sizes="(max-width: 640px) 340px, (max-width: 1024px) 460px, 520px"
-                    className="rounded-2xl object-cover object-center"
-                  />
-                </div>
+            <div className="order-1 flex w-full justify-center lg:order-2 lg:w-auto lg:shrink-0 lg:justify-end">
+              <div className="relative aspect-[4/3] w-full max-w-[340px] sm:max-w-[400px] lg:aspect-auto lg:h-[300px] lg:w-[460px] xl:h-[340px] xl:w-[520px]">
+                <Image
+                  src={ABOUT_CTA_IMAGE}
+                  alt="Build with Crusoe"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 460px, 520px"
+                  className="rounded-2xl object-cover object-center"
+                />
               </div>
             </div>
           </div>
