@@ -152,14 +152,14 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
       className="section-padding bg-transparent"
     >
       <div className="hero-container">
-        <div className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between lg:mb-12">
+        <div className="mb-6 flex flex-col gap-4 sm:mb-7 sm:flex-row sm:items-end sm:justify-between lg:mb-8">
           <div>
-            <p className="mb-2 text-[18px] font-semibold uppercase tracking-wider text-brand">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-brand sm:text-base lg:text-xs desktop:text-base">
               TESTIMONIALS
             </p>
 
             {variant === "home" && (
-              <h2 className="text-3xl font-bold text-gray-900 lg:text-4xl">
+              <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-[26px] desktop:text-4xl">
                 What Our Clients Say
               </h2>
             )}
@@ -196,7 +196,7 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
 
         <div className="overflow-hidden">
           <div
-            className="flex transition-transform duration-300 ease-in-out"
+            className="flex items-stretch transition-transform duration-300 ease-in-out"
             style={{
               transform: `translateX(-${
                 currentIndex * (100 / slidesPerView)
@@ -206,43 +206,43 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-3"
+                className="flex w-full flex-shrink-0 px-3 md:w-1/2 lg:w-1/3"
               >
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col h-[400px]">
-                  <div className="flex items-center justify-between mb-4">
-                    <FaQuoteLeft className="w-8 h-8 text-brand" />
+                <div className="flex h-[340px] w-full flex-col rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:h-[360px] sm:p-5 lg:h-[380px] lg:p-4 lg:pb-5 desktop:h-[400px] desktop:p-6">
+                  <div className="mb-3 flex items-center justify-between sm:mb-4">
+                    <FaQuoteLeft className="h-6 w-6 text-brand sm:h-7 sm:w-7 lg:h-6 lg:w-6 desktop:h-8 desktop:w-8" />
 
-                    <div className="flex gap-1">
+                    <div className="flex gap-0.5 sm:gap-1">
                       {[...Array(testimonial.rating)].map(
                         (_, starIndex) => (
                           <FaStar
                             key={starIndex}
-                            className="w-4 h-4 text-yellow-400"
+                            className="h-3 w-3 text-yellow-400 sm:h-3.5 sm:w-3.5 lg:h-3 lg:w-3 desktop:h-4 desktop:w-4"
                           />
                         )
                       )}
                     </div>
                   </div>
 
-                  <p className="text-gray-700 leading-relaxed flex-grow mb-6 text-sm">
+                  <p className="mb-3 flex-grow overflow-hidden text-xs leading-relaxed text-gray-700 line-clamp-[7] sm:text-sm sm:line-clamp-[8] lg:text-[11px] lg:leading-[1.55] lg:line-clamp-[9] desktop:text-sm desktop:leading-relaxed desktop:line-clamp-[8]">
                     {testimonial.quote}
                   </p>
 
-                  <div className="flex items-center gap-3 mt-auto">
-                    <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
+                  <div className="mt-auto flex items-center gap-2.5 sm:gap-3">
+                    <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-gray-200 sm:h-11 sm:w-11 lg:h-9 lg:w-9 desktop:h-12 desktop:w-12">
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="w-full h-full object-cover rounded-full"
+                        className="h-full w-full rounded-full object-cover"
                       />
                     </div>
 
-                    <div>
-                      <h4 className="font-semibold text-gray-900">
+                    <div className="min-w-0">
+                      <h4 className="truncate text-sm font-semibold text-gray-900 lg:text-xs desktop:text-sm">
                         {testimonial.name}
                       </h4>
 
-                      <p className="text-sm text-gray-600">
+                      <p className="line-clamp-2 text-xs text-gray-600 lg:text-[10px] lg:leading-snug desktop:text-sm">
                         {testimonial.title}
                       </p>
                     </div>
@@ -254,7 +254,7 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
         </div>
 
         {/* Dots */}
-        <div className="mt-8 flex items-center justify-center gap-3">
+        <div className="mt-5 flex items-center justify-center gap-3 sm:mt-6">
           {Array.from({ length: maxIndex + 1 }).map(
             (_, index) => (
               <button

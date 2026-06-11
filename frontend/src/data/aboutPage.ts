@@ -1,4 +1,13 @@
-export const ABOUT_IMAGE = "/images/contactlast.png";
+export const ABOUT_HERO_IMAGE = "/images/aboutus/about1.png";
+export const ABOUT_STORY_IMAGE = "/images/aboutus/about2.png";
+export const ABOUT_CTA_IMAGE = "/images/aboutus/about7.png";
+
+export const cultureImages = [
+  "/images/aboutus/about3.png",
+  "/images/aboutus/about5.png",
+  "/images/aboutus/about6.png",
+  "/images/aboutus/about4.png",
+] as const;
 
 export const storyStats = [
   { icon: "users" as const, value: "150+", label: "Happy Clients" },
@@ -34,21 +43,25 @@ export const leadershipTeam = [
   {
     name: "Arun Kumar",
     role: "Founder & CEO",
+    image: "/images/aboutus/team/team1.jpg",
     bio: "Leads strategy and client partnerships with a focus on engineering excellence and sustainable growth.",
   },
   {
     name: "Priya Nair",
     role: "Engineering Director",
+    image: "/images/aboutus/team/team2.avif",
     bio: "Drives architecture, delivery practices, and high-performing engineering teams across engagements.",
   },
   {
     name: "Vikram Reddy",
     role: "QA & Automation Lead",
+    image: "/images/aboutus/team/team3.avif",
     bio: "Specialises in test automation, quality frameworks, and reliable release pipelines.",
   },
   {
     name: "Neha Sharma",
     role: "Product Consultant",
+    image: "/images/aboutus/team/team4.jpg",
     bio: "Bridges business goals and technical execution for customer-centric product outcomes.",
   },
 ] as const;

@@ -87,7 +87,7 @@ export function AchievementsSection() {
   });
 
   return (
-    <section className="relative overflow-hidden bg-transparent py-10 sm:py-12 lg:py-14">
+    <section className="relative overflow-hidden bg-transparent py-6 sm:py-8 lg:py-10">
       {/* background dots */}
       <div className="absolute inset-0 opacity-[0.08]">
         <div className="h-full w-full bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:18px_18px]" />
@@ -137,7 +137,7 @@ export function AchievementsSection() {
                     delay: index * 0.08,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className={`relative flex flex-col items-center justify-center px-3 py-7 text-center sm:px-5 sm:py-8 md:px-6 md:py-10 lg:py-12 ${
+                  className={`relative flex flex-col items-center justify-center px-3 py-6 text-center sm:px-5 sm:py-7 md:px-6 md:py-8 lg:py-8 desktop:py-10 xl:py-12 ${
                     index < 2
                       ? "border-b border-[#e9eee3] lg:border-b-0"
                       : ""
@@ -145,7 +145,7 @@ export function AchievementsSection() {
                 >
                   {/* center divider */}
                   {index !== stats.length - 1 && (
-                    <div className="absolute right-0 top-1/2 hidden h-[160px] w-px -translate-y-1/2 bg-[#e4e9df] lg:block" />
+                    <div className="absolute right-0 top-1/2 hidden h-[120px] w-px -translate-y-1/2 bg-[#e4e9df] lg:block desktop:h-[140px] xl:h-[160px]" />
                   )}
 
                   {/* icon */}
@@ -159,16 +159,16 @@ export function AchievementsSection() {
                       ease: "easeInOut",
                       delay: index * 0.2,
                     }}
-                    className="mb-3 sm:mb-4 md:mb-5"
+                    className="mb-2 sm:mb-3 md:mb-4 lg:mb-3 desktop:mb-4 xl:mb-5"
                   >
                     <Icon
-                      className="h-11 w-11 text-brand sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-[72px] lg:w-[72px]"
+                      className="h-10 w-10 text-brand sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-12 lg:w-12 desktop:h-16 desktop:w-16 xl:h-[72px] xl:w-[72px]"
                       aria-hidden
                     />
                   </motion.div>
 
                   {/* number */}
-                  <h3 className="text-[24px] font-extrabold leading-none tracking-tight text-[#0f172a] sm:text-[30px] md:text-[38px] lg:text-[48px]">
+                  <h3 className="text-[22px] font-extrabold leading-none tracking-tight text-[#0f172a] sm:text-[28px] md:text-[34px] lg:text-[32px] desktop:text-[40px] xl:text-[48px]">
                     <Counter
                       value={item.value}
                       suffix={item.suffix}
@@ -178,7 +178,7 @@ export function AchievementsSection() {
                   </h3>
 
                   {/* label */}
-                  <p className="mt-2 max-w-[7.5rem] text-balance text-[11px] font-medium leading-snug text-[#4b5563] sm:mt-3 sm:max-w-none sm:text-[13px] md:text-[15px] lg:text-[17px]">
+                  <p className="mt-1.5 max-w-[7.5rem] text-balance text-[11px] font-medium leading-snug text-[#4b5563] sm:mt-2 sm:max-w-none sm:text-[12px] md:text-[14px] lg:text-[13px] desktop:text-[15px] xl:mt-3 xl:text-[17px]">
                     {item.label}
                   </p>
                 </motion.div>

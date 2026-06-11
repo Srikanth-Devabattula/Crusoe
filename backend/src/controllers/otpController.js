@@ -51,15 +51,32 @@ const requestOTP = async (req, res) => {
   }
 
   try {
-    let user = await User.findOne({ email: email.toLowerCase() });
+    const normalizedEmail = email.toLowerCase();
+    const adminExists =
+      (await User.countDocuments({ role: "admin" })) > 0;
+    let user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
+      if (adminExists) {
+        return sendError(
+          res,
+          403,
+          "No admin account found for this email. Team members should use password login.",
+        );
+      }
+
       user = await User.create({
-        name: email.split("@")[0],
-        email: email.toLowerCase(),
+        name: normalizedEmail.split("@")[0],
+        email: normalizedEmail,
         password: "temp-password-will-be-updated",
-        role: "staff",
+        role: "admin",
       });
+    } else if (adminExists && user.role !== "admin") {
+      return sendError(
+        res,
+        403,
+        "This email uses team login. Sign in with password instead.",
+      );
     }
 
     const ipAddress = req.ip || req.connection.remoteAddress;
@@ -216,12 +233,23 @@ const resendOTP = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const normalizedEmail = email.toLowerCase();
+    const adminExists =
+      (await User.countDocuments({ role: "admin" })) > 0;
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return sendError(
         res,
         404,
         "User not found. Please request a new OTP first.",
+      );
+    }
+
+    if (adminExists && user.role !== "admin") {
+      return sendError(
+        res,
+        403,
+        "This email uses team login. Sign in with password instead.",
       );
     }
 

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { FiMail } from "react-icons/fi";
 
-import { ABOUT_IMAGE, leadershipTeam } from "@/data/aboutPage";
+import { leadershipTeam } from "@/data/aboutPage";
 import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
 
 export function AboutLeadership() {
@@ -54,7 +54,7 @@ export function AboutLeadership() {
             >
               <div className="relative mx-auto h-28 w-28 overflow-hidden rounded-2xl sm:h-32 sm:w-32">
                 <Image
-                  src={ABOUT_IMAGE}
+                  src={member.image}
                   alt={member.name}
                   fill
                   sizes="128px"

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
 
 import { ROUTES } from "@/constants";
-import { ABOUT_IMAGE } from "@/data/aboutPage";
+import { ABOUT_CTA_IMAGE } from "@/data/aboutPage";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 import { FloatingOrb } from "./AboutDecor";
@@ -53,19 +53,15 @@ export function AboutCtaSection() {
 
             <div className="relative flex shrink-0 justify-center lg:justify-end">
               <div className="relative h-[220px] w-[min(100%,340px)] sm:h-[260px] sm:w-[400px] lg:h-[300px] lg:w-[460px] xl:h-[340px] xl:w-[520px]">
-                <motion.div
-                  className="relative h-full w-full"
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                >
+                <div className="relative h-full w-full">
                   <Image
-                    src={ABOUT_IMAGE}
+                    src={ABOUT_CTA_IMAGE}
                     alt="Build with Crusoe"
                     fill
                     sizes="(max-width: 640px) 340px, (max-width: 1024px) 460px, 520px"
-                    className="object-contain object-center"
+                    className="rounded-2xl object-cover object-center"
                   />
-                </motion.div>
+                </div>
               </div>
             </div>
           </div>

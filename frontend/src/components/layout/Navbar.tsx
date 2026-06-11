@@ -9,10 +9,11 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import { ROUTES } from "@/constants";
 
+import { ServicesNavMenu } from "./ServicesNavMenu";
+
 const navLinks = [
   { href: ROUTES.home, label: "Home" },
   { href: ROUTES.about, label: "About Us" },
-  { href: ROUTES.services, label: "Services" },
   { href: ROUTES.careers, label: "Careers" },
   {
     href: ROUTES.testimonials,
@@ -92,7 +93,7 @@ export function Navbar() {
           "transition-transform duration-300 ease-in-out"
         )}
       >
-        <nav className="w-full border-b border-[#e8edf3] bg-[#EFF4F9] shadow-[0_4px_20px_rgba(8,21,38,0.08)]">
+        <nav className="w-full overflow-visible border-b border-[#e8edf3] bg-[#EFF4F9] shadow-[0_4px_20px_rgba(8,21,38,0.08)]">
           <div className="mx-auto flex h-16 w-full max-w-[1760px] items-center justify-between gap-1 px-4 sm:h-[4.5rem] sm:gap-2 sm:px-5 lg:gap-4 lg:px-3 xl:gap-5 xl:px-4 desktop:gap-6 desktop:px-6 2xl:gap-8 2xl:px-8">
           {/* Logo */}
           <Link
@@ -111,8 +112,47 @@ export function Navbar() {
 
           {/* Desktop Menu — from 1024px; hamburger below */}
           <div className="hidden min-w-0 flex-1 justify-center lg:flex lg:px-2 xl:px-4">
-            <ul className="flex min-w-0 flex-1 items-center justify-center gap-1 lg:gap-1.5 xl:gap-2 desktop:gap-2.5 2xl:gap-3">
-              {navLinks.map((link) => {
+            <ul className="flex min-w-0 flex-1 items-center justify-center gap-1 overflow-visible lg:gap-1.5 xl:gap-2 desktop:gap-2.5 2xl:gap-3">
+              {navLinks.slice(0, 2).map((link) => {
+                const isActive =
+                  pathname === link.href ||
+                  (link.href !== "/" &&
+                    pathname.startsWith(link.href));
+
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "group relative inline-flex h-9 shrink-0 items-center gap-0.5 whitespace-nowrap px-2 text-[13px] font-bold uppercase tracking-[0.02em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 xl:h-10 xl:px-2.5 xl:text-[14px] xl:tracking-[0.04em] desktop:h-11 desktop:px-3 desktop:text-[16px] desktop:tracking-[0.06em] 2xl:px-4 2xl:tracking-[0.08em]",
+                        isActive
+                          ? "text-brand"
+                          : "text-slate-700 hover:text-brand"
+                      )}
+                    >
+                      {link.label}
+
+                      <span
+                        className={cn(
+                          "absolute bottom-1 left-0 h-[2px] rounded-full bg-brand transition-all duration-300",
+                          isActive ? "w-full" : "w-0 group-hover:w-full"
+                        )}
+                        aria-hidden
+                      />
+                    </Link>
+                  </li>
+                );
+              })}
+
+              <ServicesNavMenu
+                variant="desktop"
+                isActive={
+                  pathname === ROUTES.services ||
+                  pathname.startsWith(`${ROUTES.services}/`)
+                }
+              />
+
+              {navLinks.slice(2).map((link) => {
                 const isActive =
                   pathname === link.href ||
                   (link.href !== "/" &&
@@ -188,7 +228,47 @@ export function Navbar() {
         >
           <div className="mx-auto max-w-[1760px] p-4 sm:px-6 lg:px-8">
             <ul className="flex flex-col gap-2">
-              {navLinks.map((link) => {
+              {navLinks.slice(0, 2).map((link) => {
+                const isActive =
+                  pathname === link.href ||
+                  (link.href !== "/" &&
+                    pathname.startsWith(link.href));
+
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={cn(
+                        "relative block rounded-2xl px-4 py-4 text-[16px] font-bold uppercase tracking-[0.08em] transition-colors duration-300",
+                        isActive
+                          ? "bg-[#E8F0DC] text-brand"
+                          : "text-slate-700 hover:bg-[#f2f6fa] hover:text-brand"
+                      )}
+                    >
+                      {link.label}
+
+                      {isActive && (
+                        <span
+                          className="absolute bottom-2 left-4 right-4 h-0.5 rounded-full bg-brand"
+                          aria-hidden
+                        />
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+
+              <ServicesNavMenu
+                variant="mobile"
+                isActive={
+                  pathname === ROUTES.services ||
+                  pathname.startsWith(`${ROUTES.services}/`)
+                }
+                onNavigate={() => setMobileOpen(false)}
+              />
+
+              {navLinks.slice(2).map((link) => {
                 const isActive =
                   pathname === link.href ||
                   (link.href !== "/" &&

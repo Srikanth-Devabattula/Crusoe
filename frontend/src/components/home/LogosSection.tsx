@@ -41,7 +41,7 @@ export function LogosSection() {
     <section
       id="logos"
       aria-label="Partner logos"
-      className="relative overflow-hidden bg-transparent py-10 sm:py-12 lg:py-14"
+      className="relative overflow-hidden bg-transparent py-6 sm:py-8 lg:py-10"
     >
       <div
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(126, 168, 73,0.08),transparent_55%)]"

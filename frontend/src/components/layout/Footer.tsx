@@ -20,10 +20,10 @@ const quickLinks = [
 ];
 
 const services = [
-  { label: "CAD CAM CAE Software MTTRE", href: ROUTES.services },
-  { label: "Software Quality", href: ROUTES.services },
-  { label: "Engineering Services", href: ROUTES.services },
-  { label: "Software Development", href: ROUTES.services },
+  { label: "CAD CAM CAE Software Testing", href: ROUTES.servicesCadCam },
+  { label: "Software Quality", href: ROUTES.servicesQuality },
+  { label: "Engineering Services", href: ROUTES.servicesEngineering },
+  { label: "Software Development", href: ROUTES.servicesDevelopment },
 ];
 
 const linkClass =

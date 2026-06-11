@@ -53,7 +53,7 @@ export function OurServicesSection() {
     <section
       id="our-services"
       aria-label="Our services"
-      className="relative overflow-hidden bg-transparent py-16 sm:py-20 lg:py-24"
+      className="relative overflow-hidden bg-transparent py-10 sm:py-12 lg:py-14"
     >
       {/* dotted background */}
       <div className="absolute inset-0 opacity-[0.08]">
@@ -113,7 +113,7 @@ export function OurServicesSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
-          className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4"
+          className="mt-8 grid items-stretch gap-4 sm:mt-9 sm:gap-5 md:grid-cols-2 md:gap-6 lg:mt-10 lg:grid-cols-4 lg:gap-4 desktop:gap-6 xl:gap-6"
         >
           {services.map((service, index) => (
             <motion.div
@@ -126,41 +126,41 @@ export function OurServicesSection() {
               transition={{
                 duration: 0.3,
               }}
-              className="group relative flex h-full flex-col overflow-hidden rounded-[30px] border border-[#edf2e7] bg-white p-5 shadow-[0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:border-brand/20 hover:shadow-[0_20px_60px_rgba(15,23,42,0.10)]"
+              className="group relative flex h-full min-h-[360px] flex-col overflow-hidden rounded-[20px] border border-[#edf2e7] bg-white p-3 shadow-[0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:border-brand/20 hover:shadow-[0_20px_60px_rgba(15,23,42,0.10)] sm:min-h-[380px] sm:rounded-[24px] sm:p-4 lg:min-h-[360px] lg:rounded-[18px] lg:p-3 desktop:min-h-0 desktop:rounded-[26px] desktop:p-4 xl:rounded-[30px] xl:p-5"
             >
               {/* glow */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(126, 168, 73,0.05),transparent_68%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
               {/* image */}
-              <div className="relative h-[220px] overflow-hidden rounded-[22px] bg-[#f6f8f2]">
+              <div className="relative h-[240px] overflow-hidden rounded-[16px] bg-[#f6f8f2] sm:h-[220px] sm:rounded-[18px] lg:h-[175px] lg:rounded-[14px] desktop:h-[250px] desktop:rounded-[18px] xl:h-[260px] xl:rounded-[22px]">
                 <Image
                   src={service.image}
                   alt={service.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1376px) 25vw, 25vw"
                   className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(126, 168, 73,0.08),transparent_70%)]" />
               </div>
 
               {/* content */}
-              <div className="relative z-10 flex flex-1 flex-col pt-6">
-                <h3 className="text-[26px] font-extrabold tracking-[-0.03em] text-[#0f172a]">
+              <div className="relative z-10 flex flex-1 flex-col pt-3 sm:pt-4 lg:pt-3 desktop:pt-5 xl:pt-6">
+                <h3 className="text-lg font-extrabold tracking-[-0.03em] text-[#0f172a] sm:text-xl lg:text-[14px] lg:leading-tight desktop:text-[20px] xl:text-[26px]">
                   {service.title}
                 </h3>
 
-                <p className="mt-4 flex-1 text-[16px] leading-[1.95] text-[#4b5563]">
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-[#4b5563] sm:mt-3 sm:text-[15px] lg:mt-2 lg:text-[11px] lg:leading-[1.5] desktop:mt-3 desktop:text-[14px] desktop:leading-[1.65] xl:mt-4 xl:text-[16px] xl:leading-[1.95]">
                   {service.description}
                 </p>
 
                 {/* button */}
                 <Link
                   href="/services"
-                  className="group/link mt-7 inline-flex items-center gap-3 text-[16px] font-semibold text-brand"
+                  className="group/link mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand sm:mt-5 sm:gap-3 sm:text-[15px] lg:mt-3 lg:gap-1.5 lg:text-[11px] desktop:mt-5 desktop:text-[14px] xl:mt-7 xl:text-[16px]"
                 >
                   Learn More
 
-                  <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover/link:translate-x-1" />
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1 sm:h-5 sm:w-5 lg:h-3.5 lg:w-3.5 desktop:h-4 desktop:w-4 xl:h-5 xl:w-5" />
                 </Link>
               </div>
             </motion.div>

@@ -4,15 +4,17 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiCheckCircle } from "react-icons/fi";
 
-import { ABOUT_IMAGE, cultureFeatures } from "@/data/aboutPage";
+import { cultureFeatures, cultureImages } from "@/data/aboutPage";
 import { cn } from "@/lib/cn";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
-function CultureIllustrationTile({
+function CulturePhotoTile({
+  src,
   alt,
   sizes,
   className,
 }: {
+  src: string;
   alt: string;
   sizes: string;
   className?: string;
@@ -22,17 +24,17 @@ function CultureIllustrationTile({
       whileHover={{ y: -3 }}
       transition={{ duration: 0.25 }}
       className={cn(
-        "group relative min-h-0 overflow-hidden rounded-2xl border border-[#e7efe0]/80 bg-white p-1.5 shadow-[0_8px_24px_rgba(15,23,42,0.06)] sm:rounded-3xl sm:p-2",
+        "group relative min-h-0 overflow-hidden rounded-2xl border border-[#e7efe0]/80 bg-white shadow-[0_8px_24px_rgba(15,23,42,0.06)] sm:rounded-3xl",
         className
       )}
     >
-      <div className="relative h-full w-full min-h-[72px] overflow-hidden rounded-xl bg-[linear-gradient(165deg,#f8fbf4_0%,#eef8e7_50%,#ffffff_100%)] sm:rounded-2xl">
+      <div className="relative h-full w-full min-h-[72px] overflow-hidden rounded-2xl sm:rounded-3xl">
         <Image
-          src={ABOUT_IMAGE}
+          src={src}
           alt={alt}
           fill
           sizes={sizes}
-          className="object-contain object-center p-1.5 transition-transform duration-500 group-hover:scale-[1.03] sm:p-2"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
         />
       </div>
     </motion.div>
@@ -40,6 +42,8 @@ function CultureIllustrationTile({
 }
 
 export function AboutCulture() {
+  const [tall, wide, bottomLeft, bottomRight] = cultureImages;
+
   return (
     <section aria-label="Our culture" className="section-padding bg-[#F7F9F4]">
       <div className="hero-container">
@@ -88,18 +92,28 @@ export function AboutCulture() {
               className="w-full lg:pl-0"
             >
               <div className="grid h-[300px] w-full min-w-0 grid-cols-3 grid-rows-2 gap-3 sm:h-[340px] sm:gap-3.5 lg:h-[400px] lg:gap-4 xl:h-[440px] 2xl:h-[480px]">
-                <CultureIllustrationTile
-                  alt="Crusoe team collaboration"
+                <CulturePhotoTile
+                  src={tall}
+                  alt="Team collaborating around data and charts"
                   sizes="(max-width: 1024px) 55vw, 420px"
                   className="row-span-2"
                 />
-                {[1, 2, 3, 4].map((n) => (
-                  <CultureIllustrationTile
-                    key={n}
-                    alt={`Crusoe culture ${n}`}
-                    sizes="(max-width: 1024px) 28vw, 220px"
-                  />
-                ))}
+                <CulturePhotoTile
+                  src={wide}
+                  alt="Team brainstorming with sticky notes"
+                  sizes="(max-width: 1024px) 85vw, 560px"
+                  className="col-span-2"
+                />
+                <CulturePhotoTile
+                  src={bottomLeft}
+                  alt="Professional working with headset and laptop"
+                  sizes="(max-width: 1024px) 28vw, 220px"
+                />
+                <CulturePhotoTile
+                  src={bottomRight}
+                  alt="Business handshake with city skyline"
+                  sizes="(max-width: 1024px) 28vw, 220px"
+                />
               </div>
             </motion.div>
           </div>

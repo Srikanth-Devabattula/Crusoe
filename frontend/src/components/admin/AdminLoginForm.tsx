@@ -14,12 +14,6 @@ const emailSchema = z.object({
   email: z.string().email("Enter a valid email"),
 });
 
-const registerSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
 const otpSchema = z.object({
   otp: z
     .string()
@@ -33,7 +27,6 @@ const passwordLoginSchema = z.object({
 });
 
 type EmailValues = z.infer<typeof emailSchema>;
-type RegisterValues = z.infer<typeof registerSchema>;
 type OtpValues = z.infer<typeof otpSchema>;
 type PasswordLoginValues = z.infer<typeof passwordLoginSchema>;
 
@@ -66,23 +59,12 @@ function formatTime(seconds: number) {
 }
 
 export function AdminLoginForm() {
-  const {
-    hasAdmin,
-    requestOtp,
-    verifyOtp,
-    resendOtp,
-    login,
-    register,
-    checkHasAdmin,
-    isLoading,
-  } = useAuth();
+  const { requestOtp, verifyOtp, resendOtp, login, isLoading } = useAuth();
   const [loginMode, setLoginMode] = useState<LoginMode>("otp");
   const [step, setStep] = useState<"email" | "otp">("email");
   const [pendingEmail, setPendingEmail] = useState("");
   const [otpExpiresIn, setOtpExpiresIn] = useState(0);
   const [resendCooldown, setResendCooldown] = useState(0);
-
-  const isRegister = hasAdmin === false;
 
   const emailForm = useForm<EmailValues>({
     resolver: zodResolver(emailSchema),
@@ -92,11 +74,6 @@ export function AdminLoginForm() {
   const otpForm = useForm<OtpValues>({
     resolver: zodResolver(otpSchema),
     defaultValues: { otp: "" },
-  });
-
-  const registerForm = useForm<RegisterValues>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: { name: "", email: "", password: "" },
   });
 
   const passwordForm = useForm<PasswordLoginValues>({
@@ -160,16 +137,6 @@ export function AdminLoginForm() {
     }
   };
 
-  const onRegister = async (data: RegisterValues) => {
-    try {
-      await register(data);
-      toast.success("Admin account created");
-      await checkHasAdmin();
-    } catch (error) {
-      toast.error(getApiErrorMessage(error));
-    }
-  };
-
   const backToEmail = () => {
     setStep("email");
     setPendingEmail("");
@@ -178,42 +145,8 @@ export function AdminLoginForm() {
     otpForm.reset({ otp: "" });
   };
 
-  if (isLoading && hasAdmin === null) {
+  if (isLoading) {
     return <p className="text-sm text-gray-500">Loading...</p>;
-  }
-
-  if (isRegister) {
-    return (
-      <form onSubmit={registerForm.handleSubmit(onRegister)} className="space-y-4">
-        <p className="rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-800">
-          No admin account yet. Create your first admin user below.
-        </p>
-        <Field label="Name" error={registerForm.formState.errors.name?.message}>
-          <input
-            type="text"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            {...registerForm.register("name")}
-          />
-        </Field>
-        <Field label="Email" error={registerForm.formState.errors.email?.message}>
-          <input
-            type="email"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            {...registerForm.register("email")}
-          />
-        </Field>
-        <Field label="Password" error={registerForm.formState.errors.password?.message}>
-          <input
-            type="password"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            {...registerForm.register("password")}
-          />
-        </Field>
-        <Button type="submit" className="w-full" disabled={registerForm.formState.isSubmitting}>
-          {registerForm.formState.isSubmitting ? "Creating..." : "Create admin account"}
-        </Button>
-      </form>
-    );
   }
 
   if (step === "otp") {
@@ -301,7 +234,7 @@ export function AdminLoginForm() {
               : "text-gray-600 hover:bg-gray-100"
           }`}
         >
-          Admin (OTP)
+          Email login
         </button>
         <button
           type="button"
@@ -312,7 +245,7 @@ export function AdminLoginForm() {
               : "text-gray-600 hover:bg-gray-100"
           }`}
         >
-          Team (password)
+          Team login
         </button>
       </div>
 
