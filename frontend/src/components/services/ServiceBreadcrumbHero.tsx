@@ -35,7 +35,11 @@ export function ServiceBreadcrumbHero({
               {crumb.href ? (
                 <Link
                   href={crumb.href}
-                  className="font-medium transition-colors hover:text-brand"
+                  className={
+                    index === 0
+                      ? "font-medium transition-colors hover:text-brand"
+                      : "font-medium text-brand transition-colors hover:text-brand-dark"
+                  }
                 >
                   {crumb.label}
                 </Link>
@@ -52,5 +56,5 @@ export function ServiceBreadcrumbHero({
 
 export const defaultServiceCrumbs = [
   { label: "Home", href: ROUTES.home },
-  { label: "Service" },
+  { label: "Services", href: ROUTES.services },
 ];

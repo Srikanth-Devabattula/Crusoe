@@ -24,7 +24,7 @@ export function ServicesGridSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
           variants={staggerContainer}
-          className="grid grid-cols-1 gap-6 md:gap-7 lg:grid-cols-2 lg:gap-8 xl:gap-10"
+          className="grid w-full grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-2 lg:gap-4 xl:gap-5 desktop:gap-5 2xl:gap-6"
         >
           {servicesList.map((service, index) => (
             <ServiceCard key={service.id} service={service} index={index} />

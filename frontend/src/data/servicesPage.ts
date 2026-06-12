@@ -1,5 +1,7 @@
-export const SERVICES_HERO_IMAGE = "/images/services-page/services-hero.png";
-export const SERVICES_CTA_IMAGE = "/images/services-page/services-last.png";
+import { ROUTES } from "@/constants";
+
+export const SERVICES_HERO_IMAGE = "/images/service/service1.png";
+export const SERVICES_CTA_IMAGE = "/images/service/servicelast.png";
 
 export type ServiceAccent = "green" | "blue" | "purple" | "amber";
 
@@ -9,6 +11,7 @@ export interface ServiceItem {
   description: string;
   features: string[];
   image: string;
+  href: string;
   accent: ServiceAccent;
   /** Card background */
   bgColor: string;
@@ -18,68 +21,72 @@ export interface ServiceItem {
 
 export const servicesList: ServiceItem[] = [
   {
-    id: "qa",
-    title: "Quality Assurance",
+    id: "engineering-services",
+    title: "Engineering Services",
     description:
-      "Comprehensive QA services to ensure your software meets the highest standards of quality, reliability, and performance.",
+      "Advanced engineering solutions focused on product innovation, system optimization and scalable technology implementation for modern businesses.",
     features: [
-      "Manual Testing",
-      "Test Strategy & Planning",
-      "Regression Testing",
-      "Performance Testing",
+      "Platform Migration & Integration",
+      "Onshape Design Services",
+      "CAD Content & Conceptual Designs",
+      "Product Configurators",
     ],
-    image: "/images/services-page/service1.png",
-    accent: "green",
-    bgColor: "#F3F8EE",
-    accentColor: "#7EA849",
-  },
-  {
-    id: "automated-testing",
-    title: "Automated Testing",
-    description:
-      "Accelerate releases with robust automation frameworks, CI/CD integration, and scalable test coverage across your stack.",
-    features: [
-      "Automation Framework",
-      "API & Integration Testing",
-      "CI/CD Integration",
-      "Test Maintenance",
-    ],
-    image: "/images/services-page/service2.png",
+    image: "/images/service/ES.png",
+    href: ROUTES.servicesEngineering,
     accent: "blue",
     bgColor: "#F3F7FC",
     accentColor: "#4A7DDB",
   },
   {
-    id: "cad",
-    title: "CAD Customisation",
+    id: "software-development",
+    title: "Software Development",
     description:
-      "Tailored CAD tools, workflow automation, and integrations that streamline engineering design and collaboration.",
+      "Custom software applications built with modern technologies to deliver secure, scalable and high-performance digital experiences.",
     features: [
-      "CAD Software Customization",
-      "Plugin Development",
-      "Process Automation",
-      "Data Migration",
+      "Onshape FeatureScript Tools",
+      "REST API Apps & Integrations",
+      "Component Libraries",
+      "Extended Development Teams",
     ],
-    image: "/images/services-page/service3.png",
-    accent: "purple",
-    bgColor: "#F5F0FB",
-    accentColor: "#8B5CF6",
-  },
-  {
-    id: "tooling",
-    title: "Software Tooling",
-    description:
-      "Custom software tools and internal platforms that boost productivity, integration, and engineering velocity.",
-    features: [
-      "Custom Tools Development",
-      "Plugin Development",
-      "Workflow Automation",
-      "System Integration",
-    ],
-    image: "/images/services-page/service4.png",
+    image: "/images/service/SDM.png",
+    href: ROUTES.servicesDevelopment,
     accent: "amber",
     bgColor: "#FBF7EE",
     accentColor: "#D4A017",
+  },
+  {
+    id: "software-qa",
+    title: "Software QA",
+    description:
+      "Comprehensive quality assurance and automated testing services to ensure reliability, performance and seamless user experiences.",
+    features: [
+      "Functional & Regression Testing",
+      "Test Strategy & Planning",
+      "Performance & Automation",
+      "Release Quality Assurance",
+    ],
+    image: "/images/service/Sqa.png",
+    href: ROUTES.servicesQuality,
+    accent: "green",
+    bgColor: "#F3F8EE",
+    accentColor: "#7EA849",
+  },
+  {
+    id: "cad-testing",
+    title: "CAD Testing",
+    description:
+      "Specialized CAD validation and testing services designed to improve design accuracy, workflow efficiency and manufacturing quality.",
+    features: [
+      "CAD/CAM/CAE Functional Testing",
+      "Multi-platform & Browser Testing",
+      "Mobile & Custom Testing",
+      "CAD / PDM / PLM Validation",
+    ],
+    image: "/images/service/Cad.png",
+    href: ROUTES.servicesCadCam,
+    accent: "purple",
+    bgColor: "#F5F0FB",
+    accentColor: "#8B5CF6",
   },
 ];
 

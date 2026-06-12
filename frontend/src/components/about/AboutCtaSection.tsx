@@ -33,8 +33,8 @@ export function AboutCtaSection() {
             delay={0.5}
           />
 
-          <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-6 py-10 sm:gap-7 sm:px-10 sm:py-12 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-12 xl:max-w-7xl">
-            <div className="order-2 w-full max-w-md text-center lg:order-1 lg:max-w-lg lg:shrink-0 lg:text-left">
+          <div className="relative grid w-full items-center gap-6 px-6 py-10 sm:gap-8 sm:px-10 sm:py-12 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-10 lg:px-12 xl:gap-12 xl:px-14">
+            <div className="order-2 w-full min-w-0 text-center lg:order-1 lg:text-left">
               <h2 className="text-heading text-[26px] sm:text-[30px] lg:text-[32px]">
                 Ready to Build with <span className="text-brand">Crusoe</span>?
               </h2>
@@ -51,13 +51,13 @@ export function AboutCtaSection() {
               </Link>
             </div>
 
-            <div className="order-1 flex w-full justify-center lg:order-2 lg:w-auto lg:shrink-0 lg:justify-end">
-              <div className="relative aspect-[4/3] w-full max-w-[340px] sm:max-w-[400px] lg:aspect-auto lg:h-[300px] lg:w-[460px] xl:h-[340px] xl:w-[520px]">
+            <div className="order-1 w-full min-w-0 lg:order-2">
+              <div className="relative aspect-[16/10] w-full sm:aspect-[3/2] lg:aspect-auto lg:min-h-[360px] xl:min-h-[400px] 2xl:min-h-[440px]">
                 <Image
                   src={ABOUT_CTA_IMAGE}
                   alt="Build with Crusoe"
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 460px, 520px"
+                  sizes="(max-width: 1024px) 100vw, 55vw"
                   className="rounded-2xl object-cover object-center"
                 />
               </div>

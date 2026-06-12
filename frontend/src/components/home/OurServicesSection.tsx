@@ -5,32 +5,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-const services = [
-  {
-    title: "Engineering Services",
-    description:
-      "Advanced engineering solutions focused on product innovation, system optimization and scalable technology implementation for modern businesses.",
-    image: "/images/services/service1.png",
-  },
-  {
-    title: "Software Development",
-    description:
-      "Custom software applications built with modern technologies to deliver secure, scalable and high-performance digital experiences.",
-    image: "/images/services/service2.png",
-  },
-  {
-    title: "Software QA",
-    description:
-      "Comprehensive quality assurance and automated testing services to ensure reliability, performance and seamless user experiences.",
-    image: "/images/services/service3.png",
-  },
-  {
-    title: "CAD Testing",
-    description:
-      "Specialized CAD validation and testing services designed to improve design accuracy, workflow efficiency and manufacturing quality.",
-    image: "/images/services/service4.png",
-  },
-];
+import { ROUTES } from "@/constants";
+import { servicesList } from "@/data/servicesPage";
 
 const fadeUp = {
   hidden: {
@@ -98,7 +74,7 @@ export function OurServicesSection() {
             </p>
 
             <Link
-              href="/services"
+              href={ROUTES.services}
               className="group mt-7 inline-flex items-center gap-3 text-[17px] font-semibold text-brand transition-all duration-300 hover:gap-4"
             >
               View All Services
@@ -115,9 +91,9 @@ export function OurServicesSection() {
           viewport={{ once: true, amount: 0.15 }}
           className="mt-8 grid items-stretch gap-4 sm:mt-9 sm:gap-5 md:grid-cols-2 md:gap-6 lg:mt-10 lg:grid-cols-4 lg:gap-4 desktop:gap-6 xl:gap-6"
         >
-          {services.map((service, index) => (
+          {servicesList.map((service, index) => (
             <motion.div
-              key={service.title}
+              key={service.id}
               custom={index * 0.08}
               variants={fadeUp}
               whileHover={{
@@ -138,7 +114,7 @@ export function OurServicesSection() {
                   alt={service.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1376px) 25vw, 25vw"
-                  className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  className="object-contain object-center p-2 transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(126, 168, 73,0.08),transparent_70%)]" />
               </div>
@@ -155,7 +131,7 @@ export function OurServicesSection() {
 
                 {/* button */}
                 <Link
-                  href="/services"
+                  href={service.href}
                   className="group/link mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand sm:mt-5 sm:gap-3 sm:text-[15px] lg:mt-3 lg:gap-1.5 lg:text-[11px] desktop:mt-5 desktop:text-[14px] xl:mt-7 xl:text-[16px]"
                 >
                   Learn More
