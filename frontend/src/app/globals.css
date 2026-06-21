@@ -88,6 +88,17 @@ body {
   .text-heading {
     @apply font-sans font-bold tracking-tight text-gray-900;
   }
+
+  .prose-blog {
+    @apply min-w-0 max-w-full text-left;
+    direction: ltr;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .prose-blog p {
+    @apply break-words;
+  }
 }
 
 @layer utilities {

@@ -62,17 +62,17 @@ export function BlogCard({ post, categoryLabel, variant = "default" }: BlogCardP
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="flex min-w-0 flex-1 flex-col p-5 sm:p-6">
         <p className="text-xs font-medium text-slate-500">{formatBlogDate(post.createdAt)}</p>
         <h3
           className={cn(
-            "mt-2 font-bold text-slate-900 transition-colors group-hover:text-brand",
+            "mt-2 break-words text-left font-bold text-slate-900 transition-colors group-hover:text-brand",
             variant === "compact" ? "text-lg" : "text-xl"
           )}
         >
           {post.title}
         </h3>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 line-clamp-3">
+        <p className="mt-2 flex-1 break-words text-left text-sm leading-relaxed text-slate-600 line-clamp-3">
           {post.excerpt}
         </p>
         <div className="mt-4 flex items-center justify-between gap-3">

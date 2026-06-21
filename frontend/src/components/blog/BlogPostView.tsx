@@ -92,9 +92,9 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
   const coverSrc = getBlogCoverUrl(post.coverImage);
 
   return (
-    <article className="bg-white">
+    <article className="overflow-x-hidden bg-white" dir="ltr">
       <div className="relative overflow-hidden bg-transparent pt-[5.25rem] sm:pt-[5.75rem] lg:pt-[6.25rem]">
-        <div className="hero-container pb-10 lg:pb-14">
+        <div className="hero-container min-w-0 pb-10 lg:pb-14">
           <Link
             href={ROUTES.blog}
             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-brand"
@@ -110,11 +110,11 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
             {getLabel(post.category)}
           </span>
 
-          <h1 className="mt-4 max-w-4xl text-3xl font-bold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
+          <h1 className="mt-4 max-w-4xl break-words text-left text-3xl font-bold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
             {post.title}
           </h1>
 
-          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 max-w-3xl break-words text-left text-lg leading-relaxed text-slate-600">
             {post.excerpt}
           </p>
 
@@ -131,7 +131,7 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
         </div>
       </div>
 
-      <div className="hero-container pb-12 lg:pb-16">
+      <div className="hero-container min-w-0 pb-12 lg:pb-16">
         <figure className="mx-auto max-w-3xl overflow-hidden rounded-[20px] border border-[#E8EEF5] bg-slate-50/80 shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
           {coverSrc ? (
             <CoverImage
@@ -156,7 +156,7 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
         <div className="prose-blog mx-auto mt-10 max-w-3xl">
           {post.content.split("\n").map((paragraph, index) =>
             paragraph.trim() ? (
-              <p key={index} className="mb-5 text-base leading-relaxed text-slate-700 sm:text-lg">
+              <p key={index} className="mb-5 break-words text-left text-base leading-relaxed text-slate-700 sm:text-lg">
                 {paragraph}
               </p>
             ) : (
