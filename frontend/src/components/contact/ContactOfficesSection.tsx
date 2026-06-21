@@ -24,9 +24,6 @@ export function ContactOfficesSection() {
           <h2 className="text-heading text-2xl sm:text-3xl lg:text-[34px]">
             Our Offices
           </h2>
-          <p className="text-description mx-auto mt-3 max-w-lg">
-            We are present in two key locations to serve you better.
-          </p>
         </motion.div>
 
         <motion.div

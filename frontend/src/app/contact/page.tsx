@@ -1,9 +1,7 @@
 import {
-  ContactCtaSection,
   ContactFormSection,
   ContactHero,
   ContactOfficesSection,
-  ContactWhySection,
 } from "@/components/contact";
 import { createPageMetadata } from "@/lib/createPageMetadata";
 
@@ -18,8 +16,6 @@ export default function ContactPage() {
       <ContactHero />
       <ContactFormSection />
       <ContactOfficesSection />
-      <ContactWhySection />
-      <ContactCtaSection />
     </>
   );
 }

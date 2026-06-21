@@ -1,17 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { ROUTES } from "@/constants";
-import { servicesNavItems } from "@/data/servicesNav";
+import { servicesNavItems, type ServiceNavItem } from "@/data/servicesNav";
 import { cn } from "@/lib/cn";
 
 const linkClassName =
   "group relative inline-flex h-9 shrink-0 items-center gap-0.5 whitespace-nowrap px-2 text-[13px] font-bold uppercase tracking-[0.02em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 xl:h-10 xl:px-2.5 xl:text-[14px] xl:tracking-[0.04em] desktop:h-11 desktop:px-3 desktop:text-[16px] desktop:tracking-[0.06em] 2xl:px-4 2xl:tracking-[0.08em]";
 
 const CLOSE_DELAY_MS = 150;
+
+function isNavItemActive(item: ServiceNavItem, pathname: string): boolean {
+  if (item.href && pathname === item.href) return true;
+  return item.children?.some((child) => pathname === child.href) ?? false;
+}
 
 interface ServicesNavMenuProps {
   isActive: boolean;
@@ -24,6 +30,7 @@ export function ServicesNavMenu({
   onNavigate,
   variant,
 }: ServicesNavMenuProps) {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState(
     servicesNavItems[0]?.id ?? ""
@@ -51,12 +58,27 @@ export function ServicesNavMenu({
 
   const handleClose = () => {
     clearCloseTimer();
-    closeTimerRef.current = setTimeout(() => setOpen(false), CLOSE_DELAY_MS);
+    closeTimerRef.current = setTimeout(() => {
+      setOpen(false);
+      const match = servicesNavItems.find((item) =>
+        isNavItemActive(item, pathname)
+      );
+      if (match) {
+        setActiveCategoryId(match.id);
+      }
+    }, CLOSE_DELAY_MS);
   };
 
   useEffect(() => {
     return () => clearCloseTimer();
   }, []);
+
+  useEffect(() => {
+    const match = servicesNavItems.find((item) => isNavItemActive(item, pathname));
+    if (match) {
+      setActiveCategoryId(match.id);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (variant !== "desktop" || !open) return;
@@ -122,24 +144,38 @@ export function ServicesNavMenu({
                       {item.label}
                     </p>
                     <ul className="mt-2 space-y-1 border-l-2 border-brand/20 pl-3">
-                      {item.children.map((child) => (
-                        <li key={child.href}>
-                          <Link
-                            href={child.href}
-                            onClick={onNavigate}
-                            className="block py-2 text-[14px] font-medium text-slate-700 transition-colors hover:text-brand"
-                          >
-                            {child.label}
-                          </Link>
-                        </li>
-                      ))}
+                      {item.children.map((child) => {
+                        const childActive = pathname === child.href;
+
+                        return (
+                          <li key={child.href}>
+                            <Link
+                              href={child.href}
+                              onClick={onNavigate}
+                              className={cn(
+                                "block py-2 text-[14px] font-medium transition-colors",
+                                childActive
+                                  ? "text-brand"
+                                  : "text-slate-700 hover:text-brand"
+                              )}
+                            >
+                              {child.label}
+                            </Link>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 ) : (
                   <Link
                     href={item.href!}
                     onClick={onNavigate}
-                    className="block rounded-xl px-3 py-3 text-[14px] font-semibold text-slate-700 transition-colors hover:bg-[#f2f6fa] hover:text-brand"
+                    className={cn(
+                      "block rounded-xl px-3 py-3 text-[14px] font-semibold transition-colors",
+                      pathname === item.href
+                        ? "bg-[#E8F0DC] text-brand"
+                        : "text-slate-700 hover:bg-[#f2f6fa] hover:text-brand"
+                    )}
                   >
                     {item.label}
                   </Link>
@@ -202,7 +238,7 @@ export function ServicesNavMenu({
           <div className="min-w-[220px] px-6 py-5">
             <ul className="space-y-4">
               {servicesNavItems.map((item) => {
-                const isCategoryActive = activeCategoryId === item.id;
+                const pathActive = isNavItemActive(item, pathname);
 
                 if (item.href) {
                   return (
@@ -215,7 +251,7 @@ export function ServicesNavMenu({
                         }}
                         className={cn(
                           "block text-[15px] font-medium transition-colors",
-                          isCategoryActive
+                          pathname === item.href
                             ? "text-brand"
                             : "text-[#081526] hover:text-brand"
                         )}
@@ -237,7 +273,7 @@ export function ServicesNavMenu({
                       onFocus={() => setActiveCategoryId(item.id)}
                       className={cn(
                         "w-full text-left text-[15px] font-medium transition-colors",
-                        isCategoryActive
+                        pathActive
                           ? "text-brand"
                           : "text-[#081526] hover:text-brand"
                       )}
@@ -259,17 +295,26 @@ export function ServicesNavMenu({
 
               <div className="min-w-[300px] px-6 py-5">
                 <ul className="space-y-4">
-                  {activeCategory?.children?.map((child) => (
-                    <li key={child.href}>
-                      <Link
-                        href={child.href}
-                        className="block text-[15px] font-medium text-[#081526] transition-colors hover:text-brand"
-                        onMouseEnter={handleOpen}
-                      >
-                        {child.label}
-                      </Link>
-                    </li>
-                  ))}
+                  {activeCategory?.children?.map((child) => {
+                    const childActive = pathname === child.href;
+
+                    return (
+                      <li key={child.href}>
+                        <Link
+                          href={child.href}
+                          className={cn(
+                            "block text-[15px] font-medium transition-colors",
+                            childActive
+                              ? "text-brand"
+                              : "text-[#081526] hover:text-brand"
+                          )}
+                          onMouseEnter={handleOpen}
+                        >
+                          {child.label}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </>

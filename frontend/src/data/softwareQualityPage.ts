@@ -1,5 +1,17 @@
-export const SOFTWARE_QUALITY_PLACEHOLDER_IMAGE =
-  "/images/services-page/service2.png";
+export const SOFTWARE_QUALITY_IMAGES = {
+  hero: "/images/services/QA/QA1.png",
+  smartSourcing: "/images/services/QA/QA3.jpg",
+  specs: "/images/services/QA/QA4.jpg",
+} as const;
+
+export const SOFTWARE_QUALITY_PLACEHOLDER_IMAGE = SOFTWARE_QUALITY_IMAGES.hero;
+
+export const softwareQualityIntroLabels = [
+  "Our Promise",
+  "Make It Simple",
+  "SmartSourcing",
+  "SPECS Review",
+] as const;
 
 export const softwareQualityAdvantageTagline =
   "We help you build Robust, Secure, Scalable product";
@@ -19,8 +31,17 @@ export const softwareQualityAdvantageItems = [
   "Significant Cost Savings",
 ];
 
-export const softwareQualityCtaBanner =
-  "Software Products are at their most vulnerable state in this digital world, And it is the responsibility of the software developing companies, and users to enforce better quality & security checks.";
+export const softwareQualityCtaBanner = {
+  badge: "Quality & Security",
+  title: "Software products are at their most vulnerable in today's digital world",
+  description:
+    "It is the shared responsibility of software companies and users to enforce rigorous quality and security checks — before vulnerabilities become costly failures.",
+  highlights: [
+    "End-to-end QA coverage",
+    "Security-first validation",
+    "Transparent, process-driven delivery",
+  ],
+} as const;
 
 export interface SoftwareQualityTestingCard {
   number: number;
@@ -79,6 +100,23 @@ export const softwareQualityTestingCards: SoftwareQualityTestingCard[] = [
   },
 ];
 
+export interface SoftwareQualityTestingTab {
+  id: string;
+  label: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
+export const softwareQualityTestingTabs: SoftwareQualityTestingTab[] =
+  softwareQualityTestingCards.map((card) => ({
+    id: `testing-${card.number}`,
+    label: card.title,
+    title: card.title,
+    description: card.description,
+    image: SOFTWARE_QUALITY_IMAGES.hero,
+  }));
+
 export const softwareQualityContentSections = [
   {
     heading: "Business Knowledge | Strictly Process-Driven | 100% Reliability",
@@ -86,6 +124,8 @@ export const softwareQualityContentSections = [
       "Rapid Product Development | Complete Confidentiality | Value-added Solutions",
     paragraphs: [
       "Building a SOFTWARE PRODUCT is EASY; Building a GREAT & SUSTAINABLE one is tough.",
+      "At Crusoe Technologies, we combine deep business knowledge with strictly process-driven QA — so every release meets the highest standards of reliability, not just on paper, but in production.",
+      "Whether you need rapid product validation, complete confidentiality, or value-added testing insights, our consultative approach helps you ship faster while protecting brand reputation and customer trust.",
     ],
   },
   {

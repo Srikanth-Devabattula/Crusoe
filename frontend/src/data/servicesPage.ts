@@ -90,6 +90,14 @@ export const servicesList: ServiceItem[] = [
   },
 ];
 
+/** Home page card photos — services page keeps `servicesList` images above */
+export const homeServicesCardImages: Record<string, string> = {
+  "engineering-services": "/images/services/service1.png",
+  "software-development": "/images/services/service2.png",
+  "software-qa": "/images/services/service3.png",
+  "cad-testing": "/images/services/service4.png",
+};
+
 export const whyChooseServices = [
   {
     icon: "users" as const,

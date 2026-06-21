@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { ROUTES } from "@/constants";
-import { servicesList } from "@/data/servicesPage";
+import { homeServicesCardImages, servicesList } from "@/data/servicesPage";
 
 const fadeUp = {
   hidden: {
@@ -102,25 +102,24 @@ export function OurServicesSection() {
               transition={{
                 duration: 0.3,
               }}
-              className="group relative flex h-full min-h-[360px] flex-col overflow-hidden rounded-[20px] border border-[#edf2e7] bg-white p-3 shadow-[0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:border-brand/20 hover:shadow-[0_20px_60px_rgba(15,23,42,0.10)] sm:min-h-[380px] sm:rounded-[24px] sm:p-4 lg:min-h-[360px] lg:rounded-[18px] lg:p-3 desktop:min-h-0 desktop:rounded-[26px] desktop:p-4 xl:rounded-[30px] xl:p-5"
+              className="group relative flex h-full min-h-[360px] flex-col overflow-hidden rounded-[20px] border border-[#edf2e7] bg-white shadow-[0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 hover:border-brand/20 hover:shadow-[0_20px_60px_rgba(15,23,42,0.10)] sm:min-h-[380px] sm:rounded-[24px] lg:min-h-[360px] lg:rounded-[18px] desktop:min-h-0 desktop:rounded-[26px] xl:rounded-[30px]"
             >
               {/* glow */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(126, 168, 73,0.05),transparent_68%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
               {/* image */}
-              <div className="relative h-[240px] overflow-hidden rounded-[16px] bg-[#f6f8f2] sm:h-[220px] sm:rounded-[18px] lg:h-[175px] lg:rounded-[14px] desktop:h-[250px] desktop:rounded-[18px] xl:h-[260px] xl:rounded-[22px]">
+              <div className="relative h-[240px] shrink-0 overflow-hidden sm:h-[220px] lg:h-[175px] desktop:h-[250px] xl:h-[260px]">
                 <Image
-                  src={service.image}
+                  src={homeServicesCardImages[service.id] ?? service.image}
                   alt={service.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1376px) 25vw, 25vw"
-                  className="object-contain object-center p-2 transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(126, 168, 73,0.08),transparent_70%)]" />
               </div>
 
               {/* content */}
-              <div className="relative z-10 flex flex-1 flex-col pt-3 sm:pt-4 lg:pt-3 desktop:pt-5 xl:pt-6">
+              <div className="relative z-10 flex flex-1 flex-col p-3 sm:p-4 lg:p-3 desktop:p-4 xl:p-5">
                 <h3 className="text-lg font-extrabold tracking-[-0.03em] text-[#0f172a] sm:text-xl lg:text-[14px] lg:leading-tight desktop:text-[20px] xl:text-[26px]">
                   {service.title}
                 </h3>

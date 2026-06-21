@@ -8,4 +8,5 @@ export { SoftwareQualityServicePage } from "./SoftwareQualityServicePage";
 export { EngineeringServicesPage } from "./EngineeringServicesPage";
 export { SoftwareDevelopmentPage } from "./SoftwareDevelopmentPage";
 export { ServiceBreadcrumbHero } from "./ServiceBreadcrumbHero";
+export { RelatedServicesSection } from "./RelatedServicesSection";
 export { ServiceAdvantageSection } from "./ServiceAdvantageSection";

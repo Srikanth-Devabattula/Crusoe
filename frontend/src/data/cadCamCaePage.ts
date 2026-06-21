@@ -1,12 +1,16 @@
-import { ROUTES } from "@/constants";
+export const CAD_CAM_IMAGES = {
+  hero: "/images/services/CAD/CAD1.png",
+  ensures: "/images/services/CAD/cad2.jpg",
+  gamut: [
+    "/images/services/CAD/cad3.png",
+    "/images/services/CAD/cad4.png",
+    "/images/services/CAD/cad5.png",
+    "/images/services/CAD/cad6.png",
+  ],
+} as const;
 
-export const CAD_CAM_PLACEHOLDER_IMAGE = "/images/services-page/service1.png";
-
-export const cadCamAdvantageLinks = [
-  { label: "Software Quality", href: ROUTES.servicesQuality },
-  { label: "Engineering Services", href: ROUTES.servicesEngineering },
-  { label: "Software Development", href: ROUTES.servicesDevelopment },
-];
+/** @deprecated Use CAD_CAM_IMAGES.hero */
+export const CAD_CAM_PLACEHOLDER_IMAGE = CAD_CAM_IMAGES.hero;
 
 export const cadCamEnsuresItems = [
   "Quick",
@@ -20,6 +24,7 @@ export interface CadCamGamutTab {
   id: string;
   label: string;
   title: string;
+  image: string;
   items: string[];
 }
 
@@ -28,6 +33,7 @@ export const cadCamGamutTabs: CadCamGamutTab[] = [
     id: "new-projects",
     label: "New projects",
     title: "We conduct end-to-end QA for your 3D Design Software",
+    image: CAD_CAM_IMAGES.gamut[0],
     items: [
       "UI & UX Testing",
       "Functional testing",
@@ -38,13 +44,11 @@ export const cadCamGamutTabs: CadCamGamutTab[] = [
   {
     id: "release-testing",
     label: "Release Testing",
-    title:
-      "A systematic, process-driven approach with distinct phases and timelines",
+    title: "Process-driven release validation with clear phases",
+    image: CAD_CAM_IMAGES.gamut[1],
     items: [
-      "Regression testing",
-      "Performance testing",
-      "Multi-platform testing",
-      "Multi-browser testing",
+      "Regression & performance testing",
+      "Multi-platform & multi-browser testing",
       "Globalization testing",
       "Graphics testing",
     ],
@@ -54,6 +58,7 @@ export const cadCamGamutTabs: CadCamGamutTab[] = [
     label: "Mobile Testing",
     title:
       "We employ 3D design app testing thoroughly on smartphones so that your product works smoothly on them",
+    image: CAD_CAM_IMAGES.gamut[2],
     items: [
       "Comprehensive testing on iOS and Android Platforms",
       "Ensure full CAD, PDM, PLM functionalities are supported on these platforms",
@@ -63,6 +68,7 @@ export const cadCamGamutTabs: CadCamGamutTab[] = [
     id: "custom-testing",
     label: "Custom Testing",
     title: "Customized QA Services to ensure full portability",
+    image: CAD_CAM_IMAGES.gamut[3],
     items: [
       "Testing of apps on App Stores",
       "Peripherals testing",

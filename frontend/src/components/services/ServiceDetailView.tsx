@@ -10,8 +10,6 @@ import { ROUTES } from "@/constants";
 import type { ServicePageData } from "@/data/servicePages";
 import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
 
-import { ServicesCtaSection } from "./ServicesCtaSection";
-
 const fadeUpItem = {
   hidden: { opacity: 0, y: 20 },
   visible: (delay: number) => ({
@@ -130,8 +128,6 @@ export function ServiceDetailView({ page }: ServiceDetailViewProps) {
           </motion.div>
         </div>
       </section>
-
-      <ServicesCtaSection />
     </>
   );
 }

@@ -1,5 +1,28 @@
+export const SOFTWARE_DEVELOPMENT_IMAGES = {
+  hero: "/images/services/SE/se1.png",
+  partnership: "/images/services/SE/se2.png",
+} as const;
+
+/** @deprecated Use SOFTWARE_DEVELOPMENT_IMAGES.hero */
 export const SOFTWARE_DEVELOPMENT_PLACEHOLDER_IMAGE =
-  "/images/services-page/service4.png";
+  SOFTWARE_DEVELOPMENT_IMAGES.hero;
+
+export const softwareDevelopmentIntroLabels = [
+  "Rev-Up Development",
+  "Your Extended Team",
+] as const;
+
+export const softwareDevelopmentCtaBanner = {
+  badge: "CAD Development",
+  title: "Same expertise, quality consciousness & accountability",
+  description:
+    "Our contribution catalyzes your product development — like your in-house team, working from our office with complete confidentiality and value-added solutions.",
+  highlights: [
+    "Rapid product development",
+    "Complete confidentiality",
+    "Value-added solutions",
+  ],
+} as const;
 
 export interface BenefitSegment {
   text: string;
@@ -71,36 +94,62 @@ export const softwareDevelopmentBenefits: SoftwareDevelopmentBenefit[] = [
   },
 ];
 
+export const softwareDevelopmentContentSections = [
+  {
+    heading: "Leverage our CAD expertise & rev-up your development",
+    emphasis:
+      "Rapid Product Development | Complete Confidentiality | Value-added Solutions",
+    paragraphs: [
+      "Our contribution catalyzes your product development — it's like your in-house team, working from our office.",
+      "CAD development products are key to transforming ideas to innovation, and these products need to be enhanced constantly with bug-fixes, feature development, improved functionality, and collaboration tools that neutralize geographical boundaries.",
+    ],
+  },
+  {
+    heading: "The right partner for future-proof CAD products",
+    paragraphs: [
+      "Crusoe Technology is the right partner to work as an extended arm of your development team in making your product future-proof.",
+      "With in-depth knowledge and hands-on experience of working with CAD development giants, we completely understand the challenges, plausible solutions and the work-culture — expertise, transparency, accountability and synergy between the two teams.",
+    ],
+  },
+];
+
+export const softwareDevelopmentPartnershipSection = {
+  heading: "Extended development team with industry depth",
+  paragraphs: [
+    "We realize the importance of collaborative work culture that demands expertise, transparency, accountability and synergy between your team and ours.",
+    "From FeatureScript tools to REST API apps and custom component libraries — we bring the same rigor and quality consciousness you expect from an in-house engineering group.",
+  ],
+};
+
 export interface SoftwareDevelopmentCapability {
-  id: string;
+  number: number;
   title: string;
   description: string;
-  fullWidth?: boolean;
 }
 
 export const softwareDevelopmentCapabilities: SoftwareDevelopmentCapability[] =
   [
     {
-      id: "featurescript",
-      title: "Onshape FeatureScript based Tools",
+      number: 1,
+      title: "Onshape FeatureScript Tools",
       description:
-        "FeatureScript is the new programming language designed by Onshape for building and working with 3D Parametric models. Our team has the capability to develop custom commands, geometry checkers, productivity enhancement tools, design automation tools and more using FeatureScript Language.",
+        "FeatureScript is the programming language designed by Onshape for building 3D parametric models. We develop custom commands, geometry checkers, productivity tools, design automation and more.",
     },
     {
-      id: "rest-api",
+      number: 2,
       title: "Onshape REST API Apps & Integrations",
       description:
-        "Crusoe team has the capabilities to develop client specific Apps on the Onshape App store and can develop necessary integrations between Onshape to other systems like PLM, ERP etc based on the client requirements.",
+        "Client-specific apps on the Onshape App store and integrations between Onshape and other systems like PLM and ERP — built to your requirements.",
     },
     {
-      id: "component-libraries",
+      number: 3,
       title: "Component Libraries in Onshape",
       description:
-        "Crusoe team can develop custom component libraries for clients similar to Standard Content library in Onshape. Onshape Standard Content library was developed by Crusoe team using FeatureScript language and created geometries based on the standard like ANSI, ISO etc",
-      fullWidth: true,
+        "Custom component libraries similar to Standard Content in Onshape. Onshape's Standard Content library was developed by Crusoe using FeatureScript with ANSI, ISO and other standards.",
     },
   ];
 
+/** @deprecated Use softwareDevelopmentContentSections */
 export const softwareDevelopmentIntro = {
   lead: "Leverage Our Cad Expertise & Rev-Up Your Development",
   emphasis:
@@ -110,8 +159,5 @@ export const softwareDevelopmentIntro = {
     "It's like your in-house team, working from our office;",
   ],
   heading: "SAME EXPERTISE, QUALITY CONSCIOUSNESS & ACCOUNTABILITY",
-  paragraphs: [
-    "CAD development products are key to transforming ideas to innovation, and these products need to be enhanced constantly with bug-fixes, feature development, improved functionality, simplifying usability, collaboration tools, platform-independence, neutralizing geographical boundaries, and a lot more.",
-    "Crusoe Technology is the right partner to work as an extended-arm of your development team in making your product future-proof. With in-depth knowledge and hands-on experience of working with CAD development giants, we completely understand the challenges, plausible solutions and the work-culture. We realize the importance of collaborative work culture that demands expertise, transparency, accountability and synergy between the two teams.",
-  ],
+  paragraphs: softwareDevelopmentContentSections.flatMap((s) => s.paragraphs),
 };
