@@ -15,7 +15,6 @@ const jobRoutes = require("./routes/jobRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const fileRoutes = require("./routes/fileRoutes");
-const userRoutes = require("./routes/userRoutes");
 const { getCorsOptions } = require("./config/cors");
 const { apiLimiter } = require("./middleware/rateLimitMiddleware");
 const { errorMiddleware, notFound } = require("./middleware/errorMiddleware");
@@ -47,7 +46,6 @@ app.use(cookieParser());
 app.use("/api", apiLimiter);
 
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/blog-categories", blogCategoryRoutes);
 app.use("/api/news", newsRoutes);

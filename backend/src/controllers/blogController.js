@@ -5,8 +5,14 @@ const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
 const {
   removeCoverAsset,
-  resolveCoverFromRequest,
+  resolveGalleryFromRequest,
   validateCoverImageValue,
+  validateGalleryImages,
+  validateVideoUrls,
+  removeGalleryAssets,
+  getExistingImagesFromDoc,
+  parseVideoUrlsFromBody,
+  sanitizeVideoUrlsPayload,
 } = require("../utils/gridfsStorage");
 
 const BLOG_COVER_BUCKET = "blog-covers";
@@ -18,6 +24,9 @@ const parseBlogRequestBody = (body) => ({
   content: body.content,
   category: body.category,
   coverImage: body.coverImage,
+  images: body.images,
+  videoUrl: body.videoUrl,
+  videoUrls: body.videoUrls,
   featured: body.featured === true || body.featured === "true",
   published: body.published === true || body.published === "true",
   removeCoverImage: body.removeCoverImage === true || body.removeCoverImage === "true",
@@ -54,7 +63,7 @@ const getBlogBySlug = async (req, res) => {
 };
 
 const validateBlogBody = (body, isUpdate = false) => {
-  const { title, slug, excerpt, content, category, coverImage } = body;
+  const { title, slug, excerpt, content, category, coverImage, images, videoUrls } = body;
 
   if (!isUpdate || title !== undefined) {
     if (!title || !String(title).trim()) {
@@ -89,6 +98,16 @@ const validateBlogBody = (body, isUpdate = false) => {
     if (coverError) return coverError;
   }
 
+  if (images !== undefined) {
+    const galleryError = validateGalleryImages(images);
+    if (galleryError) return galleryError;
+  }
+
+  if (videoUrls !== undefined) {
+    const videoError = validateVideoUrls(videoUrls);
+    if (videoError) return videoError;
+  }
+
   return null;
 };
 
@@ -101,6 +120,12 @@ const sanitizeBlogBody = (body) => {
   if (body.content !== undefined) payload.content = String(body.content).trim();
   if (body.category !== undefined) payload.category = body.category;
   if (body.coverImage !== undefined) payload.coverImage = String(body.coverImage).trim();
+  if (body.images !== undefined) payload.images = body.images;
+  if (body.videoUrls !== undefined) {
+    const videoPayload = sanitizeVideoUrlsPayload(body.videoUrls);
+    payload.videoUrls = videoPayload.videoUrls;
+    payload.videoUrl = videoPayload.videoUrl;
+  }
   if (body.featured !== undefined) payload.featured = Boolean(body.featured);
   if (body.published !== undefined) payload.published = Boolean(body.published);
 
@@ -118,15 +143,14 @@ const assertCategoryExists = async (slug) => {
 
 const createBlog = async (req, res) => {
   const body = parseBlogRequestBody(req.body);
-  const cover = await resolveCoverFromRequest(
-    req,
-    BLOG_COVER_BUCKET,
-    blogCoverDir,
-    null
-  );
+  const parsedVideoUrls = parseVideoUrlsFromBody(req.body);
+  if (parsedVideoUrls !== undefined) body.videoUrls = parsedVideoUrls;
 
-  if (cover.value !== undefined) {
-    body.coverImage = cover.value;
+  const gallery = await resolveGalleryFromRequest(req, BLOG_COVER_BUCKET, blogCoverDir, null);
+
+  if (gallery.changed) {
+    body.images = gallery.images;
+    body.coverImage = gallery.coverImage;
   }
 
   const error = validateBlogBody(body);
@@ -158,15 +182,14 @@ const updateBlog = async (req, res) => {
   }
 
   const body = parseBlogRequestBody(req.body);
-  const cover = await resolveCoverFromRequest(
-    req,
-    BLOG_COVER_BUCKET,
-    blogCoverDir,
-    existing.coverImage
-  );
+  const parsedVideoUrls = parseVideoUrlsFromBody(req.body);
+  if (parsedVideoUrls !== undefined) body.videoUrls = parsedVideoUrls;
 
-  if (cover.value !== undefined) {
-    body.coverImage = cover.value;
+  const gallery = await resolveGalleryFromRequest(req, BLOG_COVER_BUCKET, blogCoverDir, existing);
+
+  if (gallery.changed) {
+    body.images = gallery.images;
+    body.coverImage = gallery.coverImage;
   }
 
   const error = validateBlogBody(body, true);
@@ -180,8 +203,10 @@ const updateBlog = async (req, res) => {
 
   const payload = sanitizeBlogBody(body);
 
-  if (cover.value !== undefined && cover.previous && cover.previous !== cover.value) {
-    await removeCoverAsset(cover.previous, BLOG_COVER_BUCKET, blogCoverDir);
+  if (gallery.changed) {
+    for (const removed of gallery.removedAssets) {
+      await removeCoverAsset(removed, BLOG_COVER_BUCKET, blogCoverDir);
+    }
   }
 
   if (payload.slug) {
@@ -210,7 +235,7 @@ const deleteBlog = async (req, res) => {
     return sendError(res, 404, "Blog not found");
   }
 
-  await removeCoverAsset(blog.coverImage, BLOG_COVER_BUCKET, blogCoverDir);
+  await removeGalleryAssets(getExistingImagesFromDoc(blog), BLOG_COVER_BUCKET, blogCoverDir);
 
   return sendSuccess(res, 200, "Blog deleted");
 };

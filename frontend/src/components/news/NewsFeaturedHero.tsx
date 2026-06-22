@@ -5,7 +5,7 @@ import { CoverImage } from "@/components/common/CoverImage";
 import { getNewsCategoryStyle } from "@/data/newsCategories";
 import { ROUTES } from "@/constants";
 import { estimateNewsReadTime, formatNewsDate } from "@/lib/news";
-import { getNewsCoverUrl } from "@/lib/uploads";
+import { getNewsPrimaryCoverUrl } from "@/lib/uploads";
 import type { News } from "@/types";
 
 interface NewsFeaturedHeroProps {
@@ -16,7 +16,7 @@ interface NewsFeaturedHeroProps {
 export function NewsFeaturedHero({ item, categoryLabel }: NewsFeaturedHeroProps) {
   const styles = getNewsCategoryStyle(item.category);
   const readTime = estimateNewsReadTime(item.content);
-  const coverSrc = getNewsCoverUrl(item.coverImage);
+  const coverSrc = getNewsPrimaryCoverUrl(item);
 
   return (
     <section className="bg-transparent pb-4 pt-2 sm:pb-6">

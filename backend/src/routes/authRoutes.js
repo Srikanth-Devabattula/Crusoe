@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   hasAdmin,
+  adminLogin,
   register,
   login,
   getMe,
@@ -21,6 +22,7 @@ const asyncHandler = require("../utils/asyncHandler");
 const router = express.Router();
 
 router.get("/has-admin", asyncHandler(hasAdmin));
+router.post("/admin-login", authLimiter, asyncHandler(adminLogin));
 router.post("/register", authLimiter, asyncHandler(register));
 router.post("/login", authLimiter, asyncHandler(login));
 router.get("/me", protect, asyncHandler(getMe));

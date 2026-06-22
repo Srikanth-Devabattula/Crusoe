@@ -8,16 +8,12 @@ export const ADMIN_PERMISSIONS: Array<{
   { key: "blogs", label: "Blogs" },
   { key: "news", label: "News" },
   { key: "jobs", label: "Jobs" },
-  { key: "applications", label: "Applications" },
-  { key: "contacts", label: "Contact enquiries" },
 ];
 
 export const EMPTY_PERMISSIONS: Record<AdminPermission, boolean> = {
   blogs: false,
   news: false,
   jobs: false,
-  applications: false,
-  contacts: false,
 };
 
 export function isAdmin(user: User | null): boolean {
@@ -35,7 +31,6 @@ export function hasPermission(
 
 export function getDefaultAdminPath(user: User | null): string {
   if (!user) return ROUTES.admin.login;
-  if (user.role === "admin") return ROUTES.admin.users;
 
   for (const { key } of ADMIN_PERMISSIONS) {
     const href = PERMISSION_ROUTES[key];
@@ -49,12 +44,9 @@ export const PERMISSION_ROUTES: Record<AdminPermission, string> = {
   blogs: ROUTES.admin.blogs,
   news: ROUTES.admin.news,
   jobs: ROUTES.admin.jobs,
-  applications: ROUTES.admin.applications,
-  contacts: ROUTES.admin.contacts,
 };
 
-export function getPermissionForPath(pathname: string): AdminPermission | "users" | null {
-  if (pathname.startsWith(ROUTES.admin.users)) return "users";
+export function getPermissionForPath(pathname: string): AdminPermission | null {
   for (const [key, href] of Object.entries(PERMISSION_ROUTES)) {
     if (pathname === href || pathname.startsWith(`${href}/`)) {
       return key as AdminPermission;
@@ -67,6 +59,5 @@ export function canAccessPath(user: User | null, pathname: string): boolean {
   if (!user) return false;
   const required = getPermissionForPath(pathname);
   if (!required) return true;
-  if (required === "users") return user.role === "admin";
   return hasPermission(user, required);
 }

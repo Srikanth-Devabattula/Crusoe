@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { sendError } = require("../utils/responseHandler");
 const { PERMISSION_KEYS } = require("../constants/permissions");
+const { ENV_ADMIN_ID, getEnvAdminUser } = require("../constants/envAdmin");
 
 const protect = async (req, res, next) => {
   let token;
@@ -21,6 +22,12 @@ const protect = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (decoded.id === ENV_ADMIN_ID) {
+      req.user = getEnvAdminUser();
+      return next();
+    }
+
     const user = await User.findById(decoded.id);
 
     if (!user) {

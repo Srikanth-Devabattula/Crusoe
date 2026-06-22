@@ -30,6 +30,11 @@ export const authService = {
     return response.data;
   },
 
+  adminLogin: async (data: LoginFormData) => {
+    const response = await api.post<ApiResponse<AuthData>>("/auth/admin-login", data);
+    return response.data;
+  },
+
   login: async (data: LoginFormData) => {
     const response = await api.post<ApiResponse<AuthData>>("/auth/login", data);
     return response.data;

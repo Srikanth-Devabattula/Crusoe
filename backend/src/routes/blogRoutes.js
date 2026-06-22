@@ -20,14 +20,14 @@ router.post(
   "/",
   protect,
   requirePermission("blogs"),
-  uploadBlogCover.single("coverImageFile"),
+  uploadBlogCover,
   asyncHandler(createBlog)
 );
 router.put(
   "/:id",
   protect,
   requirePermission("blogs"),
-  uploadBlogCover.single("coverImageFile"),
+  uploadBlogCover,
   asyncHandler(updateBlog)
 );
 router.delete("/:id", protect, requirePermission("blogs"), asyncHandler(deleteBlog));

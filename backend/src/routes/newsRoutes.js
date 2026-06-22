@@ -20,14 +20,14 @@ router.post(
   "/",
   protect,
   requirePermission("news"),
-  uploadNewsCover.single("coverImageFile"),
+  uploadNewsCover,
   asyncHandler(createNews)
 );
 router.put(
   "/:id",
   protect,
   requirePermission("news"),
-  uploadNewsCover.single("coverImageFile"),
+  uploadNewsCover,
   asyncHandler(updateNews)
 );
 router.delete("/:id", protect, requirePermission("news"), asyncHandler(deleteNews));

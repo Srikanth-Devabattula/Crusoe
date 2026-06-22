@@ -2,6 +2,12 @@ const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { isValidEmail } = require("../utils/validators");
+const { secureCompare } = require("../utils/secureCompare");
+const {
+  ENV_ADMIN_ID,
+  getEnvAdminUser,
+  isEnvAdminConfigured,
+} = require("../constants/envAdmin");
 
 const setAuthCookie = (res, token) => {
   const isProduction = process.env.NODE_ENV === "production";
@@ -18,12 +24,57 @@ const { staffHasAnyPermission } = require("../middleware/authMiddleware");
 
 /**
  * @route   GET /api/auth/has-admin
- * @desc    Check if any admin user exists
+ * @desc    Check if admin login is configured
  * @access  Public
  */
 const hasAdmin = async (req, res) => {
-  const count = await User.countDocuments({ role: "admin" });
-  return sendSuccess(res, 200, "Admin status retrieved", { hasAdmin: count > 0 });
+  return sendSuccess(res, 200, "Admin status retrieved", {
+    hasAdmin: isEnvAdminConfigured(),
+  });
+};
+
+/**
+ * @route   POST /api/auth/admin-login
+ * @desc    Admin login using ADMIN_EMAIL + ADMIN_PASSWORD from .env
+ * @access  Public
+ */
+const adminLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return sendError(res, 400, "Email and password are required");
+  }
+
+  if (!isValidEmail(email)) {
+    return sendError(res, 400, "Invalid email format");
+  }
+
+  if (!isEnvAdminConfigured()) {
+    return sendError(
+      res,
+      503,
+      "Admin login is not configured. Set ADMIN_EMAIL and ADMIN_PASSWORD in server environment."
+    );
+  }
+
+  const adminEmail = process.env.ADMIN_EMAIL.trim().toLowerCase();
+  const inputEmail = email.trim().toLowerCase();
+
+  const emailMatch = secureCompare(inputEmail, adminEmail);
+  const passwordMatch = secureCompare(password, process.env.ADMIN_PASSWORD);
+
+  if (!emailMatch || !passwordMatch) {
+    return sendError(res, 401, "Invalid email or password");
+  }
+
+  const token = generateToken(ENV_ADMIN_ID);
+  setAuthCookie(res, token);
+
+  return sendSuccess(res, 200, "Logged in successfully", {
+    user: formatUser(getEnvAdminUser()),
+    token,
+    loginMethod: "env-admin",
+  });
 };
 
 /**
@@ -122,4 +173,4 @@ const getMe = async (req, res) => {
   });
 };
 
-module.exports = { hasAdmin, register, login, getMe };
+module.exports = { hasAdmin, adminLogin, register, login, getMe };

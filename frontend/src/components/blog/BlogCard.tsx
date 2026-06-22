@@ -5,7 +5,7 @@ import { CoverImage } from "@/components/common/CoverImage";
 import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
 import { estimateReadTime, formatBlogDate } from "@/lib/blog";
-import { getBlogCoverUrl } from "@/lib/uploads";
+import { getBlogPrimaryCoverUrl } from "@/lib/uploads";
 import { cn } from "@/lib/cn";
 import type { Blog } from "@/types";
 
@@ -18,7 +18,7 @@ interface BlogCardProps {
 export function BlogCard({ post, categoryLabel, variant = "default" }: BlogCardProps) {
   const styles = getCategoryStyle(post.category);
   const readTime = estimateReadTime(post.content);
-  const coverSrc = getBlogCoverUrl(post.coverImage);
+  const coverSrc = getBlogPrimaryCoverUrl(post);
   const gradientFallback = (
     <div
       className="absolute inset-0"

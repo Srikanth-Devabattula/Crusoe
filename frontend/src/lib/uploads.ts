@@ -54,3 +54,36 @@ export function getNewsCoverUrl(coverImage?: string): string | null {
 
   return resolveStoredCover(coverImage, "news-covers");
 }
+
+/** Resolve all gallery image URLs for a blog post */
+export function getBlogGalleryUrls(post: {
+  images?: string[];
+  coverImage?: string;
+}): string[] {
+  const refs = post.images?.length ? post.images : post.coverImage ? [post.coverImage] : [];
+  return refs.map((ref) => getBlogCoverUrl(ref)).filter((url): url is string => Boolean(url));
+}
+
+/** Resolve all gallery image URLs for a news article */
+export function getNewsGalleryUrls(post: {
+  images?: string[];
+  coverImage?: string;
+}): string[] {
+  const refs = post.images?.length ? post.images : post.coverImage ? [post.coverImage] : [];
+  return refs.map((ref) => getNewsCoverUrl(ref)).filter((url): url is string => Boolean(url));
+}
+
+/** Primary thumbnail for cards — first gallery image or legacy cover */
+export function getBlogPrimaryCoverUrl(post: {
+  images?: string[];
+  coverImage?: string;
+}): string | null {
+  return getBlogGalleryUrls(post)[0] ?? null;
+}
+
+export function getNewsPrimaryCoverUrl(post: {
+  images?: string[];
+  coverImage?: string;
+}): string | null {
+  return getNewsGalleryUrls(post)[0] ?? null;
+}

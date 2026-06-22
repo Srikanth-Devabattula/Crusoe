@@ -1,15 +1,19 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
 
+import {
+  AdminMediaFields,
+  type AdminMediaState,
+} from "@/components/admin/AdminMediaFields";
 import { Button } from "@/components/ui/Button";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { getNewsCoverUrl } from "@/lib/uploads";
+import { getPostVideoUrls } from "@/lib/video";
 import { newsService } from "@/services";
 import type { News, NewsCategoryItem, NewsFormData } from "@/types";
 
@@ -20,15 +24,11 @@ const newsSchema = z.object({
     .optional()
     .refine(
       (val) => !val || /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(val),
-      "Slug: lowercase letters, numbers, and hyphens only"
+      "Slug: lowercase letters, numbers, hyphens only"
     ),
   excerpt: z.string().min(20, "Excerpt is required (min 20 characters)").max(400),
   content: z.string().min(50, "Content is required (min 50 characters)"),
   category: z.string().min(1, "Category is required"),
-  coverImage: z
-    .string()
-    .optional()
-    .refine((val) => !val || /^https?:\/\/.+/i.test(val), "Must be a valid URL"),
   featured: z.boolean(),
   published: z.boolean(),
 });
@@ -41,9 +41,16 @@ const defaultValues: NewsFormValues = {
   excerpt: "",
   content: "",
   category: "announcements",
-  coverImage: "",
   featured: false,
   published: false,
+};
+
+const emptyMediaState: AdminMediaState = {
+  keepImages: [],
+  removeImages: [],
+  galleryFiles: [],
+  imageUrls: [],
+  removeAllImages: false,
 };
 
 const inputClass =
@@ -75,6 +82,13 @@ function Field({
   );
 }
 
+function getExistingImageRefs(news?: News | null): string[] {
+  if (!news) return [];
+  if (news.images?.length) return news.images;
+  if (news.coverImage) return [news.coverImage];
+  return [];
+}
+
 interface AdminNewsFormProps {
   onSuccess: () => void;
   editingNews?: News | null;
@@ -89,65 +103,50 @@ export function AdminNewsForm({
   onCancelEdit,
 }: AdminNewsFormProps) {
   const isEditing = Boolean(editingNews);
-  const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [coverPreview, setCoverPreview] = useState<string | null>(null);
-  const [coverRemoved, setCoverRemoved] = useState(false);
+  const [mediaState, setMediaState] = useState<AdminMediaState>(emptyMediaState);
+  const [videoUrls, setVideoUrls] = useState<string[]>([]);
 
   const form = useForm<NewsFormValues>({
     resolver: zodResolver(newsSchema),
     defaultValues,
   });
 
-  const existingCoverUrl = useMemo(() => {
-    if (!editingNews?.coverImage || coverRemoved) return null;
-    return getNewsCoverUrl(editingNews.coverImage);
-  }, [editingNews, coverRemoved]);
+  const existingImageRefs = useMemo(
+    () => getExistingImageRefs(editingNews),
+    [editingNews]
+  );
 
-  const displayPreview = coverPreview ?? existingCoverUrl;
-
-  useEffect(() => {
-    if (!coverFile) {
-      setCoverPreview(null);
-      return;
-    }
-    const objectUrl = URL.createObjectURL(coverFile);
-    setCoverPreview(objectUrl);
-    setCoverRemoved(false);
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [coverFile]);
+  const handleMediaChange = useCallback((state: AdminMediaState) => {
+    setMediaState(state);
+  }, []);
 
   useEffect(() => {
     if (editingNews) {
-      const isExternal = /^https?:\/\//i.test(editingNews.coverImage ?? "");
-      const categorySlug = categories.some((c) => c.slug === editingNews.category)
-        ? editingNews.category
-        : categories[0]?.slug ?? "announcements";
+      const categorySlug =
+        categories.some((c) => c.slug === editingNews.category)
+          ? editingNews.category
+          : categories[0]?.slug ?? "announcements";
       form.reset({
         title: editingNews.title,
         slug: editingNews.slug,
         excerpt: editingNews.excerpt ?? "",
         content: editingNews.content ?? "",
         category: categorySlug,
-        coverImage: isExternal ? editingNews.coverImage ?? "" : "",
         featured: editingNews.featured ?? false,
         published: editingNews.published,
       });
-      setCoverFile(null);
-      setCoverRemoved(false);
+      setVideoUrls(getPostVideoUrls(editingNews));
     } else {
       form.reset({
         ...defaultValues,
         category: categories[0]?.slug ?? "announcements",
       });
-      setCoverFile(null);
-      setCoverRemoved(false);
+      setVideoUrls([]);
     }
+    setMediaState(emptyMediaState);
   }, [editingNews, categories, form]);
 
   const onSubmit = async (values: NewsFormValues) => {
-    const externalUrl = values.coverImage?.trim() ?? "";
-    const coverChanged = Boolean(coverFile) || coverRemoved || Boolean(externalUrl);
-
     const payload: NewsFormData = {
       title: values.title,
       excerpt: values.excerpt,
@@ -156,25 +155,42 @@ export function AdminNewsForm({
       featured: values.featured,
       published: values.published,
       slug: values.slug?.trim() || undefined,
+      videoUrls,
     };
 
-    if (coverChanged) {
-      payload.coverImage = coverFile ? "" : coverRemoved ? "" : externalUrl;
-    }
+    const hasMediaChanges =
+      mediaState.galleryFiles.length > 0 ||
+      mediaState.removeImages.length > 0 ||
+      mediaState.imageUrls.length > 0 ||
+      mediaState.removeAllImages;
 
-    const options = { coverFile, removeCoverImage: coverRemoved && !coverFile };
+    const mediaOptions =
+      hasMediaChanges || (isEditing && existingImageRefs.length > 0)
+        ? {
+            galleryFiles: mediaState.galleryFiles,
+            keepImages: mediaState.keepImages,
+            removeImages: mediaState.removeImages,
+            imageUrls: mediaState.imageUrls,
+            removeAllImages: mediaState.removeAllImages,
+          }
+        : hasMediaChanges
+          ? {
+              galleryFiles: mediaState.galleryFiles,
+              imageUrls: mediaState.imageUrls,
+            }
+          : undefined;
 
     try {
       if (isEditing && editingNews) {
-        await newsService.update(editingNews._id, payload, options);
+        await newsService.update(editingNews._id, payload, mediaOptions);
         toast.success("News updated");
       } else {
-        await newsService.create(payload, options);
+        await newsService.create(payload, mediaOptions);
         toast.success("News created");
       }
       form.reset(defaultValues);
-      setCoverFile(null);
-      setCoverRemoved(false);
+      setMediaState(emptyMediaState);
+      setVideoUrls([]);
       onSuccess();
     } catch (error) {
       toast.error(getApiErrorMessage(error));
@@ -217,44 +233,14 @@ export function AdminNewsForm({
           )}
         </Field>
 
-        <Field
-          label="Cover image"
-          hint="Optional. Upload or paste a URL."
-          error={form.formState.errors.coverImage?.message}
-        >
-          <div className="space-y-3">
-            <input
-              type="file"
-              accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"
-              onChange={(e) => setCoverFile(e.target.files?.[0] ?? null)}
-              className="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-brand/10 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-brand hover:file:bg-brand/20"
-            />
-            <input
-              {...form.register("coverImage")}
-              className={inputClass}
-              placeholder="Or paste image URL: https://example.com/image.jpg"
-              disabled={Boolean(coverFile)}
-            />
-            {displayPreview && (
-              <div className="relative max-h-48 overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
-                <Image src={displayPreview} alt="Cover preview" width={480} height={270} unoptimized className="mx-auto h-auto max-h-48 w-full object-contain" />
-              </div>
-            )}
-            {displayPreview && (
-              <button
-                type="button"
-                onClick={() => {
-                  setCoverFile(null);
-                  setCoverRemoved(true);
-                  form.setValue("coverImage", "");
-                }}
-                className="text-sm font-medium text-red-600 hover:underline"
-              >
-                Remove cover image
-              </button>
-            )}
-          </div>
-        </Field>
+        <AdminMediaFields
+          mediaType="news"
+          existingImages={existingImageRefs}
+          resolveImageUrl={getNewsCoverUrl}
+          videoUrls={videoUrls}
+          onVideoUrlsChange={setVideoUrls}
+          onMediaChange={handleMediaChange}
+        />
 
         <Field label="Excerpt" required error={form.formState.errors.excerpt?.message}>
           <textarea {...form.register("excerpt")} rows={3} className={inputClass} placeholder="Short summary" required />

@@ -1,4 +1,4 @@
-const PERMISSION_KEYS = ["blogs", "news", "jobs", "applications", "contacts"];
+const PERMISSION_KEYS = ["blogs", "news", "jobs"];
 
 const DEFAULT_PERMISSIONS = Object.fromEntries(
   PERMISSION_KEYS.map((key) => [key, false]),

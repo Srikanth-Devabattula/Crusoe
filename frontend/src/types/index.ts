@@ -4,12 +4,7 @@ export interface ApiResponse<T = unknown> {
   data?: T;
 }
 
-export type AdminPermission =
-  | "blogs"
-  | "news"
-  | "jobs"
-  | "applications"
-  | "contacts";
+export type AdminPermission = "blogs" | "news" | "jobs";
 
 export type AdminPermissions = Record<AdminPermission, boolean>;
 
@@ -18,26 +13,6 @@ export interface User {
   name: string;
   email: string;
   role: "admin" | "staff";
-  permissions?: AdminPermissions;
-}
-
-export interface AdminUserRecord extends User {
-  passwordPlain?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface CreateAdminUserPayload {
-  name: string;
-  email: string;
-  password: string;
-  permissions: AdminPermissions;
-}
-
-export interface UpdateAdminUserPayload {
-  name?: string;
-  email?: string;
-  password?: string;
   permissions?: AdminPermissions;
 }
 
@@ -57,6 +32,9 @@ export interface Blog {
   excerpt: string;
   category: string;
   coverImage?: string;
+  images?: string[];
+  videoUrl?: string;
+  videoUrls?: string[];
   featured: boolean;
   published: boolean;
   createdAt: string;
@@ -70,6 +48,9 @@ export interface BlogFormData {
   content: string;
   category: string;
   coverImage?: string;
+  images?: string[];
+  videoUrl?: string;
+  videoUrls?: string[];
   featured: boolean;
   published: boolean;
 }
@@ -90,6 +71,9 @@ export interface News {
   excerpt: string;
   category: string;
   coverImage?: string;
+  images?: string[];
+  videoUrl?: string;
+  videoUrls?: string[];
   featured: boolean;
   published: boolean;
   createdAt: string;
@@ -103,6 +87,9 @@ export interface NewsFormData {
   content: string;
   category: string;
   coverImage?: string;
+  images?: string[];
+  videoUrl?: string;
+  videoUrls?: string[];
   featured: boolean;
   published: boolean;
 }
@@ -142,46 +129,12 @@ export interface ContactFormData {
   message: string;
 }
 
-export type ContactStatus = "new" | "read" | "replied";
-
-export interface ContactSubmission {
-  _id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  company?: string;
-  service?: string;
-  subject: string;
-  message: string;
-  status: ContactStatus;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface ApplicationFormData {
   jobId: string;
   name: string;
   email: string;
   phone?: string;
   resume?: File;
-}
-
-export interface JobApplication {
-  _id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  resume: string;
-  status: "pending" | "reviewed" | "accepted" | "rejected";
-  createdAt: string;
-}
-
-export interface JobWithApplications {
-  job: Pick<
-    Job,
-    "_id" | "title" | "experience" | "location" | "department" | "type"
-  >;
-  applications: JobApplication[];
 }
 
 export interface LoginFormData {

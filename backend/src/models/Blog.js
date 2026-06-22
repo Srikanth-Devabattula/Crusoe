@@ -33,6 +33,18 @@ const blogSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    images: {
+      type: [String],
+      default: [],
+    },
+    videoUrl: {
+      type: String,
+      default: "",
+    },
+    videoUrls: {
+      type: [String],
+      default: [],
+    },
     featured: {
       type: Boolean,
       default: false,

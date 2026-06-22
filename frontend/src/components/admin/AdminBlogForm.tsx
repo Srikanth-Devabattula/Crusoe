@@ -1,15 +1,19 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
 
+import {
+  AdminMediaFields,
+  type AdminMediaState,
+} from "@/components/admin/AdminMediaFields";
 import { Button } from "@/components/ui/Button";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { getBlogCoverUrl } from "@/lib/uploads";
+import { getPostVideoUrls } from "@/lib/video";
 import { blogService } from "@/services";
 import type { Blog, BlogCategoryItem, BlogFormData } from "@/types";
 
@@ -25,10 +29,6 @@ const blogSchema = z.object({
   excerpt: z.string().min(20, "Excerpt must be at least 20 characters").max(400),
   content: z.string().min(50, "Content must be at least 50 characters"),
   category: z.string().min(1, "Category is required"),
-  coverImage: z
-    .string()
-    .optional()
-    .refine((val) => !val || /^https?:\/\/.+/i.test(val), "Must be a valid URL"),
   featured: z.boolean(),
   published: z.boolean(),
 });
@@ -41,9 +41,16 @@ const defaultValues: BlogFormValues = {
   excerpt: "",
   content: "",
   category: "insights",
-  coverImage: "",
   featured: false,
   published: false,
+};
+
+const emptyMediaState: AdminMediaState = {
+  keepImages: [],
+  removeImages: [],
+  galleryFiles: [],
+  imageUrls: [],
+  removeAllImages: false,
 };
 
 const inputClass =
@@ -75,6 +82,13 @@ function Field({
   );
 }
 
+function getExistingImageRefs(blog?: Blog | null): string[] {
+  if (!blog) return [];
+  if (blog.images?.length) return blog.images;
+  if (blog.coverImage) return [blog.coverImage];
+  return [];
+}
+
 interface AdminBlogFormProps {
   onSuccess: () => void;
   editingBlog?: Blog | null;
@@ -89,38 +103,25 @@ export function AdminBlogForm({
   onCancelEdit,
 }: AdminBlogFormProps) {
   const isEditing = Boolean(editingBlog);
-  const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [coverPreview, setCoverPreview] = useState<string | null>(null);
-  const [coverRemoved, setCoverRemoved] = useState(false);
+  const [mediaState, setMediaState] = useState<AdminMediaState>(emptyMediaState);
+  const [videoUrls, setVideoUrls] = useState<string[]>([]);
 
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogSchema),
     defaultValues,
   });
 
-  const existingCoverUrl = useMemo(() => {
-    if (!editingBlog?.coverImage || coverRemoved) return null;
-    return getBlogCoverUrl(editingBlog.coverImage);
-  }, [editingBlog, coverRemoved]);
+  const existingImageRefs = useMemo(
+    () => getExistingImageRefs(editingBlog),
+    [editingBlog]
+  );
 
-  const displayPreview = coverPreview ?? existingCoverUrl;
-
-  useEffect(() => {
-    if (!coverFile) {
-      setCoverPreview(null);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(coverFile);
-    setCoverPreview(objectUrl);
-    setCoverRemoved(false);
-
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [coverFile]);
+  const handleMediaChange = useCallback((state: AdminMediaState) => {
+    setMediaState(state);
+  }, []);
 
   useEffect(() => {
     if (editingBlog) {
-      const isExternal = /^https?:\/\//i.test(editingBlog.coverImage ?? "");
       const categorySlug =
         categories.some((c) => c.slug === editingBlog.category)
           ? editingBlog.category
@@ -131,27 +132,22 @@ export function AdminBlogForm({
         excerpt: editingBlog.excerpt ?? "",
         content: editingBlog.content ?? "",
         category: categorySlug,
-        coverImage: isExternal ? editingBlog.coverImage ?? "" : "",
         featured: editingBlog.featured ?? false,
         published: editingBlog.published,
       });
-      setCoverFile(null);
-      setCoverRemoved(false);
+      setVideoUrls(getPostVideoUrls(editingBlog));
     } else {
       form.reset({
         ...defaultValues,
         category: categories[0]?.slug ?? "insights",
       });
-      setCoverFile(null);
-      setCoverRemoved(false);
+      setVideoUrls([]);
     }
+    setMediaState(emptyMediaState);
   }, [editingBlog, categories, form]);
 
   const onSubmit = async (values: BlogFormValues) => {
-    const externalUrl = values.coverImage?.trim() ?? "";
-    const coverChanged = Boolean(coverFile) || coverRemoved || Boolean(externalUrl);
-
-    const payload: BlogFormValues = {
+    const payload: BlogFormData = {
       title: values.title,
       excerpt: values.excerpt,
       content: values.content,
@@ -159,28 +155,42 @@ export function AdminBlogForm({
       featured: values.featured,
       published: values.published,
       slug: values.slug?.trim() || undefined,
+      videoUrls,
     };
 
-    if (coverChanged) {
-      payload.coverImage = coverFile ? "" : coverRemoved ? "" : externalUrl;
-    }
+    const hasMediaChanges =
+      mediaState.galleryFiles.length > 0 ||
+      mediaState.removeImages.length > 0 ||
+      mediaState.imageUrls.length > 0 ||
+      mediaState.removeAllImages;
 
-    const options = {
-      coverFile,
-      removeCoverImage: coverRemoved && !coverFile,
-    };
+    const mediaOptions =
+      hasMediaChanges || (isEditing && existingImageRefs.length > 0)
+        ? {
+            galleryFiles: mediaState.galleryFiles,
+            keepImages: mediaState.keepImages,
+            removeImages: mediaState.removeImages,
+            imageUrls: mediaState.imageUrls,
+            removeAllImages: mediaState.removeAllImages,
+          }
+        : hasMediaChanges
+          ? {
+              galleryFiles: mediaState.galleryFiles,
+              imageUrls: mediaState.imageUrls,
+            }
+          : undefined;
 
     try {
       if (isEditing && editingBlog) {
-        await blogService.update(editingBlog._id, payload, options);
+        await blogService.update(editingBlog._id, payload, mediaOptions);
         toast.success("Blog updated");
       } else {
-        await blogService.create(payload, options);
+        await blogService.create(payload, mediaOptions);
         toast.success("Blog created");
       }
       form.reset(defaultValues);
-      setCoverFile(null);
-      setCoverRemoved(false);
+      setMediaState(emptyMediaState);
+      setVideoUrls([]);
       onSuccess();
     } catch (error) {
       toast.error(getApiErrorMessage(error));
@@ -228,50 +238,14 @@ export function AdminBlogForm({
           )}
         </Field>
 
-        <Field
-          label="Cover image"
-          hint="Upload JPG, PNG, WebP, or GIF (max 5MB), or paste an external https:// URL. Upload takes priority over URL."
-          error={form.formState.errors.coverImage?.message}
-        >
-          <div className="space-y-3">
-            <input
-              type="file"
-              accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"
-              onChange={(e) => setCoverFile(e.target.files?.[0] ?? null)}
-              className="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-brand/10 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-brand hover:file:bg-brand/20"
-            />
-            <input
-              {...form.register("coverImage")}
-              className={inputClass}
-              placeholder="Or paste image URL: https://example.com/image.jpg"
-              disabled={Boolean(coverFile)}
-            />
-            {displayPreview && (
-              <div className="relative aspect-[16/9] max-h-48 overflow-hidden rounded-lg border border-gray-200">
-                <Image
-                  src={displayPreview}
-                  alt="Cover preview"
-                  fill
-                  unoptimized
-                  className="object-cover"
-                />
-              </div>
-            )}
-            {displayPreview && (
-              <button
-                type="button"
-                onClick={() => {
-                  setCoverFile(null);
-                  setCoverRemoved(true);
-                  form.setValue("coverImage", "");
-                }}
-                className="text-sm font-medium text-red-600 hover:underline"
-              >
-                Remove cover image
-              </button>
-            )}
-          </div>
-        </Field>
+        <AdminMediaFields
+          mediaType="blog"
+          existingImages={existingImageRefs}
+          resolveImageUrl={getBlogCoverUrl}
+          videoUrls={videoUrls}
+          onVideoUrlsChange={setVideoUrls}
+          onMediaChange={handleMediaChange}
+        />
 
         <Field label="Excerpt" required error={form.formState.errors.excerpt?.message}>
           <textarea

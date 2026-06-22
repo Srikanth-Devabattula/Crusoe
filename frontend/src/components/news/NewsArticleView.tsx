@@ -4,14 +4,15 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { HiOutlineArrowLeft, HiOutlineCalendar, HiOutlineClock } from "react-icons/hi";
 
-import { CoverImage } from "@/components/common/CoverImage";
+import { PostGallery, PostVideo } from "@/components/common/PostMediaSection";
 import { NewsCard } from "@/components/news/NewsCard";
 import { getNewsCategoryStyle } from "@/data/newsCategories";
 import { ROUTES } from "@/constants";
 import { useNewsCategories } from "@/hooks/useNewsCategories";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { estimateNewsReadTime, formatNewsDate } from "@/lib/news";
-import { getNewsCoverUrl } from "@/lib/uploads";
+import { getNewsGalleryUrls } from "@/lib/uploads";
+import { getPostVideoUrls } from "@/lib/video";
 import { newsService } from "@/services";
 import type { News } from "@/types";
 
@@ -82,10 +83,11 @@ export function NewsArticleView({ slug }: NewsArticleViewProps) {
 
   const styles = getNewsCategoryStyle(item.category);
   const readTime = estimateNewsReadTime(item.content);
-  const coverSrc = getNewsCoverUrl(item.coverImage);
+  const galleryImages = getNewsGalleryUrls(item);
+  const videoUrls = getPostVideoUrls(item);
 
   return (
-    <article className="bg-white">
+    <article className="overflow-x-hidden bg-white">
       <div className="relative overflow-hidden bg-transparent pt-[5.25rem] sm:pt-[5.75rem] lg:pt-[6.25rem]">
         <div className="hero-container pb-10 lg:pb-14">
           <Link
@@ -122,22 +124,10 @@ export function NewsArticleView({ slug }: NewsArticleViewProps) {
         </div>
       </div>
 
-      <div className="hero-container pb-12 lg:pb-16">
-        {coverSrc && (
-          <figure className="mx-auto max-w-3xl overflow-hidden rounded-[20px] border border-[#E8EEF5] bg-slate-50/80 shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
-            <CoverImage
-              src={coverSrc}
-              alt=""
-              width={960}
-              height={540}
-              priority
-              sizes="(max-width: 768px) 100vw, 768px"
-              imageClassName="mx-auto block h-auto w-full max-h-[280px] object-contain sm:max-h-[320px] lg:max-h-[360px]"
-            />
-          </figure>
-        )}
+      <PostGallery images={galleryImages} title={item.title} />
 
-        <div className="prose-blog mx-auto mt-10 max-w-3xl">
+      <div className="hero-container min-w-0 pt-10 lg:pt-12">
+        <div className="prose-blog mx-auto max-w-3xl">
           {item.content.split("\n").map((paragraph, index) =>
             paragraph.trim() ? (
               <p key={index} className="mb-5 text-base leading-relaxed text-slate-700 sm:text-lg">
@@ -149,6 +139,8 @@ export function NewsArticleView({ slug }: NewsArticleViewProps) {
           )}
         </div>
       </div>
+
+      <PostVideo title={item.title} videoUrls={videoUrls} />
 
       {related.length > 0 && (
         <section className="border-t border-[#E8EEF5] bg-[#f8faf6] py-14 sm:py-16">

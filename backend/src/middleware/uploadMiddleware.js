@@ -53,18 +53,29 @@ const uploadResume = multer({
 
 const memoryStorage = multer.memoryStorage();
 
+const galleryLimits = {
+  fileSize: 5 * 1024 * 1024,
+  files: 11,
+};
+
 /** Blog/news covers stored in MongoDB GridFS (not disk) */
 const uploadBlogCover = multer({
   storage: memoryStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
-});
+  limits: galleryLimits,
+}).fields([
+  { name: "coverImageFile", maxCount: 1 },
+  { name: "galleryImages", maxCount: 10 },
+]);
 
 const uploadNewsCover = multer({
   storage: memoryStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
-});
+  limits: galleryLimits,
+}).fields([
+  { name: "coverImageFile", maxCount: 1 },
+  { name: "galleryImages", maxCount: 10 },
+]);
 
 module.exports = {
   uploadResume,

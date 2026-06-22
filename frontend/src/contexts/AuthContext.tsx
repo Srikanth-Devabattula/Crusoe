@@ -115,7 +115,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const login = async (data: LoginFormData) => {
-    const res = await authService.login(data);
+    const res = await authService.adminLogin(data);
     if (!res.data?.token || !res.data?.user) {
       throw new Error(res.message || "Login failed");
     }

@@ -5,8 +5,14 @@ const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
 const {
   removeCoverAsset,
-  resolveCoverFromRequest,
+  resolveGalleryFromRequest,
   validateCoverImageValue,
+  validateGalleryImages,
+  validateVideoUrls,
+  removeGalleryAssets,
+  getExistingImagesFromDoc,
+  parseVideoUrlsFromBody,
+  sanitizeVideoUrlsPayload,
 } = require("../utils/gridfsStorage");
 
 const NEWS_COVER_BUCKET = "news-covers";
@@ -18,6 +24,9 @@ const parseNewsRequestBody = (body) => ({
   content: body.content,
   category: body.category,
   coverImage: body.coverImage,
+  images: body.images,
+  videoUrl: body.videoUrl,
+  videoUrls: body.videoUrls,
   featured: body.featured === true || body.featured === "true",
   published: body.published === true || body.published === "true",
   removeCoverImage: body.removeCoverImage === true || body.removeCoverImage === "true",
@@ -48,7 +57,7 @@ const getNewsBySlug = async (req, res) => {
 };
 
 const validateNewsBody = (body, isUpdate = false) => {
-  const { title, slug, excerpt, content, category, coverImage } = body;
+  const { title, slug, excerpt, content, category, coverImage, images, videoUrls } = body;
 
   if (!isUpdate || title !== undefined) {
     if (!title || !String(title).trim()) return "Title is required";
@@ -69,6 +78,14 @@ const validateNewsBody = (body, isUpdate = false) => {
     const coverError = validateCoverImageValue(coverImage);
     if (coverError) return coverError;
   }
+  if (images !== undefined) {
+    const galleryError = validateGalleryImages(images);
+    if (galleryError) return galleryError;
+  }
+  if (videoUrls !== undefined) {
+    const videoError = validateVideoUrls(videoUrls);
+    if (videoError) return videoError;
+  }
   return null;
 };
 
@@ -80,6 +97,12 @@ const sanitizeNewsBody = (body) => {
   if (body.content !== undefined) payload.content = String(body.content).trim();
   if (body.category !== undefined) payload.category = body.category;
   if (body.coverImage !== undefined) payload.coverImage = String(body.coverImage).trim();
+  if (body.images !== undefined) payload.images = body.images;
+  if (body.videoUrls !== undefined) {
+    const videoPayload = sanitizeVideoUrlsPayload(body.videoUrls);
+    payload.videoUrls = videoPayload.videoUrls;
+    payload.videoUrl = videoPayload.videoUrl;
+  }
   if (body.featured !== undefined) payload.featured = Boolean(body.featured);
   if (body.published !== undefined) payload.published = Boolean(body.published);
   return payload;
@@ -94,9 +117,15 @@ const assertCategoryExists = async (slug) =>
 
 const createNews = async (req, res) => {
   const body = parseNewsRequestBody(req.body);
-  const cover = await resolveCoverFromRequest(req, NEWS_COVER_BUCKET, newsCoverDir, null);
+  const parsedVideoUrls = parseVideoUrlsFromBody(req.body);
+  if (parsedVideoUrls !== undefined) body.videoUrls = parsedVideoUrls;
 
-  if (cover.value !== undefined) body.coverImage = cover.value;
+  const gallery = await resolveGalleryFromRequest(req, NEWS_COVER_BUCKET, newsCoverDir, null);
+
+  if (gallery.changed) {
+    body.images = gallery.images;
+    body.coverImage = gallery.coverImage;
+  }
 
   const error = validateNewsBody(body);
   if (error) return sendError(res, 400, error);
@@ -120,14 +149,15 @@ const updateNews = async (req, res) => {
   if (!existing) return sendError(res, 404, "News not found");
 
   const body = parseNewsRequestBody(req.body);
-  const cover = await resolveCoverFromRequest(
-    req,
-    NEWS_COVER_BUCKET,
-    newsCoverDir,
-    existing.coverImage
-  );
+  const parsedVideoUrls = parseVideoUrlsFromBody(req.body);
+  if (parsedVideoUrls !== undefined) body.videoUrls = parsedVideoUrls;
 
-  if (cover.value !== undefined) body.coverImage = cover.value;
+  const gallery = await resolveGalleryFromRequest(req, NEWS_COVER_BUCKET, newsCoverDir, existing);
+
+  if (gallery.changed) {
+    body.images = gallery.images;
+    body.coverImage = gallery.coverImage;
+  }
 
   const error = validateNewsBody(body, true);
   if (error) return sendError(res, 400, error);
@@ -140,8 +170,10 @@ const updateNews = async (req, res) => {
 
   const payload = sanitizeNewsBody(body);
 
-  if (cover.value !== undefined && cover.previous && cover.previous !== cover.value) {
-    await removeCoverAsset(cover.previous, NEWS_COVER_BUCKET, newsCoverDir);
+  if (gallery.changed) {
+    for (const removed of gallery.removedAssets) {
+      await removeCoverAsset(removed, NEWS_COVER_BUCKET, newsCoverDir);
+    }
   }
 
   if (payload.slug) {
@@ -164,7 +196,7 @@ const deleteNews = async (req, res) => {
   const item = await News.findByIdAndDelete(req.params.id);
   if (!item) return sendError(res, 404, "News not found");
 
-  await removeCoverAsset(item.coverImage, NEWS_COVER_BUCKET, newsCoverDir);
+  await removeGalleryAssets(getExistingImagesFromDoc(item), NEWS_COVER_BUCKET, newsCoverDir);
 
   return sendSuccess(res, 200, "News deleted");
 };

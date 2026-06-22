@@ -8,14 +8,15 @@ import {
   HiOutlineClock,
 } from "react-icons/hi";
 
+import { PostGallery, PostVideo } from "@/components/common/PostMediaSection";
 import { BlogCard } from "@/components/blog/BlogCard";
-import { CoverImage } from "@/components/common/CoverImage";
 import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
 import { useBlogCategories } from "@/hooks/useBlogCategories";
 import { estimateReadTime, formatBlogDate } from "@/lib/blog";
 import { getApiErrorMessage } from "@/lib/api-error";
-import { getBlogCoverUrl } from "@/lib/uploads";
+import { getBlogGalleryUrls } from "@/lib/uploads";
+import { getPostVideoUrls } from "@/lib/video";
 import { blogService } from "@/services";
 import type { Blog } from "@/types";
 
@@ -89,7 +90,8 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
 
   const styles = getCategoryStyle(post.category);
   const readTime = estimateReadTime(post.content);
-  const coverSrc = getBlogCoverUrl(post.coverImage);
+  const galleryImages = getBlogGalleryUrls(post);
+  const videoUrls = getPostVideoUrls(post);
 
   return (
     <article className="overflow-x-hidden bg-white" dir="ltr">
@@ -131,29 +133,10 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
         </div>
       </div>
 
-      <div className="hero-container min-w-0 pb-12 lg:pb-16">
-        <figure className="mx-auto max-w-3xl overflow-hidden rounded-[20px] border border-[#E8EEF5] bg-slate-50/80 shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
-          {coverSrc ? (
-            <CoverImage
-              src={coverSrc}
-              alt=""
-              width={960}
-              height={540}
-              priority
-              sizes="(max-width: 768px) 100vw, 768px"
-              imageClassName="mx-auto block h-auto w-full max-h-[280px] object-contain sm:max-h-[320px] lg:max-h-[360px]"
-            />
-          ) : (
-            <div
-              className="aspect-[16/10] w-full max-h-[240px] sm:max-h-[280px]"
-              style={{
-                background: `linear-gradient(to bottom right, ${styles.accent}33, ${styles.bg}, #eef4e8)`,
-              }}
-            />
-          )}
-        </figure>
+      <PostGallery images={galleryImages} title={post.title} />
 
-        <div className="prose-blog mx-auto mt-10 max-w-3xl">
+      <div className="hero-container min-w-0 pt-10 lg:pt-12">
+        <div className="prose-blog mx-auto max-w-3xl">
           {post.content.split("\n").map((paragraph, index) =>
             paragraph.trim() ? (
               <p key={index} className="mb-5 break-words text-left text-base leading-relaxed text-slate-700 sm:text-lg">
@@ -165,6 +148,8 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
           )}
         </div>
       </div>
+
+      <PostVideo title={post.title} videoUrls={videoUrls} />
 
       {related.length > 0 && (
         <section className="border-t border-[#E8EEF5] bg-[#f8faf6] py-14 sm:py-16">

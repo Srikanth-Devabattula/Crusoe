@@ -1,9 +1,12 @@
 import api from "@/lib/api";
 import type { ApiResponse, Blog, BlogFormData } from "@/types";
 
-type BlogMutationOptions = {
-  coverFile?: File | null;
-  removeCoverImage?: boolean;
+export type BlogMediaOptions = {
+  galleryFiles?: File[];
+  keepImages?: string[];
+  removeImages?: string[];
+  imageUrls?: string[];
+  removeAllImages?: boolean;
 };
 
 function appendBlogFields(formData: FormData, data: Partial<BlogFormData>) {
@@ -13,25 +16,53 @@ function appendBlogFields(formData: FormData, data: Partial<BlogFormData>) {
   if (data.content !== undefined) formData.append("content", data.content);
   if (data.category !== undefined) formData.append("category", data.category);
   if (data.coverImage !== undefined) formData.append("coverImage", data.coverImage);
+  if (data.videoUrl !== undefined) formData.append("videoUrl", data.videoUrl);
+  if (data.videoUrls !== undefined) {
+    formData.append("videoUrls", JSON.stringify(data.videoUrls));
+  }
   if (data.featured !== undefined) formData.append("featured", String(data.featured));
   if (data.published !== undefined) formData.append("published", String(data.published));
 }
 
+function appendBlogMediaFields(formData: FormData, options?: BlogMediaOptions) {
+  if (options?.keepImages !== undefined) {
+    formData.append("keepImages", JSON.stringify(options.keepImages));
+  }
+  if (options?.removeImages?.length) {
+    formData.append("removeImages", JSON.stringify(options.removeImages));
+  }
+  if (options?.imageUrls?.length) {
+    formData.append("imageUrls", JSON.stringify(options.imageUrls));
+  }
+  if (options?.removeAllImages) {
+    formData.append("removeAllImages", "true");
+  }
+  if (options?.galleryFiles?.length) {
+    for (const file of options.galleryFiles) {
+      formData.append("galleryImages", file);
+    }
+  }
+}
+
+function needsBlogFormData(data: Partial<BlogFormData>, options?: BlogMediaOptions) {
+  return Boolean(
+    options?.galleryFiles?.length ||
+      options?.keepImages !== undefined ||
+      options?.removeImages?.length ||
+      options?.imageUrls?.length ||
+      options?.removeAllImages ||
+      data.videoUrl !== undefined ||
+      data.videoUrls !== undefined
+  );
+}
+
 function buildBlogFormData(
   data: Partial<BlogFormData>,
-  options?: BlogMutationOptions
+  options?: BlogMediaOptions
 ): FormData {
   const formData = new FormData();
   appendBlogFields(formData, data);
-
-  if (options?.removeCoverImage) {
-    formData.append("removeCoverImage", "true");
-  }
-
-  if (options?.coverFile) {
-    formData.append("coverImageFile", options.coverFile);
-  }
-
+  appendBlogMediaFields(formData, options);
   return formData;
 }
 
@@ -55,8 +86,8 @@ export const blogService = {
     return response.data;
   },
 
-  create: async (data: BlogFormData, options?: BlogMutationOptions) => {
-    if (options?.coverFile || options?.removeCoverImage) {
+  create: async (data: BlogFormData, options?: BlogMediaOptions) => {
+    if (needsBlogFormData(data, options)) {
       const formData = buildBlogFormData(data, options);
       const response = await api.post<ApiResponse<Blog>>("/blogs", formData);
       return response.data;
@@ -69,9 +100,9 @@ export const blogService = {
   update: async (
     id: string,
     data: Partial<BlogFormData>,
-    options?: BlogMutationOptions
+    options?: BlogMediaOptions
   ) => {
-    if (options?.coverFile || options?.removeCoverImage) {
+    if (needsBlogFormData(data, options)) {
       const formData = buildBlogFormData(data, options);
       const response = await api.put<ApiResponse<Blog>>(`/blogs/${id}`, formData);
       return response.data;

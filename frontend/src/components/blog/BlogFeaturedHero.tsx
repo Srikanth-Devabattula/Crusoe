@@ -5,7 +5,7 @@ import { CoverImage } from "@/components/common/CoverImage";
 import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
 import { estimateReadTime, formatBlogDate } from "@/lib/blog";
-import { getBlogCoverUrl } from "@/lib/uploads";
+import { getBlogPrimaryCoverUrl } from "@/lib/uploads";
 import type { Blog } from "@/types";
 
 interface BlogFeaturedHeroProps {
@@ -16,7 +16,7 @@ interface BlogFeaturedHeroProps {
 export function BlogFeaturedHero({ post, categoryLabel }: BlogFeaturedHeroProps) {
   const styles = getCategoryStyle(post.category);
   const readTime = estimateReadTime(post.content);
-  const coverSrc = getBlogCoverUrl(post.coverImage);
+  const coverSrc = getBlogPrimaryCoverUrl(post);
 
   return (
     <section className="bg-transparent pb-4 pt-2 sm:pb-6">
