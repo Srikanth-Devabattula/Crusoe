@@ -4,7 +4,7 @@ export interface ApiResponse<T = unknown> {
   data?: T;
 }
 
-export type AdminPermission = "blogs" | "news" | "jobs";
+export type AdminPermission = "blogs" | "news" | "jobs" | "testimonials" | "team";
 
 export type AdminPermissions = Record<AdminPermission, boolean>;
 
@@ -117,6 +117,62 @@ export interface JobFormData {
   department?: string;
   type: Job["type"];
   published: boolean;
+}
+
+export interface Testimonial {
+  _id: string;
+  name: string;
+  title: string;
+  company?: string;
+  quote?: string;
+  photo?: string;
+  rating: number;
+  type: "text" | "video";
+  videoUrl?: string;
+  published: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TestimonialFormData {
+  name: string;
+  title: string;
+  company?: string;
+  quote?: string;
+  photo?: string;
+  rating: number;
+  type: "text" | "video";
+  videoUrl?: string;
+  published: boolean;
+  sortOrder?: number;
+}
+
+export interface TeamMember {
+  _id: string;
+  name: string;
+  role: string;
+  bio?: string;
+  photo?: string;
+  linkedIn?: string;
+  twitter?: string;
+  email?: string;
+  published: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TeamMemberFormData {
+  name: string;
+  role: string;
+  bio?: string;
+  photo?: string;
+  linkedIn?: string;
+  twitter?: string;
+  email?: string;
+  published: boolean;
+  sortOrder?: number;
 }
 
 export interface ContactFormData {

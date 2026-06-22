@@ -77,10 +77,24 @@ const uploadNewsCover = multer({
   { name: "galleryImages", maxCount: 10 },
 ]);
 
+const uploadTestimonialPhoto = multer({
+  storage: memoryStorage,
+  fileFilter: imageFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
+}).single("photoFile");
+
+const uploadTeamPhoto = multer({
+  storage: memoryStorage,
+  fileFilter: imageFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
+}).single("photoFile");
+
 module.exports = {
   uploadResume,
   uploadBlogCover,
   uploadNewsCover,
+  uploadTestimonialPhoto,
+  uploadTeamPhoto,
   blogCoverDir,
   newsCoverDir,
 };

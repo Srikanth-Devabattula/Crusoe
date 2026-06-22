@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileText, Newspaper, Briefcase, LogOut } from "lucide-react";
+import { FileText, Newspaper, Briefcase, LogOut, MessageSquareQuote, Users } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { ROUTES } from "@/constants";
 import { useAuth } from "@/contexts/AuthContext";
@@ -18,6 +18,13 @@ const sectionLinks: Array<{
   { href: ROUTES.admin.blogs, label: "Blogs", icon: FileText, permission: "blogs" },
   { href: ROUTES.admin.news, label: "News", icon: Newspaper, permission: "news" },
   { href: ROUTES.admin.jobs, label: "Jobs", icon: Briefcase, permission: "jobs" },
+  {
+    href: ROUTES.admin.testimonials,
+    label: "Testimonials",
+    icon: MessageSquareQuote,
+    permission: "testimonials",
+  },
+  { href: ROUTES.admin.team, label: "Team", icon: Users, permission: "team" },
 ];
 
 export function AdminSidebar() {

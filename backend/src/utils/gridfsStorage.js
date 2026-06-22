@@ -8,6 +8,8 @@ const GRIDFS_PREFIX = "gridfs:";
 const BUCKET_NAMES = {
   "blog-covers": "blogCovers",
   "news-covers": "newsCovers",
+  "testimonial-photos": "testimonialPhotos",
+  "team-photos": "teamPhotos",
 };
 
 const isExternalCover = (cover) => /^https?:\/\//i.test(cover || "");
@@ -112,6 +114,10 @@ const validateCoverImageValue = (coverImage) => {
   }
 
   if (/^[a-zA-Z0-9._-]+$/.test(coverImage)) {
+    return null;
+  }
+
+  if (coverImage.startsWith("/")) {
     return null;
   }
 

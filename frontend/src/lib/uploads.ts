@@ -18,7 +18,7 @@ export function getUploadsBaseUrl(): string {
 
 function resolveStoredCover(
   coverImage: string,
-  bucket: "blog-covers" | "news-covers"
+  bucket: "blog-covers" | "news-covers" | "testimonial-photos" | "team-photos"
 ): string {
   if (coverImage.startsWith(GRIDFS_PREFIX)) {
     const fileId = coverImage.slice(GRIDFS_PREFIX.length);
@@ -86,4 +86,22 @@ export function getNewsPrimaryCoverUrl(post: {
   coverImage?: string;
 }): string | null {
   return getNewsGalleryUrls(post)[0] ?? null;
+}
+
+function resolveMediaPhoto(
+  photo: string,
+  bucket: "testimonial-photos" | "team-photos"
+): string | null {
+  if (!photo?.trim()) return null;
+  if (photo.startsWith("/")) return photo;
+  if (/^https?:\/\//i.test(photo)) return photo;
+  return resolveStoredCover(photo, bucket);
+}
+
+export function getTestimonialPhotoUrl(photo?: string): string | null {
+  return resolveMediaPhoto(photo ?? "", "testimonial-photos");
+}
+
+export function getTeamPhotoUrl(photo?: string): string | null {
+  return resolveMediaPhoto(photo ?? "", "team-photos");
 }

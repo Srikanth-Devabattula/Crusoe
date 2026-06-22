@@ -7,6 +7,8 @@ const permissionsSchema = new mongoose.Schema(
     blogs: { type: Boolean, default: false },
     news: { type: Boolean, default: false },
     jobs: { type: Boolean, default: false },
+    testimonials: { type: Boolean, default: false },
+    team: { type: Boolean, default: false },
   },
   { _id: false },
 );

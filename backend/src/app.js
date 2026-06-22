@@ -12,6 +12,8 @@ const blogCategoryRoutes = require("./routes/blogCategoryRoutes");
 const newsRoutes = require("./routes/newsRoutes");
 const newsCategoryRoutes = require("./routes/newsCategoryRoutes");
 const jobRoutes = require("./routes/jobRoutes");
+const testimonialRoutes = require("./routes/testimonialRoutes");
+const teamRoutes = require("./routes/teamRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const fileRoutes = require("./routes/fileRoutes");
@@ -22,6 +24,7 @@ const {
   runStartupCleanup,
   startCleanupScheduler,
 } = require("./services/otpCleanupService");
+const { seedContentIfEmpty } = require("./services/contentSeedService");
 
 const app = express();
 
@@ -51,6 +54,8 @@ app.use("/api/blog-categories", blogCategoryRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/news-categories", newsCategoryRoutes);
 app.use("/api/jobs", jobRoutes);
+app.use("/api/testimonials", testimonialRoutes);
+app.use("/api/team", teamRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/files", fileRoutes);
@@ -94,6 +99,7 @@ app.get("/api/health", (req, res) => {
 mongoose.connection.once("open", async () => {
   await runStartupCleanup();
   startCleanupScheduler();
+  await seedContentIfEmpty();
 });
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
