@@ -1,5 +1,5 @@
 export const SOFTWARE_DEVELOPMENT_IMAGES = {
-  hero: "/images/services/SE/se1.png",
+  hero: "/images/stock/st9.png",
   partnership: "/images/services/SE/se2.png",
 } as const;
 

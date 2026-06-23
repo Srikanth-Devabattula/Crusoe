@@ -45,7 +45,7 @@ export const cadCamGamutTabs: CadCamGamutTab[] = [
     id: "release-testing",
     label: "Release Testing",
     title: "Process-driven release validation with clear phases",
-    image: CAD_CAM_IMAGES.gamut[1],
+    image: "/images/stock/st3.png",
     items: [
       "Regression & performance testing",
       "Multi-platform & multi-browser testing",
