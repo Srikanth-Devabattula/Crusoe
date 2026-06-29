@@ -1,5 +1,6 @@
 const Testimonial = require("../models/Testimonial");
 const TeamMember = require("../models/TeamMember");
+const Partner = require("../models/Partner");
 
 const DEFAULT_TESTIMONIALS = [
   {
@@ -127,6 +128,44 @@ const DEFAULT_TEAM = [
   },
 ];
 
+const DEFAULT_PARTNERS = [
+  {
+    name: "Juniper",
+    logo: "/icons/logo1.png",
+    websiteUrl: "",
+    published: true,
+    sortOrder: 1,
+  },
+  {
+    name: "PTC",
+    logo: "/icons/logo2.png",
+    websiteUrl: "",
+    published: true,
+    sortOrder: 2,
+  },
+  {
+    name: "Onshape",
+    logo: "/icons/logo3.png",
+    websiteUrl: "",
+    published: true,
+    sortOrder: 3,
+  },
+  {
+    name: "Spokbee",
+    logo: "/icons/logo4.png",
+    websiteUrl: "",
+    published: true,
+    sortOrder: 4,
+  },
+  {
+    name: "Garrett",
+    logo: "/icons/logo5.png",
+    websiteUrl: "",
+    published: true,
+    sortOrder: 5,
+  },
+];
+
 const seedContentIfEmpty = async () => {
   try {
     const testimonialCount = await Testimonial.countDocuments();
@@ -139,6 +178,12 @@ const seedContentIfEmpty = async () => {
     if (teamCount === 0) {
       await TeamMember.insertMany(DEFAULT_TEAM);
       console.log(`Seeded ${DEFAULT_TEAM.length} team members`);
+    }
+
+    const partnerCount = await Partner.countDocuments();
+    if (partnerCount === 0) {
+      await Partner.insertMany(DEFAULT_PARTNERS);
+      console.log(`Seeded ${DEFAULT_PARTNERS.length} partner logos`);
     }
   } catch (error) {
     console.error("Content seed failed:", error.message);

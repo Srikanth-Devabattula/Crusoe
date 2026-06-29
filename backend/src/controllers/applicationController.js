@@ -2,6 +2,11 @@ const Application = require("../models/Application");
 const Job = require("../models/Job");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { isValidEmail } = require("../utils/validators");
+const { notifyJobApplication } = require("../services/formNotifyService");
+const fs = require("fs");
+const path = require("path");
+
+const APPLICATION_STATUSES = ["pending", "reviewed", "accepted", "rejected"];
 
 /**
  * @route   POST /api/applications
@@ -37,10 +42,84 @@ const submitApplication = async (req, res) => {
       resume: req.file.filename,
     });
 
+    await notifyJobApplication({
+      application,
+      job,
+      resumeFile: req.file,
+    }).catch((err) => {
+      console.error("Application notification email failed:", err.message);
+    });
+
     return sendSuccess(res, 201, "Application submitted", application);
   } catch (error) {
     return sendError(res, 500, error.message);
   }
 };
 
-module.exports = { submitApplication };
+/**
+ * @route   GET /api/applications
+ * @desc    List job applications
+ * @access  Private (applications permission)
+ */
+const getApplications = async (req, res) => {
+  const items = await Application.find()
+    .populate("job", "title location experience")
+    .sort({ createdAt: -1 });
+  return sendSuccess(res, 200, "Applications retrieved", items);
+};
+
+/**
+ * @route   PATCH /api/applications/:id
+ * @desc    Update application status
+ * @access  Private (applications permission)
+ */
+const updateApplication = async (req, res) => {
+  const { status } = req.body;
+
+  if (status !== undefined && !APPLICATION_STATUSES.includes(status)) {
+    return sendError(res, 400, "Invalid status");
+  }
+
+  const application = await Application.findById(req.params.id);
+  if (!application) {
+    return sendError(res, 404, "Application not found");
+  }
+
+  if (status !== undefined) application.status = status;
+  await application.save();
+
+  const populated = await Application.findById(application._id).populate(
+    "job",
+    "title location experience"
+  );
+
+  return sendSuccess(res, 200, "Application updated", populated);
+};
+
+/**
+ * @route   DELETE /api/applications/:id
+ * @desc    Delete application and resume file
+ * @access  Private (applications permission)
+ */
+const deleteApplication = async (req, res) => {
+  const application = await Application.findById(req.params.id);
+  if (!application) {
+    return sendError(res, 404, "Application not found");
+  }
+
+  if (application.resume) {
+    const resumePath = path.join(__dirname, "..", "uploads", "resumes", application.resume);
+    fs.unlink(resumePath, () => {});
+  }
+
+  await application.deleteOne();
+
+  return sendSuccess(res, 200, "Application deleted");
+};
+
+module.exports = {
+  submitApplication,
+  getApplications,
+  updateApplication,
+  deleteApplication,
+};

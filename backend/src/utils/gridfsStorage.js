@@ -10,6 +10,7 @@ const BUCKET_NAMES = {
   "news-covers": "newsCovers",
   "testimonial-photos": "testimonialPhotos",
   "team-photos": "teamPhotos",
+  "partner-logos": "partnerLogos",
 };
 
 const isExternalCover = (cover) => /^https?:\/\//i.test(cover || "");

@@ -1,27 +1,52 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-import { PARTNER_LOGOS } from "@/data/partnerLogos";
+import { getPartnerLogoUrl } from "@/lib/uploads";
+import { partnerService } from "@/services";
+import type { Partner } from "@/types";
 
-function LogoCard({ src, alt }: { src: string; alt: string }) {
-  return (
+function LogoCard({ partner }: { partner: Partner }) {
+  const src = getPartnerLogoUrl(partner.logo);
+  if (!src) return null;
+
+  const content = (
     <div className="flex h-[72px] w-[148px] shrink-0 items-center justify-center bg-transparent px-5 sm:h-20 sm:w-[172px]">
       <Image
         src={src}
-        alt={alt}
+        alt={partner.name}
         width={160}
         height={64}
+        unoptimized={src.startsWith("/api/")}
         className="h-10 w-auto max-w-[120px] object-contain sm:h-12 sm:max-w-[140px]"
       />
     </div>
   );
+
+  if (partner.websiteUrl?.trim()) {
+    return (
+      <Link
+        href={partner.websiteUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={partner.name}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }
 
 function LogoMarqueeSet({
+  partners,
   ariaHidden = false,
 }: {
+  partners: Partner[];
   ariaHidden?: boolean;
 }) {
   return (
@@ -29,14 +54,36 @@ function LogoMarqueeSet({
       className="flex shrink-0 items-center gap-8 sm:gap-10 lg:gap-12"
       aria-hidden={ariaHidden || undefined}
     >
-      {PARTNER_LOGOS.map((logo) => (
-        <LogoCard key={logo.src} src={logo.src} alt={logo.alt} />
+      {partners.map((partner) => (
+        <LogoCard key={partner._id} partner={partner} />
       ))}
     </div>
   );
 }
 
 export function LogosSection() {
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await partnerService.getPublished();
+        if (!cancelled) setPartners(Array.isArray(res.data) ? res.data : []);
+      } catch {
+        if (!cancelled) setPartners([]);
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (!isLoading && partners.length === 0) return null;
+
   return (
     <section
       id="logos"
@@ -65,34 +112,44 @@ export function LogosSection() {
           </h2>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative"
-        >
-          <div className="logos-marquee-viewport overflow-hidden py-2 motion-reduce:hidden">
-            <div className="logos-marquee-track flex w-max gap-8 sm:gap-10 lg:gap-12">
-              <LogoMarqueeSet />
-              <LogoMarqueeSet ariaHidden />
-            </div>
+        {isLoading ? (
+          <div className="flex animate-pulse justify-center gap-8 py-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-12 w-28 rounded bg-gray-100" />
+            ))}
           </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="relative"
+          >
+            <div className="logos-marquee-viewport overflow-hidden py-2 motion-reduce:hidden">
+              <div className="logos-marquee-track flex w-max gap-8 sm:gap-10 lg:gap-12">
+                <LogoMarqueeSet partners={partners} />
+                <LogoMarqueeSet partners={partners} ariaHidden />
+              </div>
+            </div>
 
-          <ul className="sr-only">
-            {PARTNER_LOGOS.map((logo) => (
-              <li key={logo.src}>{logo.alt}</li>
+            <ul className="sr-only">
+              {partners.map((partner) => (
+                <li key={partner._id}>{partner.name}</li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+
+        {!isLoading && (
+          <ul className="mt-2 hidden motion-reduce:flex motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-4">
+            {partners.map((partner) => (
+              <li key={partner._id}>
+                <LogoCard partner={partner} />
+              </li>
             ))}
           </ul>
-        </motion.div>
-
-        <ul className="mt-2 hidden motion-reduce:flex motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-4">
-          {PARTNER_LOGOS.map((logo) => (
-            <li key={logo.src}>
-              <LogoCard src={logo.src} alt={logo.alt} />
-            </li>
-          ))}
-        </ul>
+        )}
       </div>
     </section>
   );

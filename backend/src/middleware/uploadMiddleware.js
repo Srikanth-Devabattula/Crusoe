@@ -89,12 +89,19 @@ const uploadTeamPhoto = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 }).single("photoFile");
 
+const uploadPartnerLogo = multer({
+  storage: memoryStorage,
+  fileFilter: imageFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
+}).single("logoFile");
+
 module.exports = {
   uploadResume,
   uploadBlogCover,
   uploadNewsCover,
   uploadTestimonialPhoto,
   uploadTeamPhoto,
+  uploadPartnerLogo,
   blogCoverDir,
   newsCoverDir,
 };

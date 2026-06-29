@@ -34,6 +34,9 @@ export const ROUTES = {
     news: "/admin/news",
     testimonials: "/admin/testimonials",
     team: "/admin/team",
+    partners: "/admin/partners",
+    contacts: "/admin/contacts",
+    applications: "/admin/applications",
   },
 } as const;
 

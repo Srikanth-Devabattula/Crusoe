@@ -1,3 +1,4 @@
+const fs = require("fs");
 const nodemailer = require("nodemailer");
 
 const trim = (value) => (typeof value === "string" ? value.trim() : "");
@@ -26,6 +27,10 @@ const getFromAddress = () => {
   }
   return trim(process.env.SMTP_USER);
 };
+
+/** Inbox for contact form and job application notifications */
+const getNotifyEmail = () =>
+  trim(process.env.NOTIFY_EMAIL) || trim(process.env.SMTP_USER);
 
 const getResendFrom = () => {
   const from = trim(process.env.RESEND_FROM);
@@ -67,21 +72,30 @@ const createTransporter = () => {
   });
 };
 
-const sendViaResend = async ({ to, subject, html, text }) => {
+const sendViaResend = async ({ to, subject, html, text, attachments }) => {
   const apiKey = trim(process.env.RESEND_API_KEY);
+  const payload = {
+    from: getResendFrom(),
+    to: [to],
+    subject,
+    html,
+    text,
+  };
+
+  if (attachments?.length) {
+    payload.attachments = attachments.map((file) => ({
+      filename: file.filename,
+      content: file.content,
+    }));
+  }
+
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      from: getResendFrom(),
-      to: [to],
-      subject,
-      html,
-      text,
-    }),
+    body: JSON.stringify(payload),
   });
 
   const body = await response.json().catch(() => ({}));
@@ -94,24 +108,36 @@ const sendViaResend = async ({ to, subject, html, text }) => {
   return body;
 };
 
-const sendViaSmtp = async ({ to, subject, html, text }) => {
+const sendViaSmtp = async ({ to, subject, html, text, attachments }) => {
   const transporter = createTransporter();
 
   return transporter.sendMail({
-    from: getFromAddress(),
+    from: trim(process.env.SMTP_FROM) || getFromAddress(),
     to,
     subject,
     html,
     text,
+    attachments,
   });
 };
 
 /**
  * Send email — prefers Resend API on Render (set RESEND_API_KEY), else SMTP.
  */
-const sendEmail = async ({ to, subject, html, text }) => {
+const sendEmail = async ({ to, subject, html, text, attachments }) => {
+  const normalizedAttachments = attachments?.map((file) => {
+    if (file.content) return file;
+    if (file.path && fs.existsSync(file.path)) {
+      return {
+        filename: file.filename,
+        content: fs.readFileSync(file.path).toString("base64"),
+      };
+    }
+    return null;
+  }).filter(Boolean);
+
   if (isResendConfigured()) {
-    return sendViaResend({ to, subject, html, text });
+    return sendViaResend({ to, subject, html, text, attachments: normalizedAttachments });
   }
 
   if (!isSmtpConfigured()) {
@@ -120,7 +146,11 @@ const sendEmail = async ({ to, subject, html, text }) => {
     );
   }
 
-  return sendViaSmtp({ to, subject, html, text });
+  const smtpAttachments = attachments?.map((file) =>
+    file.path ? { filename: file.filename, path: file.path } : file
+  );
+
+  return sendViaSmtp({ to, subject, html, text, attachments: smtpAttachments });
 };
 
 const verifySmtpConnection = async () => {
@@ -140,5 +170,6 @@ module.exports = {
   isResendConfigured,
   isEmailConfigured,
   getEmailProvider,
+  getNotifyEmail,
   verifySmtpConnection,
 };

@@ -9,6 +9,9 @@ const permissionsSchema = new mongoose.Schema(
     jobs: { type: Boolean, default: false },
     testimonials: { type: Boolean, default: false },
     team: { type: Boolean, default: false },
+    partners: { type: Boolean, default: false },
+    contacts: { type: Boolean, default: false },
+    applications: { type: Boolean, default: false },
   },
   { _id: false },
 );

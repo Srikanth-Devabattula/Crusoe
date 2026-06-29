@@ -10,6 +10,9 @@ export const ADMIN_PERMISSIONS: Array<{
   { key: "jobs", label: "Jobs" },
   { key: "testimonials", label: "Testimonials" },
   { key: "team", label: "Team" },
+  { key: "partners", label: "Partner Logos" },
+  { key: "contacts", label: "Contact Forms" },
+  { key: "applications", label: "Job Applications" },
 ];
 
 export const EMPTY_PERMISSIONS: Record<AdminPermission, boolean> = {
@@ -18,6 +21,9 @@ export const EMPTY_PERMISSIONS: Record<AdminPermission, boolean> = {
   jobs: false,
   testimonials: false,
   team: false,
+  partners: false,
+  contacts: false,
+  applications: false,
 };
 
 export function isAdmin(user: User | null): boolean {
@@ -50,6 +56,9 @@ export const PERMISSION_ROUTES: Record<AdminPermission, string> = {
   jobs: ROUTES.admin.jobs,
   testimonials: ROUTES.admin.testimonials,
   team: ROUTES.admin.team,
+  partners: ROUTES.admin.partners,
+  contacts: ROUTES.admin.contacts,
+  applications: ROUTES.admin.applications,
 };
 
 export function getPermissionForPath(pathname: string): AdminPermission | null {

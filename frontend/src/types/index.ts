@@ -4,7 +4,15 @@ export interface ApiResponse<T = unknown> {
   data?: T;
 }
 
-export type AdminPermission = "blogs" | "news" | "jobs" | "testimonials" | "team";
+export type AdminPermission =
+  | "blogs"
+  | "news"
+  | "jobs"
+  | "testimonials"
+  | "team"
+  | "partners"
+  | "contacts"
+  | "applications";
 
 export type AdminPermissions = Record<AdminPermission, boolean>;
 
@@ -175,6 +183,25 @@ export interface TeamMemberFormData {
   sortOrder?: number;
 }
 
+export interface Partner {
+  _id: string;
+  name: string;
+  logo: string;
+  websiteUrl?: string;
+  published: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PartnerFormData {
+  name: string;
+  logo?: string;
+  websiteUrl?: string;
+  published: boolean;
+  sortOrder?: number;
+}
+
 export interface ContactFormData {
   name: string;
   email: string;
@@ -185,12 +212,42 @@ export interface ContactFormData {
   message: string;
 }
 
+export type ContactStatus = "new" | "read" | "replied";
+
+export interface ContactSubmission {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  service?: string;
+  subject: string;
+  message: string;
+  status: ContactStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ApplicationFormData {
   jobId: string;
   name: string;
   email: string;
   phone?: string;
   resume?: File;
+}
+
+export type ApplicationStatus = "pending" | "reviewed" | "accepted" | "rejected";
+
+export interface JobApplication {
+  _id: string;
+  job: { _id: string; title: string; location?: string; experience?: string } | string;
+  name: string;
+  email: string;
+  phone?: string;
+  resume: string;
+  status: ApplicationStatus;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface LoginFormData {
