@@ -2,95 +2,74 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { FiArrowRight } from "react-icons/fi";
 
+import { FloatingOrb } from "@/components/about/AboutDecor";
 import { ROUTES } from "@/constants";
+import { fadeUp, viewportOnce } from "@/lib/motion";
+
+const HOME_CTA_IMAGE = "/images/global/rocket1111.png";
 
 export function StartAConvoSection() {
   return (
     <section
       id="start-a-convo"
       aria-label="Start a conversation"
-      className="section-padding"
+      className="section-padding bg-transparent pb-16 lg:pb-20"
     >
       <div className="hero-container">
-        <div className="relative overflow-hidden rounded-[32px] border border-gray-200 bg-white shadow-xl">
-          {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-brand-muted/40 via-white to-brand-muted/30" />
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={fadeUp}
+          custom={0}
+          className="relative overflow-hidden rounded-[40px] border border-[#e7efe0] bg-[linear-gradient(135deg,#ffffff_0%,#f6fbf2_50%,#eef8e7_100%)] shadow-[0_16px_50px_rgba(15,23,42,0.06)]"
+        >
+          <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-brand/15 blur-3xl" />
+          <div className="absolute -bottom-12 left-1/4 h-56 w-56 rounded-full bg-brand/10 blur-3xl" />
+          <FloatingOrb className="absolute left-[10%] top-[22%] h-4 w-4 rounded-full bg-brand/60" />
+          <FloatingOrb
+            className="absolute right-[20%] top-[18%] h-3 w-3 rounded-full bg-white shadow"
+            delay={0.5}
+          />
 
-          {/* Glow Effects */}
-          <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-brand-muted blur-3xl opacity-40" />
-
-          <div className="absolute -bottom-24 right-0 h-80 w-80 rounded-full bg-brand-muted/60 blur-3xl opacity-40" />
-
-          <div className="relative grid items-center gap-10 px-6 py-14 md:px-12 lg:grid-cols-2 lg:px-16 lg:py-10">
-            {/* Left Content */}
-            <div className="max-w-xl">
-              {/* <p className="mb-4 inline-flex rounded-full border border-brand/25 bg-lime-50 px-4 py-1 text-sm font-semibold uppercase tracking-wide text-brand-dark">
-                Start a Conversation
-              </p> */}
-
+          <div className="relative grid w-full items-center gap-6 px-6 py-10 sm:gap-8 sm:px-10 sm:py-12 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-10 lg:px-12 xl:gap-12 xl:px-14">
+            <div className="order-2 w-full min-w-0 text-center lg:order-1 lg:text-left">
               <h2 className="text-heading text-[32px] leading-[1.08] sm:text-[44px] lg:text-[28px] lg:leading-[1.12] desktop:text-[34px] xl:text-[46px] 2xl:text-[50px]">
                 Ready to Build
                 <br />
                 <span className="text-brand">Better Software?</span>
               </h2>
 
-              <p className="mt-6 max-w-lg text-base leading-8 text-gray-600 md:text-lg">
-                Let’s discuss how we can help you achieve
-                quality, speed, and innovation with scalable
-                engineering solutions.
+              <p className="text-description mx-auto mt-6 max-w-lg lg:mx-0">
+                Let&apos;s discuss how we can help you achieve quality, speed, and
+                innovation with scalable engineering solutions.
               </p>
 
-              <div className="mt-8">
-                <Link
-                  href={ROUTES.contact}
-                  className="group inline-flex items-center gap-3 rounded-2xl bg-brand px-7 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-[0_12px_32px_rgba(126,168,73,0.25)]"
-                >
-                  Start a Conversation
-                  <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-              </div>
+              <Link
+                href={ROUTES.contact}
+                className="group mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-brand px-7 py-4 text-base font-semibold text-white shadow-[0_14px_34px_rgba(126,168,73,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-[0_20px_44px_rgba(126,168,73,0.38)] sm:w-auto"
+              >
+                Start a Conversation
+                <FiArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+              </Link>
             </div>
 
-            {/* Right Image */}
-            <div className="relative flex items-center justify-center">
-              {/* Glow */}
-              <div className="absolute h-[420px] w-[420px] rounded-full bg-brand-muted blur-3xl opacity-30" />
-
-              {/* Floating Balls */}
-              <div className="absolute top-10 left-10 h-6 w-6 rounded-full bg-brand-muted shadow-lg" />
-              <div className="absolute top-24 right-16 h-10 w-10 rounded-full bg-brand-muted/60 shadow-lg" />
-              <div className="absolute bottom-10 left-20 h-8 w-8 rounded-full bg-gray-200 shadow-lg" />
-
-              {/* Rocket Image */}
-              <div className="relative z-10">
+            <div className="order-1 w-full min-w-0 lg:order-2">
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl sm:aspect-[3/2] lg:aspect-auto lg:min-h-[360px] xl:min-h-[400px] 2xl:min-h-[440px]">
                 <Image
-                  src="/images/global/rocket1111.png"
-                  alt="Rocket illustration"
-                  width={700}
-                  height={700}
-                  priority
-                  className="h-auto w-full max-w-[650px] object-contain drop-shadow-2xl lg:scale-110"
+                  src={HOME_CTA_IMAGE}
+                  alt="Engineering team collaborating on software design"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  className="object-cover object-center"
                 />
               </div>
             </div>
           </div>
-
-          {/* Bottom Wave */}
-          <div className="absolute inset-x-0 bottom-0 h-24 opacity-20">
-            <svg
-              viewBox="0 0 1440 320"
-              className="h-full w-full"
-              preserveAspectRatio="none"
-            >
-              <path
-                fill="#7EA849"
-                d="M0,128L60,138.7C120,149,240,171,360,181.3C480,192,600,192,720,176C840,160,960,128,1080,128C1200,128,1320,160,1380,176L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
-              />
-            </svg>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

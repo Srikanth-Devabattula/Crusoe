@@ -5,8 +5,10 @@ import toast from "react-hot-toast";
 import { Download, Mail, Phone, Trash2 } from "lucide-react";
 
 import { AdminHeader } from "@/components/admin/AdminHeader";
+import { AdminSearchInput } from "@/components/admin/AdminSearchInput";
 import { useBulkSelection } from "@/hooks/useBulkSelection";
 import { getApiErrorMessage } from "@/lib/api-error";
+import { matchesSearchQuery } from "@/lib/admin-search";
 import { getResumeUrl } from "@/lib/uploads";
 import { applicationService } from "@/services";
 import type { ApplicationStatus, JobApplication } from "@/types";
@@ -55,6 +57,7 @@ export function AdminApplicationsContent() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const loadItems = useCallback(async () => {
     try {
@@ -86,11 +89,23 @@ export function AdminApplicationsContent() {
     return items.filter((item) => {
       if (selectedJobId && getJobId(item) !== selectedJobId) return false;
       if (selectedStatus && item.status !== selectedStatus) return false;
+      if (
+        !matchesSearchQuery(searchQuery, [
+          item.name,
+          item.email,
+          item.phone,
+          getJobTitle(item),
+          typeof item.job === "object" ? item.job?.location : undefined,
+          typeof item.job === "object" ? item.job?.experience : undefined,
+        ])
+      ) {
+        return false;
+      }
       return true;
     });
-  }, [items, selectedJobId, selectedStatus]);
+  }, [items, selectedJobId, selectedStatus, searchQuery]);
 
-  const hasActiveFilter = Boolean(selectedJobId || selectedStatus);
+  const hasActiveFilter = Boolean(selectedJobId || selectedStatus || searchQuery.trim());
 
   const visibleIds = useMemo(() => filteredItems.map((item) => item._id), [filteredItems]);
   const {
@@ -172,7 +187,15 @@ export function AdminApplicationsContent() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-end gap-3">
+            <AdminSearchInput
+              id="application-search"
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search name, email, phone, role…"
+              className="w-full sm:w-auto sm:min-w-[280px]"
+            />
+
             <div className="min-w-[200px]">
               <label htmlFor="job-status-filter" className="mb-1.5 block text-xs font-semibold uppercase text-gray-500">
                 Filter by status
@@ -220,7 +243,7 @@ export function AdminApplicationsContent() {
         ) : filteredItems.length === 0 ? (
           <p className="mt-6 rounded-lg bg-gray-50 px-4 py-8 text-center text-sm text-gray-500">
             {hasActiveFilter
-              ? "No applications match the selected filters."
+              ? "No applications match your search or filters."
               : "No job applications yet."}
           </p>
         ) : (

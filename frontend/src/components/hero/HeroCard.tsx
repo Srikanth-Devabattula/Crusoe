@@ -43,13 +43,19 @@ export function HeroCard({ slide, isActive = false, className }: HeroCardProps) 
         />
       </motion.div>
 
+      {/* #F3F5F9 panel — solid to 35%, then fade for readable copy over images */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[5] bg-[linear-gradient(90deg,#F3F5F9_0%,#F3F5F9_35%,rgba(243,245,249,0.92)_43%,rgba(243,245,249,0.55)_51%,transparent_63%)]"
+        aria-hidden
+      />
+
       <motion.div
         className="relative z-10 flex h-full min-h-[inherit] w-full"
         initial={false}
         animate={isActive ? { opacity: 1 } : { opacity: 0.94 }}
       >
         <motion.div
-          className="flex max-w-[68%] flex-1 flex-col justify-center p-5 sm:max-w-[58%] sm:p-7 lg:max-w-[56%] lg:py-6 lg:px-7 desktop:max-w-[52%] desktop:p-9 2xl:p-10"
+          className="flex min-w-0 flex-1 flex-col justify-center p-5 sm:p-7 lg:py-6 lg:px-7 desktop:p-9 2xl:p-10"
           initial={{ opacity: 0, x: -12 }}
           animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0.9, x: 0 }}
           transition={{ duration: 0.45 }}
@@ -74,7 +80,7 @@ export function HeroCard({ slide, isActive = false, className }: HeroCardProps) 
 
           <span className="mt-3 block h-1 w-12 rounded-full bg-brand" aria-hidden />
 
-          <p className="text-description mt-3 text-xs leading-relaxed sm:mt-4 sm:text-sm lg:mt-3 lg:pr-2 lg:text-[13px] desktop:mt-4 desktop:max-w-md desktop:text-base">
+          <p className="text-description !text-gray-800 mt-3 w-full max-w-[35%] text-xs leading-relaxed sm:mt-4 sm:text-sm lg:mt-3 lg:text-[13px] desktop:mt-4 desktop:text-base">
             {slide.description}
           </p>
 

@@ -5,8 +5,10 @@ import toast from "react-hot-toast";
 import { Mail, Phone, Trash2 } from "lucide-react";
 
 import { AdminHeader } from "@/components/admin/AdminHeader";
+import { AdminSearchInput } from "@/components/admin/AdminSearchInput";
 import { useBulkSelection } from "@/hooks/useBulkSelection";
 import { getApiErrorMessage } from "@/lib/api-error";
+import { matchesSearchQuery } from "@/lib/admin-search";
 import { contactService } from "@/services";
 import type { ContactStatus, ContactSubmission } from "@/types";
 
@@ -37,13 +39,29 @@ export function AdminContactsContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredItems = useMemo(() => {
-    if (!selectedStatus) return items;
-    return items.filter((item) => item.status === selectedStatus);
-  }, [items, selectedStatus]);
+    return items.filter((item) => {
+      if (selectedStatus && item.status !== selectedStatus) return false;
+      if (
+        !matchesSearchQuery(searchQuery, [
+          item.name,
+          item.email,
+          item.phone,
+          item.company,
+          item.service,
+          item.subject,
+          item.message,
+        ])
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }, [items, selectedStatus, searchQuery]);
 
-  const hasActiveFilter = Boolean(selectedStatus);
+  const hasActiveFilter = Boolean(selectedStatus || searchQuery.trim());
 
   const visibleIds = useMemo(() => filteredItems.map((item) => item._id), [filteredItems]);
   const {
@@ -140,23 +158,33 @@ export function AdminContactsContent() {
             </p>
           </div>
 
-          <div className="min-w-[200px]">
-            <label htmlFor="contact-status-filter" className="mb-1.5 block text-xs font-semibold uppercase text-gray-500">
-              Filter by status
-            </label>
-            <select
-              id="contact-status-filter"
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-            >
-              <option value="">All statuses</option>
-              {STATUS_OPTIONS.map((status) => (
-                <option key={status} value={status}>
-                  {status.charAt(0).toUpperCase() + status.slice(1)}
-                </option>
-              ))}
-            </select>
+          <div className="flex flex-wrap items-end gap-3">
+            <AdminSearchInput
+              id="contact-search"
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search name, email, phone, company…"
+              className="w-full sm:w-auto sm:min-w-[280px]"
+            />
+
+            <div className="min-w-[200px]">
+              <label htmlFor="contact-status-filter" className="mb-1.5 block text-xs font-semibold uppercase text-gray-500">
+                Filter by status
+              </label>
+              <select
+                id="contact-status-filter"
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+              >
+                <option value="">All statuses</option>
+                {STATUS_OPTIONS.map((status) => (
+                  <option key={status} value={status}>
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -165,7 +193,7 @@ export function AdminContactsContent() {
         ) : filteredItems.length === 0 ? (
           <p className="mt-6 rounded-lg bg-gray-50 px-4 py-8 text-center text-sm text-gray-500">
             {hasActiveFilter
-              ? "No enquiries match the selected status."
+              ? "No enquiries match your search or filters."
               : "No contact form submissions yet."}
           </p>
         ) : (
