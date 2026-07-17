@@ -1,17 +1,7 @@
-import { NewsHero } from "@/components/news/NewsHero";
-import { NewsListing } from "@/components/news/NewsListing";
-import { createPageMetadata } from "@/lib/createPageMetadata";
+import { redirect } from "next/navigation";
 
-export const metadata = createPageMetadata(
-  "News",
-  "Company news and announcements from Crusoe Tech."
-);
+import { ROUTES } from "@/constants";
 
 export default function NewsPage() {
-  return (
-    <>
-      <NewsHero />
-      <NewsListing />
-    </>
-  );
+  redirect(`${ROUTES.blog}?tab=news`);
 }

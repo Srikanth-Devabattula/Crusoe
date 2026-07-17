@@ -22,6 +22,8 @@ export const ROUTES = {
   testimonials: "/testimonials",
   blog: "/blog",
   blogPost: (slug: string) => `/blog/${slug}`,
+  blogNewsTab: (tab: "blog" | "news" = "blog") =>
+    tab === "news" ? "/blog?tab=news" : "/blog",
   news: "/news",
   newsArticle: (slug: string) => `/news/${slug}`,
   contact: "/contact",

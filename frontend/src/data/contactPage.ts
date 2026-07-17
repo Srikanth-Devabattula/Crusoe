@@ -15,7 +15,7 @@ const HYDERABAD_ADDRESS =
   "Plot No.27, Gachibowli, Behind Radisson Hotel, Hyderabad, India 500032";
 
 const VIZAG_ADDRESS =
-  "Crusoe Technologies LLP, #50-84-11, Madhuranagar, Visakhapatnam, India 530016";
+  "#50-84-11, Madhuranagar, Visakhapatnam, India 530016";
 
 /** Google Maps embed — lat/lng pins exact Crusoe location from shared map links */
 export function getGoogleMapsEmbedUrl(options: {

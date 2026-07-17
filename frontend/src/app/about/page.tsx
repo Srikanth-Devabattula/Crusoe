@@ -25,7 +25,7 @@ export default function AboutPage() {
       <AboutCoreValues />
       <AboutTimeline />
       <AboutCulture />
-      <AboutCtaSection />
+      {/* <AboutCtaSection /> */}
     </>
   );
 }

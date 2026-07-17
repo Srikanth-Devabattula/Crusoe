@@ -10,7 +10,7 @@ import { getNewsCategoryStyle } from "@/data/newsCategories";
 import { ROUTES } from "@/constants";
 import { useNewsCategories } from "@/hooks/useNewsCategories";
 import { getApiErrorMessage } from "@/lib/api-error";
-import { estimateNewsReadTime, formatNewsDate } from "@/lib/news";
+import { estimateNewsReadTime, formatNewsDate, getNewsDisplayDate } from "@/lib/news";
 import { getNewsGalleryUrls } from "@/lib/uploads";
 import { getPostVideoUrls } from "@/lib/video";
 import { newsService } from "@/services";
@@ -71,7 +71,7 @@ export function NewsArticleView({ slug }: NewsArticleViewProps) {
           {error ?? "This news article could not be found."}
         </p>
         <Link
-          href={ROUTES.news}
+          href={ROUTES.blogNewsTab("news")}
           className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand hover:underline"
         >
           <HiOutlineArrowLeft className="h-4 w-4" aria-hidden />
@@ -91,7 +91,7 @@ export function NewsArticleView({ slug }: NewsArticleViewProps) {
       <div className="relative overflow-hidden bg-transparent pt-[5.25rem] sm:pt-[5.75rem] lg:pt-[6.25rem]">
         <div className="hero-container pb-10 lg:pb-14">
           <Link
-            href={ROUTES.news}
+            href={ROUTES.blogNewsTab("news")}
             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-brand"
           >
             <HiOutlineArrowLeft className="h-4 w-4" aria-hidden />
@@ -114,7 +114,7 @@ export function NewsArticleView({ slug }: NewsArticleViewProps) {
           <ul className="mt-6 flex flex-wrap gap-4 text-sm text-slate-500">
             <li className="flex items-center gap-2">
               <HiOutlineCalendar className="h-4 w-4 text-brand" aria-hidden />
-              {formatNewsDate(item.createdAt)}
+              {formatNewsDate(getNewsDisplayDate(item))}
             </li>
             <li className="flex items-center gap-2">
               <HiOutlineClock className="h-4 w-4 text-brand" aria-hidden />

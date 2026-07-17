@@ -52,6 +52,10 @@ const newsSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    publishedAt: {
+      type: Date,
+      default: null,
+    },
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

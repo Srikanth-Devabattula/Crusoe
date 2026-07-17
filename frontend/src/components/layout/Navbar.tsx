@@ -11,16 +11,29 @@ import { ROUTES } from "@/constants";
 
 import { ServicesNavMenu } from "./ServicesNavMenu";
 
+function isBlogNewsRoute(pathname: string) {
+  return (
+    pathname === ROUTES.blog ||
+    pathname.startsWith(`${ROUTES.blog}/`) ||
+    pathname === ROUTES.news ||
+    pathname.startsWith(`${ROUTES.news}/`)
+  );
+}
+
+function isNavLinkActive(pathname: string, href: string) {
+  if (href === ROUTES.blog) return isBlogNewsRoute(pathname);
+  return pathname === href || (href !== "/" && pathname.startsWith(href));
+}
+
 const navLinks = [
   { href: ROUTES.home, label: "Home" },
   { href: ROUTES.about, label: "About Us" },
   { href: ROUTES.careers, label: "Careers" },
-  {
-    href: ROUTES.testimonials,
-    label: "Testimonials",
-  },
-  { href: ROUTES.blog, label: "Blog" },
-  { href: ROUTES.news, label: "News" },
+  // {
+  //   href: ROUTES.testimonials,
+  //   label: "Testimonials",
+  // },
+  { href: ROUTES.blog, label: "Blogs & News" },
   { href: ROUTES.contact, label: "Contact" },
 ];
 
@@ -114,10 +127,7 @@ export function Navbar() {
           <div className="hidden min-w-0 flex-1 justify-center lg:flex lg:px-2 xl:px-4">
             <ul className="flex min-w-0 flex-1 items-center justify-center gap-1 overflow-visible lg:gap-1.5 xl:gap-2 desktop:gap-2.5 2xl:gap-3">
               {navLinks.slice(0, 2).map((link) => {
-                const isActive =
-                  pathname === link.href ||
-                  (link.href !== "/" &&
-                    pathname.startsWith(link.href));
+                const isActive = isNavLinkActive(pathname, link.href);
 
                 return (
                   <li key={link.href}>
@@ -153,10 +163,7 @@ export function Navbar() {
               />
 
               {navLinks.slice(2).map((link) => {
-                const isActive =
-                  pathname === link.href ||
-                  (link.href !== "/" &&
-                    pathname.startsWith(link.href));
+                const isActive = isNavLinkActive(pathname, link.href);
 
                 return (
                   <li key={link.href}>
@@ -229,10 +236,7 @@ export function Navbar() {
           <div className="mx-auto max-w-[1760px] p-4 sm:px-6 lg:px-8">
             <ul className="flex flex-col gap-2">
               {navLinks.slice(0, 2).map((link) => {
-                const isActive =
-                  pathname === link.href ||
-                  (link.href !== "/" &&
-                    pathname.startsWith(link.href));
+                const isActive = isNavLinkActive(pathname, link.href);
 
                 return (
                   <li key={link.href}>
@@ -269,10 +273,7 @@ export function Navbar() {
               />
 
               {navLinks.slice(2).map((link) => {
-                const isActive =
-                  pathname === link.href ||
-                  (link.href !== "/" &&
-                    pathname.startsWith(link.href));
+                const isActive = isNavLinkActive(pathname, link.href);
 
                 return (
                   <li key={link.href}>

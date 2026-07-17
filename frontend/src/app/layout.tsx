@@ -1,15 +1,7 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 import { ToastProvider } from "@/components/providers/ToastProvider";
 import "./globals.css";
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-  weight: ["400", "500", "700"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -31,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={roboto.variable}>
+    <html lang="en">
       <body className="font-sans antialiased">
         <ConditionalLayout>{children}</ConditionalLayout>
         <ToastProvider />

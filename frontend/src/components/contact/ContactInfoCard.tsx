@@ -94,7 +94,7 @@ export function ContactInfoCard() {
       <div className="mt-8 border-t border-[#e7efe0] pt-6">
         <p className="text-sm font-semibold text-[#111827]">Connect Instantly</p>
         <div className="mt-4 flex flex-col gap-3">
-          <Link
+          {/* <Link
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
@@ -102,7 +102,7 @@ export function ContactInfoCard() {
           >
             <FaWhatsapp className="h-4 w-4" aria-hidden />
             Chat on WhatsApp
-          </Link>
+          </Link> */}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
             className="inline-flex items-center justify-center gap-2 rounded-2xl border border-brand/30 bg-white px-5 py-3.5 text-sm font-semibold text-brand transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:bg-brand-muted/40"

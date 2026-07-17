@@ -4,7 +4,7 @@ import { FiArrowRight, FiClock } from "react-icons/fi";
 import { CoverImage } from "@/components/common/CoverImage";
 import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
-import { estimateReadTime, formatBlogDate } from "@/lib/blog";
+import { estimateReadTime, formatBlogDate, getBlogDisplayDate } from "@/lib/blog";
 import { getBlogPrimaryCoverUrl } from "@/lib/uploads";
 import type { Blog } from "@/types";
 
@@ -68,7 +68,7 @@ export function BlogFeaturedHero({ post, categoryLabel }: BlogFeaturedHeroProps)
             >
               {categoryLabel}
             </span>
-            <p className="mt-4 text-sm text-slate-500">{formatBlogDate(post.createdAt)}</p>
+            <p className="mt-4 text-sm text-slate-500">{formatBlogDate(getBlogDisplayDate(post))}</p>
             <h2 className="mt-2 text-2xl font-bold leading-tight text-slate-900 transition-colors group-hover:text-brand sm:text-3xl lg:text-4xl">
               {post.title}
             </h2>

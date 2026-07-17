@@ -22,6 +22,7 @@ function appendBlogFields(formData: FormData, data: Partial<BlogFormData>) {
   }
   if (data.featured !== undefined) formData.append("featured", String(data.featured));
   if (data.published !== undefined) formData.append("published", String(data.published));
+  if (data.publishedAt !== undefined) formData.append("publishedAt", data.publishedAt);
 }
 
 function appendBlogMediaFields(formData: FormData, options?: BlogMediaOptions) {

@@ -22,6 +22,7 @@ function appendNewsFields(formData: FormData, data: Partial<NewsFormData>) {
   }
   if (data.featured !== undefined) formData.append("featured", String(data.featured));
   if (data.published !== undefined) formData.append("published", String(data.published));
+  if (data.publishedAt !== undefined) formData.append("publishedAt", data.publishedAt);
 }
 
 function appendNewsMediaFields(formData: FormData, options?: NewsMediaOptions) {

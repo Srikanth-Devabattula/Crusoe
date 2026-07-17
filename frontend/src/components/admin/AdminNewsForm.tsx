@@ -11,7 +11,7 @@ import {
   type AdminMediaState,
 } from "@/components/admin/AdminMediaFields";
 import { Button } from "@/components/ui/Button";
-import { getApiErrorMessage } from "@/lib/api-error";
+import { dateInputToIso, toDateInputValue } from "@/lib/publishDate";
 import { getNewsCoverUrl } from "@/lib/uploads";
 import { getPostVideoUrls } from "@/lib/video";
 import { newsService } from "@/services";
@@ -29,6 +29,7 @@ const newsSchema = z.object({
   excerpt: z.string().min(20, "Excerpt is required (min 20 characters)").max(400),
   content: z.string().min(50, "Content is required (min 50 characters)"),
   category: z.string().min(1, "Category is required"),
+  publishDate: z.string().min(1, "Publish date is required"),
   featured: z.boolean(),
   published: z.boolean(),
 });
@@ -41,6 +42,7 @@ const defaultValues: NewsFormValues = {
   excerpt: "",
   content: "",
   category: "announcements",
+  publishDate: toDateInputValue(),
   featured: false,
   published: false,
 };
@@ -132,6 +134,7 @@ export function AdminNewsForm({
         excerpt: editingNews.excerpt ?? "",
         content: editingNews.content ?? "",
         category: categorySlug,
+        publishDate: toDateInputValue(editingNews.publishedAt ?? editingNews.createdAt),
         featured: editingNews.featured ?? false,
         published: editingNews.published,
       });
@@ -140,6 +143,7 @@ export function AdminNewsForm({
       form.reset({
         ...defaultValues,
         category: categories[0]?.slug ?? "announcements",
+        publishDate: toDateInputValue(),
       });
       setVideoUrls([]);
     }
@@ -152,6 +156,7 @@ export function AdminNewsForm({
       excerpt: values.excerpt,
       content: values.content,
       category: values.category,
+      publishedAt: dateInputToIso(values.publishDate),
       featured: values.featured,
       published: values.published,
       slug: values.slug?.trim() || undefined,
@@ -231,6 +236,19 @@ export function AdminNewsForm({
               ))}
             </select>
           )}
+        </Field>
+
+        <Field
+          label="Publish date"
+          required
+          hint="Shown on the public news page"
+          error={form.formState.errors.publishDate?.message}
+        >
+          <input
+            type="date"
+            {...form.register("publishDate")}
+            className={inputClass}
+          />
         </Field>
 
         <AdminMediaFields

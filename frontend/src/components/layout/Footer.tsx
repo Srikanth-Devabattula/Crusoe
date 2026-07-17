@@ -14,7 +14,7 @@ const quickLinks = [
   { href: ROUTES.home, label: "Home" },
   { href: ROUTES.about, label: "About Us" },
   { href: ROUTES.services, label: "Services" },
-  { href: ROUTES.blog, label: "Blog" },
+  { href: ROUTES.blog, label: "Blogs & News" },
   { href: ROUTES.careers, label: "Careers" },
   { href: ROUTES.contact, label: "Contact Us" },
 ];

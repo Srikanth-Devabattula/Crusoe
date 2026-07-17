@@ -323,7 +323,7 @@ export function SoftwareQualityServicePage() {
         </div>
       </section>
 
-      <RelatedServicesSection currentHref={ROUTES.servicesQuality} />
+      {/* <RelatedServicesSection currentHref={ROUTES.servicesQuality} /> */}
     </>
   );
 }

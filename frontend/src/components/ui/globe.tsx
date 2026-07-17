@@ -10,6 +10,7 @@ const MOVEMENT_DAMPING = 1400;
 
 /** Green globe #7EA849, orange dots/markers, glow #E8F0DC */
 const ORANGE = [251 / 255, 100 / 255, 21 / 255] as const;
+const LIGHT_BLUE = [96 / 255, 165 / 255, 250 / 255] as const;
 
 export const BRAND_GLOBE_CONFIG: COBEOptions = {
   width: 800,
@@ -27,14 +28,16 @@ export const BRAND_GLOBE_CONFIG: COBEOptions = {
   markerColor: [...ORANGE],
   glowColor: [232 / 255, 240 / 255, 220 / 255],
   markers: [
-    { location: [17.385, 78.4867], size: 0.1, color: [...ORANGE] },
-    { location: [12.9716, 77.5946], size: 0.08, color: [...ORANGE] },
-    { location: [28.6139, 77.209], size: 0.09, color: [...ORANGE] },
-    { location: [19.076, 72.8777], size: 0.08, color: [...ORANGE] },
-    { location: [37.7749, -122.4194], size: 0.07, color: [...ORANGE] },
-    { location: [51.5074, -0.1278], size: 0.07, color: [...ORANGE] },
-    { location: [1.3521, 103.8198], size: 0.06, color: [...ORANGE] },
-    { location: [40.7128, -74.006], size: 0.07, color: [...ORANGE] },
+    { location: [39.8283, -98.5795], size: 0.09, color: [...ORANGE] }, // US
+    { location: [23.6345, -102.5528], size: 0.08, color: [...ORANGE] }, // Mexico
+    { location: [50.0755, 14.4378], size: 0.08, color: [...ORANGE] }, // Czech Republic
+    { location: [51.1657, 10.4515], size: 0.08, color: [...ORANGE] }, // Germany
+    { location: [59.9139, 10.7522], size: 0.08, color: [...ORANGE] }, // Norway
+    { location: [35.8617, 104.1954], size: 0.09, color: [...ORANGE] }, // China
+    { location: [-25.2744, 133.7751], size: 0.08, color: [...ORANGE] }, // Australia
+    { location: [53.3498, -6.2603], size: 0.08, color: [...ORANGE] }, // Ireland
+    { location: [17.385, 78.4867], size: 0.1, color: [...LIGHT_BLUE] }, // Hyderabad, India
+    { location: [17.6868, 83.2185], size: 0.1, color: [...LIGHT_BLUE] }, // Vizag, India
   ],
 };
 

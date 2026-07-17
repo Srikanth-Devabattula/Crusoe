@@ -11,7 +11,7 @@ import {
   type AdminMediaState,
 } from "@/components/admin/AdminMediaFields";
 import { Button } from "@/components/ui/Button";
-import { getApiErrorMessage } from "@/lib/api-error";
+import { dateInputToIso, toDateInputValue } from "@/lib/publishDate";
 import { getBlogCoverUrl } from "@/lib/uploads";
 import { getPostVideoUrls } from "@/lib/video";
 import { blogService } from "@/services";
@@ -29,6 +29,7 @@ const blogSchema = z.object({
   excerpt: z.string().min(20, "Excerpt must be at least 20 characters").max(400),
   content: z.string().min(50, "Content must be at least 50 characters"),
   category: z.string().min(1, "Category is required"),
+  publishDate: z.string().min(1, "Publish date is required"),
   featured: z.boolean(),
   published: z.boolean(),
 });
@@ -41,6 +42,7 @@ const defaultValues: BlogFormValues = {
   excerpt: "",
   content: "",
   category: "insights",
+  publishDate: toDateInputValue(),
   featured: false,
   published: false,
 };
@@ -132,6 +134,7 @@ export function AdminBlogForm({
         excerpt: editingBlog.excerpt ?? "",
         content: editingBlog.content ?? "",
         category: categorySlug,
+        publishDate: toDateInputValue(editingBlog.publishedAt ?? editingBlog.createdAt),
         featured: editingBlog.featured ?? false,
         published: editingBlog.published,
       });
@@ -140,6 +143,7 @@ export function AdminBlogForm({
       form.reset({
         ...defaultValues,
         category: categories[0]?.slug ?? "insights",
+        publishDate: toDateInputValue(),
       });
       setVideoUrls([]);
     }
@@ -152,6 +156,7 @@ export function AdminBlogForm({
       excerpt: values.excerpt,
       content: values.content,
       category: values.category,
+      publishedAt: dateInputToIso(values.publishDate),
       featured: values.featured,
       published: values.published,
       slug: values.slug?.trim() || undefined,
@@ -236,6 +241,19 @@ export function AdminBlogForm({
               ))}
             </select>
           )}
+        </Field>
+
+        <Field
+          label="Publish date"
+          required
+          hint="Shown on the public blog page"
+          error={form.formState.errors.publishDate?.message}
+        >
+          <input
+            type="date"
+            {...form.register("publishDate")}
+            className={inputClass}
+          />
         </Field>
 
         <AdminMediaFields

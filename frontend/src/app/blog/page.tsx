@@ -1,17 +1,23 @@
-import { BlogHero } from "@/components/blog/BlogHero";
-import { BlogListing } from "@/components/blog/BlogListing";
+import { Suspense } from "react";
+
+import { BlogNewsPageContent } from "@/components/blog/BlogNewsPageContent";
 import { createPageMetadata } from "@/lib/createPageMetadata";
 
 export const metadata = createPageMetadata(
-  "Blog",
-  "Insights, articles, and updates from Crusoe Tech."
+  "Blogs & News",
+  "Insights, articles, and company news from Crusoe Tech."
 );
 
 export default function BlogPage() {
   return (
-    <>
-      <BlogHero />
-      <BlogListing />
-    </>
+    <Suspense
+      fallback={
+        <div className="hero-container py-24 text-center text-sm text-slate-500">
+          Loading…
+        </div>
+      }
+    >
+      <BlogNewsPageContent />
+    </Suspense>
   );
 }

@@ -15,18 +15,6 @@ const stats: {
   label: string;
 }[] = [
   {
-    icon: PiUsersThreeBold,
-    value: 150,
-    suffix: "+",
-    label: "Happy Clients",
-  },
-  {
-    icon: MdOutlineRocketLaunch,
-    value: 300,
-    suffix: "+",
-    label: "Projects Delivered",
-  },
-  {
     icon: FaAward,
     value: 10,
     suffix: "+",
@@ -38,6 +26,20 @@ const stats: {
     suffix: "+",
     label: "Countries Served",
   },
+  {
+    icon: PiUsersThreeBold,
+    value: 150,
+    suffix: "+",
+    label: "Happy Clients",
+  },
+  {
+    icon: MdOutlineRocketLaunch,
+    value: 300,
+    suffix: "+",
+    label: "Projects Delivered",
+  },
+  
+ 
 ];
 
 function Counter({

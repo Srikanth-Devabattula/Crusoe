@@ -14,14 +14,14 @@ function LogoCard({ partner }: { partner: Partner }) {
   if (!src) return null;
 
   const content = (
-    <div className="flex h-[72px] w-[148px] shrink-0 items-center justify-center bg-transparent px-5 sm:h-20 sm:w-[172px]">
+    <div className="flex h-[88px] w-[180px] shrink-0 items-center justify-center bg-transparent px-5 sm:h-24 sm:w-[210px] lg:h-28 lg:w-[240px]">
       <Image
         src={src}
         alt={partner.name}
-        width={160}
-        height={64}
+        width={200}
+        height={80}
         unoptimized={src.startsWith("/api/")}
-        className="h-10 w-auto max-w-[120px] object-contain sm:h-12 sm:max-w-[140px]"
+        className="h-12 w-auto max-w-[150px] object-contain sm:h-14 sm:max-w-[175px] lg:h-16 lg:max-w-[200px]"
       />
     </div>
   );
@@ -115,7 +115,7 @@ export function LogosSection() {
         {isLoading ? (
           <div className="flex animate-pulse justify-center gap-8 py-4">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="h-12 w-28 rounded bg-gray-100" />
+              <div key={i} className="h-14 w-36 rounded bg-gray-100 sm:h-16 sm:w-40" />
             ))}
           </div>
         ) : (

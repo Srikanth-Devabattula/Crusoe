@@ -346,7 +346,7 @@ export function CadCamCaeServicePage() {
         </div>
       </section>
 
-      <RelatedServicesSection currentHref={ROUTES.servicesCadCam} />
+      {/* <RelatedServicesSection currentHref={ROUTES.servicesCadCam} /> */}
     </>
   );
 }

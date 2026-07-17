@@ -17,7 +17,7 @@ export default function ServicesPage() {
       <ServicesHero />
       <ServicesGridSection />
       <ServicesWhyChooseSection />
-      <ServicesCtaSection />
+      {/* <ServicesCtaSection /> */}
     </>
   );
 }

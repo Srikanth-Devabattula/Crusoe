@@ -4,7 +4,7 @@ import { FiArrowRight, FiClock } from "react-icons/fi";
 import { CoverImage } from "@/components/common/CoverImage";
 import { getNewsCategoryStyle } from "@/data/newsCategories";
 import { ROUTES } from "@/constants";
-import { estimateNewsReadTime, formatNewsDate } from "@/lib/news";
+import { estimateNewsReadTime, formatNewsDate, getNewsDisplayDate } from "@/lib/news";
 import { getNewsPrimaryCoverUrl } from "@/lib/uploads";
 import { cn } from "@/lib/cn";
 import type { News } from "@/types";
@@ -54,7 +54,7 @@ export function NewsCard({ item, categoryLabel }: NewsCardProps) {
       </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <p className="text-xs font-medium text-slate-500">{formatNewsDate(item.createdAt)}</p>
+        <p className="text-xs font-medium text-slate-500">{formatNewsDate(getNewsDisplayDate(item))}</p>
         <h3 className="mt-2 text-xl font-bold text-slate-900 transition-colors group-hover:text-brand">
           {item.title}
         </h3>

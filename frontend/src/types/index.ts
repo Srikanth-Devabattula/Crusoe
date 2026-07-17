@@ -45,6 +45,7 @@ export interface Blog {
   videoUrls?: string[];
   featured: boolean;
   published: boolean;
+  publishedAt?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -61,6 +62,7 @@ export interface BlogFormData {
   videoUrls?: string[];
   featured: boolean;
   published: boolean;
+  publishedAt?: string;
 }
 
 export interface NewsCategoryItem {
@@ -84,6 +86,7 @@ export interface News {
   videoUrls?: string[];
   featured: boolean;
   published: boolean;
+  publishedAt?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -100,6 +103,7 @@ export interface NewsFormData {
   videoUrls?: string[];
   featured: boolean;
   published: boolean;
+  publishedAt?: string;
 }
 
 export interface Job {

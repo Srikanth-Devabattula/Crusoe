@@ -9,13 +9,6 @@ export const cultureImages = [
   "/images/aboutus/about4.png",
 ] as const;
 
-export const storyStats = [
-  { icon: "users" as const, value: "150+", label: "Happy Clients" },
-  { icon: "trending" as const, value: "300+", label: "Projects Delivered" },
-  { icon: "award" as const, value: "10+", label: "Years of Excellence" },
-  { icon: "globe" as const, value: "25+", label: "Countries Served" },
-] as const;
-
 export const storyParagraphs = [
   "Founded in 2015, Crusoe Technologies began with a clear mission: help businesses build better software with engineering discipline and quality at the core.",
   "Over the years we have grown into a trusted partner for QA automation, CAD customisation, software tooling, and full-cycle engineering services — serving startups and global enterprises alike.",

@@ -13,7 +13,7 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
 import { useBlogCategories } from "@/hooks/useBlogCategories";
-import { estimateReadTime, formatBlogDate } from "@/lib/blog";
+import { estimateReadTime, formatBlogDate, getBlogDisplayDate } from "@/lib/blog";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { getBlogGalleryUrls } from "@/lib/uploads";
 import { getPostVideoUrls } from "@/lib/video";
@@ -123,7 +123,7 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
           <ul className="mt-6 flex flex-wrap gap-4 text-sm text-slate-500">
             <li className="flex items-center gap-2">
               <HiOutlineCalendar className="h-4 w-4 text-brand" aria-hidden />
-              {formatBlogDate(post.createdAt)}
+              {formatBlogDate(getBlogDisplayDate(post))}
             </li>
             <li className="flex items-center gap-2">
               <HiOutlineClock className="h-4 w-4 text-brand" aria-hidden />

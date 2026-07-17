@@ -266,7 +266,7 @@ export function EngineeringServicesPage() {
         </div>
       </section>
 
-      <RelatedServicesSection currentHref={ROUTES.servicesEngineering} />
+      {/* <RelatedServicesSection currentHref={ROUTES.servicesEngineering} /> */}
     </>
   );
 }

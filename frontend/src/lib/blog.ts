@@ -12,6 +12,8 @@ export function estimateReadTime(content: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+import { getPublishDisplayDate } from "@/lib/publishDate";
+
 export function formatBlogDate(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, {
     year: "numeric",
@@ -24,4 +26,11 @@ export function getFeaturedBlog<T extends { featured: boolean }>(
   blogs: T[]
 ): T | null {
   return blogs.find((b) => b.featured) ?? null;
+}
+
+export function getBlogDisplayDate(post: {
+  publishedAt?: string | null;
+  createdAt: string;
+}): string {
+  return getPublishDisplayDate(post);
 }

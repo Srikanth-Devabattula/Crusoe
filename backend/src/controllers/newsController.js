@@ -3,6 +3,7 @@ const NewsCategory = require("../models/NewsCategory");
 const { newsCoverDir } = require("../middleware/uploadMiddleware");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
+const { applyPublishedAt } = require("../utils/publishDate");
 const {
   removeCoverAsset,
   resolveGalleryFromRequest,
@@ -29,6 +30,7 @@ const parseNewsRequestBody = (body) => ({
   videoUrls: body.videoUrls,
   featured: body.featured === true || body.featured === "true",
   published: body.published === true || body.published === "true",
+  publishedAt: body.publishedAt,
   removeCoverImage: body.removeCoverImage === true || body.removeCoverImage === "true",
 });
 
@@ -46,7 +48,7 @@ const getPublishedNews = async (req, res) => {
     filter.category = req.query.category;
   }
 
-  const items = await News.find(filter).sort({ featured: -1, createdAt: -1 });
+  const items = await News.find(filter).sort({ featured: -1, publishedAt: -1, createdAt: -1 });
   return sendSuccess(res, 200, "Published news retrieved", items);
 };
 
@@ -135,6 +137,8 @@ const createNews = async (req, res) => {
   body.category = category.slug;
 
   const payload = sanitizeNewsBody(body);
+  const publishedAtError = applyPublishedAt(payload, body, null);
+  if (publishedAtError) return sendError(res, 400, publishedAtError.error);
   payload.slug = await uniqueSlug(News, payload.slug || slugify(payload.title));
   payload.author = req.user?._id;
 
@@ -169,6 +173,8 @@ const updateNews = async (req, res) => {
   }
 
   const payload = sanitizeNewsBody(body);
+  const publishedAtError = applyPublishedAt(payload, body, existing);
+  if (publishedAtError) return sendError(res, 400, publishedAtError.error);
 
   if (gallery.changed) {
     for (const removed of gallery.removedAssets) {

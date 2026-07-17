@@ -3,6 +3,7 @@ const BlogCategory = require("../models/BlogCategory");
 const { blogCoverDir } = require("../middleware/uploadMiddleware");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
+const { applyPublishedAt } = require("../utils/publishDate");
 const {
   removeCoverAsset,
   resolveGalleryFromRequest,
@@ -29,6 +30,7 @@ const parseBlogRequestBody = (body) => ({
   videoUrls: body.videoUrls,
   featured: body.featured === true || body.featured === "true",
   published: body.published === true || body.published === "true",
+  publishedAt: body.publishedAt,
   removeCoverImage: body.removeCoverImage === true || body.removeCoverImage === "true",
 });
 
@@ -48,7 +50,7 @@ const getPublishedBlogs = async (req, res) => {
     filter.category = req.query.category;
   }
 
-  const blogs = await Blog.find(filter).sort({ featured: -1, createdAt: -1 });
+  const blogs = await Blog.find(filter).sort({ featured: -1, publishedAt: -1, createdAt: -1 });
   return sendSuccess(res, 200, "Published blogs retrieved", blogs);
 };
 
@@ -161,6 +163,8 @@ const createBlog = async (req, res) => {
   body.category = category.slug;
 
   const payload = sanitizeBlogBody(body);
+  const publishedAtError = applyPublishedAt(payload, body, null);
+  if (publishedAtError) return sendError(res, 400, publishedAtError.error);
   const baseSlug = payload.slug || slugify(payload.title);
   payload.slug = await uniqueSlug(Blog, baseSlug);
   payload.author = req.user?._id;
@@ -202,6 +206,8 @@ const updateBlog = async (req, res) => {
   }
 
   const payload = sanitizeBlogBody(body);
+  const publishedAtError = applyPublishedAt(payload, body, existing);
+  if (publishedAtError) return sendError(res, 400, publishedAtError.error);
 
   if (gallery.changed) {
     for (const removed of gallery.removedAssets) {

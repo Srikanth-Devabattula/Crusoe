@@ -43,7 +43,7 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
 
   useEffect(() => {
     const updateSlidesPerView = () => {
-      if (window.innerWidth >= 1024) setSlidesPerView(3);
+      if (window.innerWidth >= 1024) setSlidesPerView(4);
       else if (window.innerWidth >= 768) setSlidesPerView(2);
       else setSlidesPerView(1);
     };
@@ -53,39 +53,44 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
   }, []);
 
   const maxIndex = Math.max(testimonials.length - slidesPerView, 0);
+  const canSlide = testimonials.length > slidesPerView;
+
+  useEffect(() => {
+    setCurrentIndex((prev) => Math.min(prev, maxIndex));
+  }, [maxIndex]);
 
   const nextTestimonial = useCallback(() => {
-    if (isTransitioning || currentIndex >= maxIndex) return;
+    if (!canSlide || isTransitioning || currentIndex >= maxIndex) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev + 1);
     setTimeout(() => setIsTransitioning(false), 300);
-  }, [isTransitioning, currentIndex, maxIndex]);
+  }, [canSlide, isTransitioning, currentIndex, maxIndex]);
 
   const prevTestimonial = useCallback(() => {
-    if (isTransitioning || currentIndex <= 0) return;
+    if (!canSlide || isTransitioning || currentIndex <= 0) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev - 1);
     setTimeout(() => setIsTransitioning(false), 300);
-  }, [isTransitioning, currentIndex]);
+  }, [canSlide, isTransitioning, currentIndex]);
 
   useEffect(() => {
-    if (isPaused || testimonials.length === 0) return;
+    if (isPaused || !canSlide) return;
     const interval = setInterval(() => {
       if (!isTransitioning) {
         setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
       }
     }, 6000);
     return () => clearInterval(interval);
-  }, [isPaused, isTransitioning, maxIndex, testimonials.length]);
+  }, [isPaused, isTransitioning, maxIndex, canSlide]);
 
   if (isLoading) {
     return (
       <section className="section-padding bg-transparent">
         <div className="hero-container animate-pulse">
           <div className="h-8 w-48 rounded bg-gray-100" />
-          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-[340px] rounded-2xl bg-gray-50" />
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-[400px] rounded-2xl bg-gray-50 lg:h-[420px]" />
             ))}
           </div>
         </div>
@@ -94,6 +99,47 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
   }
 
   if (testimonials.length === 0) return null;
+
+  const renderCard = (testimonial: Testimonial) => {
+    const photoSrc = getTestimonialPhotoUrl(testimonial.photo) ?? FALLBACK_PHOTO;
+    const rating = testimonial.rating ?? 5;
+
+    return (
+      <div className="flex h-[340px] w-full flex-col rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:h-[360px] sm:p-5 lg:h-[420px] lg:p-4 lg:pb-5 desktop:h-[440px] desktop:p-6">
+        <div className="mb-3 flex items-center justify-between sm:mb-4">
+          <FaQuoteLeft className="h-6 w-6 text-brand sm:h-7 sm:w-7 lg:h-6 lg:w-6 desktop:h-8 desktop:w-8" />
+          <div className="flex gap-0.5 sm:gap-1">
+            {[...Array(rating)].map((_, starIndex) => (
+              <FaStar
+                key={starIndex}
+                className="h-3 w-3 text-yellow-400 sm:h-3.5 sm:w-3.5 lg:h-3 lg:w-3 desktop:h-4 desktop:w-4"
+              />
+            ))}
+          </div>
+        </div>
+        <p className="mb-3 line-clamp-[7] flex-grow overflow-hidden text-xs leading-relaxed text-gray-700 sm:line-clamp-[8] sm:text-sm lg:line-clamp-[11] lg:text-[11px] lg:leading-[1.55] desktop:line-clamp-[10] desktop:text-sm desktop:leading-relaxed">
+          {testimonial.quote}
+        </p>
+        <div className="mt-auto flex items-center gap-2.5 sm:gap-3">
+          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-gray-200 sm:h-11 sm:w-11 lg:h-9 lg:w-9 desktop:h-12 desktop:w-12">
+            <img
+              src={photoSrc}
+              alt={testimonial.name}
+              className="h-full w-full rounded-full object-cover"
+            />
+          </div>
+          <div className="min-w-0">
+            <h4 className="truncate text-sm font-semibold text-gray-900 lg:text-xs desktop:text-sm">
+              {testimonial.name}
+            </h4>
+            <p className="line-clamp-2 text-xs text-gray-600 lg:text-[10px] lg:leading-snug desktop:text-sm">
+              {testimonial.title}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <section id="testimonials" aria-label="Testimonials" className="section-padding bg-transparent">
@@ -109,7 +155,7 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
               </h2>
             )}
           </div>
-          {testimonials.length > slidesPerView && (
+          {canSlide && (
             <div className="flex shrink-0 gap-2 self-start sm:self-auto">
               <button
                 onClick={() => {
@@ -147,60 +193,31 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
           )}
         </div>
 
-        <div className="overflow-hidden">
-          <div
-            className="flex items-stretch transition-transform duration-300 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * (100 / slidesPerView)}%)` }}
-          >
-            {testimonials.map((testimonial) => {
-              const photoSrc =
-                getTestimonialPhotoUrl(testimonial.photo) ?? FALLBACK_PHOTO;
-              const rating = testimonial.rating ?? 5;
-              return (
+        {canSlide ? (
+          <div className="overflow-hidden">
+            <div
+              className="flex items-stretch transition-transform duration-300 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * (100 / slidesPerView)}%)` }}
+            >
+              {testimonials.map((testimonial) => (
                 <div
                   key={testimonial._id}
-                  className="flex w-full flex-shrink-0 px-3 md:w-1/2 lg:w-1/3"
+                  className="flex w-full flex-shrink-0 px-3 md:w-1/2 lg:w-1/4"
                 >
-                  <div className="flex h-[340px] w-full flex-col rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:h-[360px] sm:p-5 lg:h-[380px] lg:p-4 lg:pb-5 desktop:h-[400px] desktop:p-6">
-                    <div className="mb-3 flex items-center justify-between sm:mb-4">
-                      <FaQuoteLeft className="h-6 w-6 text-brand sm:h-7 sm:w-7 lg:h-6 lg:w-6 desktop:h-8 desktop:w-8" />
-                      <div className="flex gap-0.5 sm:gap-1">
-                        {[...Array(rating)].map((_, starIndex) => (
-                          <FaStar
-                            key={starIndex}
-                            className="h-3 w-3 text-yellow-400 sm:h-3.5 sm:w-3.5 lg:h-3 lg:w-3 desktop:h-4 desktop:w-4"
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="mb-3 line-clamp-[7] flex-grow overflow-hidden text-xs leading-relaxed text-gray-700 sm:line-clamp-[8] sm:text-sm lg:line-clamp-[9] lg:text-[11px] lg:leading-[1.55] desktop:line-clamp-[8] desktop:text-sm desktop:leading-relaxed">
-                      {testimonial.quote}
-                    </p>
-                    <div className="mt-auto flex items-center gap-2.5 sm:gap-3">
-                      <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-gray-200 sm:h-11 sm:w-11 lg:h-9 lg:w-9 desktop:h-12 desktop:w-12">
-                        <img
-                          src={photoSrc}
-                          alt={testimonial.name}
-                          className="h-full w-full rounded-full object-cover"
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <h4 className="truncate text-sm font-semibold text-gray-900 lg:text-xs desktop:text-sm">
-                          {testimonial.name}
-                        </h4>
-                        <p className="line-clamp-2 text-xs text-gray-600 lg:text-[10px] lg:leading-snug desktop:text-sm">
-                          {testimonial.title}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  {renderCard(testimonial)}
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {testimonials.map((testimonial) => (
+              <div key={testimonial._id}>{renderCard(testimonial)}</div>
+            ))}
+          </div>
+        )}
 
-        {maxIndex > 0 && (
+        {canSlide && maxIndex > 0 && (
           <div className="mt-5 flex items-center justify-center gap-3 sm:mt-6">
             {Array.from({ length: maxIndex + 1 }).map((_, index) => (
               <button

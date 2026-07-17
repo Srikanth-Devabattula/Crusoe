@@ -11,6 +11,7 @@
     "rebuild": "npm run clean && npm run build"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.2.10",
     "@hookform/resolvers": "^5.2.2",
     "axios": "^1.16.1",
     "clsx": "^2.1.1",

@@ -274,7 +274,7 @@ export function SoftwareDevelopmentPage() {
         richItems={softwareDevelopmentBenefits}
       />
 
-      <RelatedServicesSection currentHref={ROUTES.servicesDevelopment} />
+      {/* <RelatedServicesSection currentHref={ROUTES.servicesDevelopment} /> */}
     </>
   );
 }

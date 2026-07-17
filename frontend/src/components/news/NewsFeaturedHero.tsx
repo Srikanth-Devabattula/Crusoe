@@ -4,7 +4,7 @@ import { FiArrowRight, FiClock } from "react-icons/fi";
 import { CoverImage } from "@/components/common/CoverImage";
 import { getNewsCategoryStyle } from "@/data/newsCategories";
 import { ROUTES } from "@/constants";
-import { estimateNewsReadTime, formatNewsDate } from "@/lib/news";
+import { estimateNewsReadTime, formatNewsDate, getNewsDisplayDate } from "@/lib/news";
 import { getNewsPrimaryCoverUrl } from "@/lib/uploads";
 import type { News } from "@/types";
 
@@ -65,7 +65,7 @@ export function NewsFeaturedHero({ item, categoryLabel }: NewsFeaturedHeroProps)
             >
               {categoryLabel}
             </span>
-            <p className="mt-4 text-sm text-slate-500">{formatNewsDate(item.createdAt)}</p>
+            <p className="mt-4 text-sm text-slate-500">{formatNewsDate(getNewsDisplayDate(item))}</p>
             <h2 className="mt-2 text-2xl font-bold leading-tight text-slate-900 transition-colors group-hover:text-brand sm:text-3xl lg:text-4xl">
               {item.title}
             </h2>

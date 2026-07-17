@@ -4,7 +4,7 @@ import { FiArrowRight, FiClock } from "react-icons/fi";
 import { CoverImage } from "@/components/common/CoverImage";
 import { getCategoryStyle } from "@/data/blogCategories";
 import { ROUTES } from "@/constants";
-import { estimateReadTime, formatBlogDate } from "@/lib/blog";
+import { estimateReadTime, formatBlogDate, getBlogDisplayDate } from "@/lib/blog";
 import { getBlogPrimaryCoverUrl } from "@/lib/uploads";
 import { cn } from "@/lib/cn";
 import type { Blog } from "@/types";
@@ -63,7 +63,7 @@ export function BlogCard({ post, categoryLabel, variant = "default" }: BlogCardP
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col p-5 sm:p-6">
-        <p className="text-xs font-medium text-slate-500">{formatBlogDate(post.createdAt)}</p>
+        <p className="text-xs font-medium text-slate-500">{formatBlogDate(getBlogDisplayDate(post))}</p>
         <h3
           className={cn(
             "mt-2 break-words text-left font-bold text-slate-900 transition-colors group-hover:text-brand",
