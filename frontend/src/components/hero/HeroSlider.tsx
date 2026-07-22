@@ -64,7 +64,7 @@ export function HeroSlider() {
   if (isLoading) {
     return (
       <div className="relative w-full min-w-0">
-        <div className="h-[70vh] min-h-[460px] animate-pulse rounded-[24px] bg-gray-200/70 sm:rounded-[28px] desktop:rounded-[32px]" />
+        <div className="min-h-[480px] animate-pulse rounded-[24px] bg-gray-200/70 max-lg:h-auto lg:h-[70vh] lg:min-h-[460px] sm:rounded-[28px] desktop:rounded-[32px]" />
       </div>
     );
   }
@@ -89,6 +89,10 @@ export function HeroSlider() {
           fadeEffect={{ crossFade: true }}
           speed={700}
           loop={slides.length > 1}
+          simulateTouch={slides.length > 1}
+          allowTouchMove={slides.length > 1}
+          noSwipingClass="hero-card-content"
+          touchStartPreventDefault={false}
           autoplay={
             slides.length > 1
               ? {

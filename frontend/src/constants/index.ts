@@ -30,7 +30,9 @@ export const ROUTES = {
   thankYou: "/thank-you",
   admin: {
     login: "/admin/login",
+    staffLogin: "/admin/user-login",
     dashboard: "/admin/dashboard",
+    users: "/admin/users",
     blogs: "/admin/blogs",
     jobs: "/admin/jobs",
     news: "/admin/news",
@@ -44,3 +46,6 @@ export const ROUTES = {
 } as const;
 
 export const SITE_NAME = "Crusoe Tech";
+
+/** Primary site logo (header, footer, admin login) */
+export const SITE_LOGO_SRC = "/images/global/crusoe_logo.svg";

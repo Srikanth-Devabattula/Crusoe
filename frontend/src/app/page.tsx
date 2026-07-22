@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-
 import { HeroSection } from "@/components/hero";
 import {
   AchievementsSection,
@@ -9,12 +7,14 @@ import {
   TestimonialsSection,
   StartAConvoSection,
 } from "@/components/home";
+import { ROUTES } from "@/constants";
+import { createPageMetadata } from "@/lib/createPageMetadata";
 
-export const metadata: Metadata = {
-  title: "Home",
-  description:
-    "Crusoe Tech — quality assurance, engineering services, and software development for reliable, high-impact solutions.",
-};
+export const metadata = createPageMetadata(
+  "Home",
+  "Crusoe Tech — quality assurance, engineering services, and software development for reliable, high-impact solutions.",
+  { path: ROUTES.home }
+);
 
 export default function HomePage() {
   return (

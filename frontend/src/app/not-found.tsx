@@ -1,5 +1,12 @@
 import Link from "next/link";
 import { ROUTES } from "@/constants";
+import { createPageMetadata } from "@/lib/createPageMetadata";
+
+export const metadata = createPageMetadata(
+  "Page Not Found",
+  "The page you are looking for could not be found.",
+  { noIndex: true }
+);
 
 export default function NotFound() {
   return (

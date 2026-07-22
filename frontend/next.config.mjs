@@ -17,6 +17,9 @@ const nextConfig = {
   },
 
   images: {
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: "https",
@@ -40,6 +43,10 @@ const nextConfig = {
 
   async rewrites() {
     return [
+      {
+        source: "/favicon.ico",
+        destination: "/images/global/favicon.png",
+      },
       {
         source: "/api/:path*",
         destination: `${apiOrigin}/api/:path*`,

@@ -11,7 +11,8 @@ export function ConditionalAdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isLoginPage = pathname === "/admin/login";
+  const isLoginPage =
+    pathname === "/admin/login" || pathname === "/admin/user-login";
 
   if (isLoginPage) {
     return <>{children}</>;

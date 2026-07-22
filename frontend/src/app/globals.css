@@ -122,11 +122,27 @@ body {
 /* Swiper hero — scoped overrides */
 .hero-swiper {
   @apply w-full;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .hero-swiper .swiper-wrapper,
 .hero-swiper .swiper-slide {
   @apply h-auto;
+}
+
+.hero-swiper .swiper-slide:not(.swiper-slide-active) {
+  pointer-events: none;
+}
+
+.hero-swiper .swiper-slide-active .hero-card-inner,
+.hero-swiper .swiper-slide-active .hero-card-content {
+  @apply select-text;
+}
+
+.hero-swiper .hero-card-content {
+  overflow: visible;
+  overscroll-behavior: auto;
 }
 
 .hero-swiper .swiper-slide-active .hero-card-inner {

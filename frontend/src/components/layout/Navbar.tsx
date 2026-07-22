@@ -7,7 +7,7 @@ import { ArrowRight, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/cn";
-import { ROUTES } from "@/constants";
+import { ROUTES, SITE_LOGO_SRC } from "@/constants";
 
 import { ServicesNavMenu } from "./ServicesNavMenu";
 
@@ -114,11 +114,12 @@ export function Navbar() {
             className="shrink-0 outline-none"
           >
             <Image
-              src="/images/global/logo1111.png"
+              src={SITE_LOGO_SRC}
               alt="Crusoe Tech"
               width={280}
               height={88}
               priority
+              unoptimized
               className="h-auto w-[200px] sm:w-[216px] lg:w-[168px] xl:w-[190px] desktop:w-[242px] 2xl:w-[292px]"
             />
           </Link>

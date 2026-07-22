@@ -11,6 +11,10 @@ const {
   verifyOTP,
   resendOTP,
 } = require("../controllers/otpController");
+const {
+  requestAdminPasswordOtp,
+  resetAdminPassword,
+} = require("../controllers/adminPasswordController");
 const { protect } = require("../middleware/authMiddleware");
 const {
   authLimiter,
@@ -30,5 +34,16 @@ router.get("/me", protect, asyncHandler(getMe));
 router.post("/request-otp", otpRequestLimiter, asyncHandler(requestOTP));
 router.post("/verify-otp", otpVerifyLimiter, asyncHandler(verifyOTP));
 router.post("/resend-otp", otpRequestLimiter, asyncHandler(resendOTP));
+
+router.post(
+  "/admin/forgot-password/request-otp",
+  otpRequestLimiter,
+  asyncHandler(requestAdminPasswordOtp)
+);
+router.post(
+  "/admin/forgot-password/reset",
+  otpVerifyLimiter,
+  asyncHandler(resetAdminPassword)
+);
 
 module.exports = router;

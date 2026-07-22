@@ -36,12 +36,8 @@ function Field({
   );
 }
 
-interface AdminLoginFormProps {
-  onForgotPassword?: () => void;
-}
-
-export function AdminLoginForm({ onForgotPassword }: AdminLoginFormProps) {
-  const { adminLogin, isLoading } = useAuth();
+export function StaffLoginForm() {
+  const { staffLogin, isLoading } = useAuth();
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -50,7 +46,7 @@ export function AdminLoginForm({ onForgotPassword }: AdminLoginFormProps) {
 
   const onSubmit = async (data: LoginValues) => {
     try {
-      await adminLogin(data);
+      await staffLogin(data);
       toast.success("Logged in successfully");
     } catch (error) {
       toast.error(getApiErrorMessage(error));
@@ -67,7 +63,7 @@ export function AdminLoginForm({ onForgotPassword }: AdminLoginFormProps) {
         <input
           type="email"
           autoComplete="email"
-          placeholder="admin@example.com"
+          placeholder="you@crusoetec.com"
           className={inputClass}
           {...form.register("email")}
         />
@@ -81,19 +77,8 @@ export function AdminLoginForm({ onForgotPassword }: AdminLoginFormProps) {
           {...form.register("password")}
         />
       </Field>
-      {onForgotPassword ? (
-        <div className="flex justify-end">
-          <button
-            type="button"
-            onClick={onForgotPassword}
-            className="text-sm font-medium text-brand hover:underline"
-          >
-            Forgot password?
-          </button>
-        </div>
-      ) : null}
       <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-        {form.formState.isSubmitting ? "Signing in..." : "Log in as administrator"}
+        {form.formState.isSubmitting ? "Signing in..." : "Log in"}
       </Button>
     </form>
   );

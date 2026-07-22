@@ -44,6 +44,10 @@ export function hasPermission(
 export function getDefaultAdminPath(user: User | null): string {
   if (!user) return ROUTES.admin.login;
 
+  if (isAdmin(user)) {
+    return ROUTES.admin.users;
+  }
+
   for (const { key } of ADMIN_PERMISSIONS) {
     const href = PERMISSION_ROUTES[key];
     if (hasPermission(user, key)) return href;
@@ -75,6 +79,15 @@ export function getPermissionForPath(pathname: string): AdminPermission | null {
 
 export function canAccessPath(user: User | null, pathname: string): boolean {
   if (!user) return false;
+
+  if (pathname === ROUTES.admin.users || pathname.startsWith(`${ROUTES.admin.users}/`)) {
+    return isAdmin(user);
+  }
+
+  if (pathname === ROUTES.admin.dashboard || pathname.startsWith(`${ROUTES.admin.dashboard}/`)) {
+    return isAdmin(user);
+  }
+
   const required = getPermissionForPath(pathname);
   if (!required) return true;
   return hasPermission(user, required);

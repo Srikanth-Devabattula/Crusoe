@@ -9,5 +9,6 @@ export { testimonialService } from "./testimonial.service";
 export { teamService } from "./team.service";
 export { partnerService } from "./partner.service";
 export { heroSlideService } from "./heroSlide.service";
+export { userService } from "./user.service";
 export { contactService } from "./contact.service";
 export { applicationService } from "./application.service";

@@ -6,7 +6,8 @@ import { createPageMetadata } from "@/lib/createPageMetadata";
 
 export const metadata = createPageMetadata(
   "Thank You",
-  "Thank you for contacting Crusoe Tech."
+  "Thank you for contacting Crusoe Tech.",
+  { path: ROUTES.thankYou, noIndex: true }
 );
 
 interface ThankYouPageProps {

@@ -25,6 +25,24 @@ export interface User {
   permissions?: AdminPermissions;
 }
 
+export interface StaffUser {
+  _id: string;
+  name: string;
+  email: string;
+  role: "staff";
+  permissions: AdminPermissions;
+  passwordPlain?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface StaffUserFormData {
+  name: string;
+  email: string;
+  password?: string;
+  permissions: AdminPermissions;
+}
+
 export interface BlogCategoryItem {
   _id: string;
   name: string;

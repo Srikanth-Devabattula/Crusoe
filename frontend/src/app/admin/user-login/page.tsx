@@ -2,13 +2,13 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { AdminLoginPanel } from "@/components/admin/AdminLoginPanel";
 import { AdminLoginShell } from "@/components/admin/AdminLoginShell";
+import { StaffLoginForm } from "@/components/admin/StaffLoginForm";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants";
 import { getDefaultAdminPath } from "@/lib/admin-permissions";
 
-function LoginPageContent() {
+function StaffLoginPageContent() {
   const { user, isAuthenticated, isLoading, statusMessage, clearStatusMessage } = useAuth();
   const router = useRouter();
 
@@ -22,21 +22,21 @@ function LoginPageContent() {
 
   return (
     <AdminLoginShell
-      title="Administrator login"
-      description="Sign in with the administrator email from server config and your password."
-      alternateHref={ROUTES.admin.staffLogin}
-      alternateLabel="Staff user?"
+      title="Staff login"
+      description="Sign in with the email and password created for you in Admin → Users."
+      alternateHref={ROUTES.admin.login}
+      alternateLabel="Administrator?"
       statusMessage={statusMessage}
     >
-      <AdminLoginPanel />
+      <StaffLoginForm />
     </AdminLoginShell>
   );
 }
 
-export default function AdminLoginPage() {
+export default function StaffLoginPage() {
   return (
     <AuthProvider>
-      <LoginPageContent />
+      <StaffLoginPageContent />
     </AuthProvider>
   );
 }

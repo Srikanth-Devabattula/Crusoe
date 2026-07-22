@@ -12,7 +12,12 @@ interface AnimatedBadgeProps {
 
 export function AnimatedBadge({ children, className }: AnimatedBadgeProps) {
   return (
-    <div className={cn("relative inline-flex w-fit max-w-full overflow-hidden rounded-full p-[2px]", className)}>
+    <div
+      className={cn(
+        "relative inline-flex max-w-full overflow-hidden rounded-full p-[2px]",
+        className
+      )}
+    >
       <motion.span
         className="absolute inset-[-120%] bg-[conic-gradient(from_0deg,transparent_0deg,#7EA849_70deg,transparent_140deg,transparent_220deg,#7EA849_290deg,transparent_360deg)]"
         animate={{ rotate: 360 }}
@@ -23,11 +28,11 @@ export function AnimatedBadge({ children, className }: AnimatedBadgeProps) {
         }}
         aria-hidden
       />
-      <div className="relative inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-xs text-gray-600 shadow-[0_1px_4px_rgba(15,23,42,0.08)] lg:text-[11px]">
+      <div className="relative flex max-w-full items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2 text-xs leading-snug text-gray-600 shadow-[0_1px_4px_rgba(15,23,42,0.08)] sm:px-4 sm:py-2.5 sm:text-xs lg:text-[11px]">
         <Sparkles className="h-4 w-4 shrink-0 text-brand" strokeWidth={2} />
-        <span>{children}</span>
+        <span className="animated-badge-label min-w-0 whitespace-normal text-left">{children}</span>
         <motion.span
-          className="size-2 shrink-0 rounded-full bg-brand shadow-[0_0_8px_rgba(126, 168, 73,0.55)]"
+          className="size-2 shrink-0 rounded-full bg-brand shadow-[0_0_8px_rgba(126,168,73,0.55)]"
           animate={{ opacity: [1, 1, 0, 0] }}
           transition={{
             duration: 2,

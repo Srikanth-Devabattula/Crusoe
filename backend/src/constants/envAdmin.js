@@ -1,14 +1,28 @@
-/** JWT subject id for env-configured administrator */
+/** JWT subject id for legacy env-configured administrator sessions */
 const ENV_ADMIN_ID = "env-admin";
+
+const getConfiguredAdminEmail = () =>
+  process.env.ADMIN_EMAIL?.trim().toLowerCase() || "";
 
 const getEnvAdminUser = () => ({
   _id: ENV_ADMIN_ID,
   name: process.env.ADMIN_NAME || "Administrator",
-  email: process.env.ADMIN_EMAIL?.trim().toLowerCase(),
+  email: getConfiguredAdminEmail(),
   role: "admin",
 });
 
-const isEnvAdminConfigured = () =>
-  Boolean(process.env.ADMIN_EMAIL?.trim() && process.env.ADMIN_PASSWORD);
+const isEnvAdminConfigured = () => Boolean(getConfiguredAdminEmail());
 
-module.exports = { ENV_ADMIN_ID, getEnvAdminUser, isEnvAdminConfigured };
+const isConfiguredAdminEmail = (email) => {
+  const configured = getConfiguredAdminEmail();
+  if (!configured || !email) return false;
+  return String(email).trim().toLowerCase() === configured;
+};
+
+module.exports = {
+  ENV_ADMIN_ID,
+  getEnvAdminUser,
+  getConfiguredAdminEmail,
+  isEnvAdminConfigured,
+  isConfiguredAdminEmail,
+};

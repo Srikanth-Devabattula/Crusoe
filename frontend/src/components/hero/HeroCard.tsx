@@ -30,68 +30,16 @@ export function HeroCard({
   return (
     <motion.article
       className={cn(
-        "hero-card-inner group flex h-[70vh] min-h-[460px] w-full flex-col overflow-hidden rounded-[24px] bg-[#F3F5F9] shadow-hero-card transition-transform duration-500 ease-out sm:rounded-[28px] lg:flex-row lg:rounded-[26px] desktop:rounded-[32px]",
+        "hero-card-inner group flex w-full flex-col overflow-hidden rounded-[24px] bg-[#F3F5F9] shadow-hero-card transition-transform duration-500 ease-out max-lg:h-auto sm:rounded-[28px] lg:h-[70vh] lg:max-h-[640px] lg:min-h-0 lg:flex-row lg:rounded-[26px] desktop:rounded-[32px]",
         isActive && "shadow-[0_28px_90px_rgba(126, 168, 73,0.15)]",
         className
       )}
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 300, damping: 24 }}
     >
-      <motion.div
-        className="flex w-full shrink-0 flex-col items-start justify-center p-6 sm:p-8 lg:h-full lg:w-[42%] lg:shrink-0 lg:p-10 desktop:w-[40%] desktop:px-12 desktop:py-14"
-        initial={{ opacity: 0, x: -12 }}
-        animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0.94 }}
-        transition={{ duration: 0.45 }}
-      >
-        <AnimatedBadge className="[&>div]:px-4 [&>div]:py-2.5 [&>div]:text-sm desktop:[&>div]:px-5 desktop:[&>div]:py-3 desktop:[&>div]:text-[15px]">
-          Software Quality, Engineered to Perfection.
-        </AnimatedBadge>
-
-        <span className="mt-5 inline-flex w-fit items-center rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand shadow-sm sm:mt-6">
-          {number} / {total}
-        </span>
-
-        <div className="mt-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white p-3 shadow-sm sm:mt-6 sm:h-16 sm:w-16">
-          <Image
-            src={slide.icon}
-            alt=""
-            width={56}
-            height={56}
-            className="h-10 w-10 object-contain sm:h-11 sm:w-11"
-          />
-        </div>
-
-        <h3 className="text-heading mt-4 text-[28px] leading-tight sm:mt-5 sm:text-[34px] lg:text-[38px] desktop:text-[42px] 2xl:text-[46px]">
-          {slide.title}
-        </h3>
-
-        <span className="mt-4 block h-1.5 w-16 rounded-full bg-brand sm:mt-5" aria-hidden />
-
-        <p className="text-description !text-gray-800 mt-4 max-w-lg text-base leading-relaxed sm:mt-5 sm:text-lg desktop:mt-6 desktop:text-xl desktop:leading-relaxed">
-          {slide.description}
-        </p>
-
-        <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-4">
-          <CTAButton
-            href={ROUTES.services}
-            variant="primary"
-            className="w-full !px-6 !py-3.5 !text-sm sm:w-auto desktop:!px-8 desktop:!py-4 desktop:!text-base"
-          >
-            Explore Our Services
-          </CTAButton>
-          <CTAButton
-            href={ROUTES.about}
-            variant="secondary"
-            className="w-full !px-6 !py-3.5 !text-sm sm:w-auto desktop:!px-8 desktop:!py-4 desktop:!text-base"
-          >
-            About Us
-          </CTAButton>
-        </div>
-      </motion.div>
-
-      <div className="relative flex min-h-[240px] w-full flex-1 items-stretch p-4 sm:p-5 lg:min-h-0 lg:p-6 lg:pl-3 desktop:p-8 desktop:pl-4">
+      <div className="relative order-1 flex w-full shrink-0 items-stretch p-4 pb-3 sm:p-5 sm:pb-4 lg:order-2 lg:min-h-0 lg:flex-1 lg:p-5 lg:pl-2 lg:pb-5 desktop:p-8 desktop:pl-4">
         <motion.div
-          className="relative h-full min-h-[220px] w-full overflow-hidden rounded-[20px] sm:rounded-[22px] lg:rounded-[24px] desktop:rounded-[28px]"
+          className="relative mx-auto aspect-[4/3] w-full max-h-[42vh] min-h-[220px] overflow-hidden rounded-[20px] sm:max-h-[44vh] sm:min-h-[260px] sm:rounded-[22px] lg:mx-0 lg:aspect-auto lg:h-full lg:max-h-none lg:min-h-0 lg:rounded-[24px] desktop:rounded-[28px]"
           animate={isActive ? { scale: 1.02 } : { scale: 1 }}
           transition={{ duration: 0.7 }}
         >
@@ -105,6 +53,63 @@ export function HeroCard({
           />
         </motion.div>
       </div>
+
+      <motion.div
+        className="hero-card-content relative z-10 order-2 flex w-full shrink-0 select-text flex-col items-center justify-center overflow-visible px-5 pb-6 pt-1 text-center sm:px-8 sm:pb-8 lg:order-1 lg:min-h-0 lg:w-[42%] lg:items-start lg:justify-start lg:p-6 lg:pb-5 lg:text-left lg:shrink-0 xl:p-8 desktop:w-[40%] desktop:px-12 desktop:py-12"
+        initial={{ opacity: 0, x: -12 }}
+        animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0.94 }}
+        transition={{ duration: 0.45 }}
+      >
+        <div className="w-full max-w-full lg:max-w-[min(100%,420px)]">
+          <AnimatedBadge className="w-full max-w-full [&>div]:w-full [&>div]:max-w-full [&>div]:items-start [&>div]:gap-x-2 [&>div]:gap-y-1 [&>div]:px-3 [&>div]:py-2 [&>div]:text-[11px] [&>div]:leading-snug sm:[&>div]:px-3.5 sm:[&>div]:text-xs xl:[&>div]:items-center xl:[&>div]:px-4 xl:[&>div]:py-2.5 xl:[&>div]:text-xs desktop:[&>div]:px-5 desktop:[&>div]:py-3 desktop:[&>div]:text-[15px] max-lg:[&>div]:justify-center max-lg:[&_.animated-badge-label]:text-center xl:[&_.animated-badge-label]:text-left">
+            Software Quality, Engineered to Perfection.
+          </AnimatedBadge>
+        </div>
+
+        <span className="mt-3 inline-flex w-fit items-center rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand shadow-sm sm:mt-4 sm:px-4 sm:py-1.5 sm:text-sm desktop:mt-5">
+          {number} / {total}
+        </span>
+
+        <div className="mt-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white p-2 shadow-sm sm:mt-4 sm:h-14 sm:w-14 sm:rounded-2xl sm:p-3 desktop:mt-5 desktop:h-16 desktop:w-16">
+          <Image
+            src={slide.icon}
+            alt=""
+            width={56}
+            height={56}
+            className="h-8 w-8 object-contain sm:h-10 sm:w-10 desktop:h-11 desktop:w-11"
+          />
+        </div>
+
+        <h3 className="text-heading mt-2 w-full text-[26px] leading-tight sm:mt-3 sm:text-[32px] lg:mt-2.5 lg:text-[22px] xl:mt-3 xl:text-[28px] desktop:mt-4 desktop:text-[42px] 2xl:text-[46px]">
+          {slide.title}
+        </h3>
+
+        <span
+          className="mx-auto mt-2 block h-1 w-12 rounded-full bg-brand sm:mt-3 sm:h-1.5 sm:w-16 lg:mx-0 desktop:mt-5"
+          aria-hidden
+        />
+
+        <p className="text-description !text-gray-800 mt-2 w-full max-w-lg select-text text-base leading-relaxed max-lg:mx-auto sm:mt-3 sm:text-lg lg:mx-0 lg:mt-2 lg:max-w-none lg:text-left lg:text-[13px] lg:leading-snug xl:mt-3 xl:text-base xl:leading-relaxed desktop:mt-5 desktop:text-xl desktop:leading-relaxed">
+          {slide.description}
+        </p>
+
+        <div className="mt-4 flex w-full max-w-md shrink-0 flex-col gap-2.5 max-lg:mx-auto sm:mt-5 sm:gap-3 lg:mx-0 lg:mt-3 lg:max-w-none lg:flex-row lg:flex-wrap lg:justify-start lg:gap-2 xl:mt-4 xl:gap-3 desktop:mt-7 desktop:gap-4">
+          <CTAButton
+            href={ROUTES.services}
+            variant="primary"
+            className="w-full !px-5 !py-3 !text-sm lg:!px-4 lg:!py-2.5 lg:!text-xs xl:!px-5 xl:!py-3 xl:!text-sm lg:w-auto desktop:!px-8 desktop:!py-4 desktop:!text-base"
+          >
+            Explore Our Services
+          </CTAButton>
+          <CTAButton
+            href={ROUTES.about}
+            variant="secondary"
+            className="w-full !px-5 !py-3 !text-sm lg:!px-4 lg:!py-2.5 lg:!text-xs xl:!px-5 xl:!py-3 xl:!text-sm lg:w-auto desktop:!px-8 desktop:!py-4 desktop:!text-base"
+          >
+            About Us
+          </CTAButton>
+        </div>
+      </motion.div>
     </motion.article>
   );
 }

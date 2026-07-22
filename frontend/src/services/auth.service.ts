@@ -35,6 +35,22 @@ export const authService = {
     return response.data;
   },
 
+  requestAdminPasswordOtp: async (data: OtpRequestData) => {
+    const response = await api.post<ApiResponse<OtpSentData>>(
+      "/auth/admin/forgot-password/request-otp",
+      data
+    );
+    return response.data;
+  },
+
+  resetAdminPassword: async (data: OtpVerifyFormData & { password: string }) => {
+    const response = await api.post<ApiResponse<{ email: string }>>(
+      "/auth/admin/forgot-password/reset",
+      data
+    );
+    return response.data;
+  },
+
   login: async (data: LoginFormData) => {
     const response = await api.post<ApiResponse<AuthData>>("/auth/login", data);
     return response.data;

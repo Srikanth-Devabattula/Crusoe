@@ -7,7 +7,7 @@ import {
   FaPhone,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import { ROUTES, SITE_NAME } from "@/constants";
+import { ROUTES, SITE_LOGO_SRC, SITE_NAME } from "@/constants";
 import { CONTACT_EMAIL, contactInfoBlocks } from "@/data/contactPage";
 
 const quickLinks = [
@@ -75,10 +75,11 @@ export function Footer() {
             <div className="lg:col-span-1">
               <Link href={ROUTES.home} className="mb-2 inline-block">
                 <Image
-                  src="/images/global/logo1111.png"
+                  src={SITE_LOGO_SRC}
                   alt="Crusoe Tech"
                   width={320}
                   height={120}
+                  unoptimized
                   className="h-auto w-[150px] sm:w-[170px] lg:w-[180px]"
                 />
               </Link>
@@ -113,7 +114,7 @@ export function Footer() {
               </div>
             </div>
 
-            <div>
+            <div className="lg:pl-8 xl:pl-10">
               <h3 className={headingClass}>Quick Links</h3>
               <ul className="space-y-1.5">
                 {quickLinks.map((link) => (

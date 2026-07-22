@@ -10,6 +10,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services";
+import { ROUTES } from "@/constants";
 import { clearAuth, getStoredToken, getStoredUser, saveAuth } from "@/lib/auth-storage";
 import { getDefaultAdminPath } from "@/lib/admin-permissions";
 import type {
@@ -31,6 +32,8 @@ interface AuthContextValue {
   verifyOtp: (data: OtpVerifyFormData) => Promise<void>;
   resendOtp: (data: OtpRequestData) => Promise<{ expiresIn: number; message?: string }>;
   login: (data: LoginFormData) => Promise<void>;
+  adminLogin: (data: LoginFormData) => Promise<void>;
+  staffLogin: (data: LoginFormData) => Promise<void>;
   register: (data: RegisterFormData) => Promise<void>;
   hasPermission: (permission: import("@/types").AdminPermission) => boolean;
   logout: () => void;
@@ -114,7 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push(getDefaultAdminPath(res.data.user));
   };
 
-  const login = async (data: LoginFormData) => {
+  const adminLogin = async (data: LoginFormData) => {
     const res = await authService.adminLogin(data);
     if (!res.data?.token || !res.data?.user) {
       throw new Error(res.message || "Login failed");
@@ -124,6 +127,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setStatusMessage(res.message || "Logged in successfully");
     router.push(getDefaultAdminPath(res.data.user));
   };
+
+  const staffLogin = async (data: LoginFormData) => {
+    const res = await authService.login(data);
+    if (!res.data?.token || !res.data?.user) {
+      throw new Error(res.message || "Login failed");
+    }
+    if (res.data.user.role !== "staff" && res.data.user.role !== "admin") {
+      clearAuth();
+      throw new Error("This account is not authorized for admin access.");
+    }
+    saveAuth(res.data.token, res.data.user);
+    setUser(res.data.user);
+    setStatusMessage(res.message || "Logged in successfully");
+    router.push(getDefaultAdminPath(res.data.user));
+  };
+
+  /** @deprecated Use adminLogin or staffLogin */
+  const login = adminLogin;
 
   const resendOtp = async (data: OtpRequestData) => {
     const res = await authService.resendOtp(data);
@@ -156,10 +177,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     authService.logout();
+    const wasStaff = user?.role === "staff";
     clearAuth();
     setUser(null);
     setStatusMessage(null);
-    router.push("/admin/login");
+    router.push(wasStaff ? ROUTES.admin.staffLogin : ROUTES.admin.login);
   };
 
   return (
@@ -175,6 +197,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         verifyOtp,
         resendOtp,
         login,
+        adminLogin,
+        staffLogin,
         register,
         hasPermission,
         logout,

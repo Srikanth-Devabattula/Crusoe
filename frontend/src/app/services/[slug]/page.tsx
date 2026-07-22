@@ -6,6 +6,7 @@ import { SoftwareDevelopmentPage } from "@/components/services/SoftwareDevelopme
 import { SoftwareQualityServicePage } from "@/components/services/SoftwareQualityServicePage";
 import { ServiceDetailView } from "@/components/services/ServiceDetailView";
 import { getServicePage, servicePageSlugs } from "@/data/servicePages";
+import { ROUTES } from "@/constants";
 import { createPageMetadata } from "@/lib/createPageMetadata";
 
 const CAD_CAM_SLUG = "cad-cam-cae-software-testing";
@@ -25,10 +26,14 @@ export function generateMetadata({ params }: ServiceDetailPageProps) {
   const page = getServicePage(params.slug);
 
   if (!page) {
-    return createPageMetadata("Service", "Explore Crusoe Tech services.");
+    return createPageMetadata("Service", "Explore Crusoe Tech services.", {
+      path: `${ROUTES.services}/${params.slug}`,
+    });
   }
 
-  return createPageMetadata(page.title, page.description);
+  return createPageMetadata(page.title, page.description, {
+    path: `${ROUTES.services}/${params.slug}`,
+  });
 }
 
 export default function ServiceDetailPage({ params }: ServiceDetailPageProps) {

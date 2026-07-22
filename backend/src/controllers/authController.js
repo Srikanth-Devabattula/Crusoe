@@ -2,10 +2,9 @@ const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { isValidEmail } = require("../utils/validators");
-const { secureCompare } = require("../utils/secureCompare");
 const {
-  ENV_ADMIN_ID,
-  getEnvAdminUser,
+  getConfiguredAdminEmail,
+  isConfiguredAdminEmail,
   isEnvAdminConfigured,
 } = require("../constants/envAdmin");
 
@@ -35,7 +34,7 @@ const hasAdmin = async (req, res) => {
 
 /**
  * @route   POST /api/auth/admin-login
- * @desc    Admin login using ADMIN_EMAIL + ADMIN_PASSWORD from .env
+ * @desc    Admin login — email must match ADMIN_EMAIL; password stored in database
  * @access  Public
  */
 const adminLogin = async (req, res) => {
@@ -53,27 +52,36 @@ const adminLogin = async (req, res) => {
     return sendError(
       res,
       503,
-      "Admin login is not configured. Set ADMIN_EMAIL and ADMIN_PASSWORD in server environment."
+      "Admin login is not configured. Set ADMIN_EMAIL in server environment."
     );
   }
 
-  const adminEmail = process.env.ADMIN_EMAIL.trim().toLowerCase();
-  const inputEmail = email.trim().toLowerCase();
-
-  const emailMatch = secureCompare(inputEmail, adminEmail);
-  const passwordMatch = secureCompare(password, process.env.ADMIN_PASSWORD);
-
-  if (!emailMatch || !passwordMatch) {
+  if (!isConfiguredAdminEmail(email)) {
     return sendError(res, 401, "Invalid email or password");
   }
 
-  const token = generateToken(ENV_ADMIN_ID);
+  const adminEmail = getConfiguredAdminEmail();
+  const user = await User.findOne({ email: adminEmail, role: "admin" }).select("+password");
+
+  if (!user) {
+    return sendError(
+      res,
+      401,
+      "Administrator password is not set yet. Use Forgot password to create one."
+    );
+  }
+
+  if (!(await user.matchPassword(password))) {
+    return sendError(res, 401, "Invalid email or password");
+  }
+
+  const token = generateToken(user._id);
   setAuthCookie(res, token);
 
   return sendSuccess(res, 200, "Logged in successfully", {
-    user: formatUser(getEnvAdminUser()),
+    user: formatUser(user),
     token,
-    loginMethod: "env-admin",
+    loginMethod: "admin-password",
   });
 };
 
@@ -143,6 +151,10 @@ const login = async (req, res) => {
 
   if (!user || !(await user.matchPassword(password))) {
     return sendError(res, 401, "Invalid email or password");
+  }
+
+  if (user.role === "admin") {
+    return sendError(res, 403, "Use the administrator login page for this account.");
   }
 
   if (user.role === "staff" && !staffHasAnyPermission(user)) {
