@@ -90,7 +90,7 @@ export function getNewsPrimaryCoverUrl(post: {
 
 function resolveMediaPhoto(
   photo: string,
-  bucket: "testimonial-photos" | "team-photos" | "partner-logos"
+  bucket: "testimonial-photos" | "team-photos" | "partner-logos" | "hero-slide-images" | "hero-slide-icons"
 ): string | null {
   if (!photo?.trim()) return null;
   if (photo.startsWith("/")) return photo;
@@ -108,4 +108,12 @@ export function getTeamPhotoUrl(photo?: string): string | null {
 
 export function getPartnerLogoUrl(logo?: string): string | null {
   return resolveMediaPhoto(logo ?? "", "partner-logos");
+}
+
+export function getHeroSlideImageUrl(image?: string): string | null {
+  return resolveMediaPhoto(image ?? "", "hero-slide-images");
+}
+
+export function getHeroSlideIconUrl(icon?: string): string | null {
+  return resolveMediaPhoto(icon ?? "", "hero-slide-icons");
 }

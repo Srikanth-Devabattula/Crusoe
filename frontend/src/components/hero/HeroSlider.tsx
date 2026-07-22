@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Autoplay, EffectFade } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,6 +10,9 @@ import { HERO_SLIDES } from "@/data/heroSlides";
 import { HeroCard } from "@/components/hero/HeroCard";
 import { HeroPagination } from "@/components/hero/HeroPagination";
 import { HeroSliderNav } from "@/components/hero/HeroSliderNav";
+import { mapHeroSlides } from "@/lib/hero-slides";
+import { heroSlideService } from "@/services";
+import type { HeroSlideView } from "@/data/heroSlides";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -17,6 +20,34 @@ import "swiper/css/effect-fade";
 export function HeroSlider() {
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [slides, setSlides] = useState<HeroSlideView[]>(HERO_SLIDES);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadSlides = async () => {
+      try {
+        const res = await heroSlideService.getPublished();
+        const items = Array.isArray(res.data) ? res.data : [];
+        if (!cancelled && items.length > 0) {
+          setSlides(mapHeroSlides(items));
+        }
+      } catch {
+        if (!cancelled) {
+          setSlides(HERO_SLIDES);
+        }
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
+
+    loadSlides();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const goTo = useCallback((index: number) => {
     swiperRef.current?.slideToLoop(index);
@@ -30,8 +61,20 @@ export function HeroSlider() {
     swiperRef.current?.slideNext();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="relative w-full min-w-0">
+        <div className="h-[70vh] min-h-[460px] animate-pulse rounded-[24px] bg-gray-200/70 sm:rounded-[28px] desktop:rounded-[32px]" />
+      </div>
+    );
+  }
+
+  if (slides.length === 0) {
+    return null;
+  }
+
   return (
-      <motion.div
+    <motion.div
       className="relative w-full min-w-0"
       initial={{ opacity: 0, y: 32 }}
       animate={{ opacity: 1, y: 0 }}
@@ -45,12 +88,16 @@ export function HeroSlider() {
           effect="fade"
           fadeEffect={{ crossFade: true }}
           speed={700}
-          loop
-          autoplay={{
-            delay: 4000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          }}
+          loop={slides.length > 1}
+          autoplay={
+            slides.length > 1
+              ? {
+                  delay: 4000,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                }
+              : false
+          }
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
           }}
@@ -59,16 +106,21 @@ export function HeroSlider() {
           }}
           className="hero-swiper !overflow-visible w-full rounded-[24px] sm:rounded-[28px] desktop:rounded-[32px]"
         >
-          {HERO_SLIDES.map((slide, index) => (
+          {slides.map((slide, index) => (
             <SwiperSlide key={slide.id}>
-              <HeroCard slide={slide} isActive={activeIndex === index} />
+              <HeroCard
+                slide={slide}
+                slideIndex={index}
+                totalSlides={slides.length}
+                isActive={activeIndex === index}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
       </motion.div>
 
       <HeroPagination
-        total={HERO_SLIDES.length}
+        total={slides.length}
         activeIndex={activeIndex}
         onSelect={goTo}
         className="mt-4 sm:mt-6 desktop:mt-8"

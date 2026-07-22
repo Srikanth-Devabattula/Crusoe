@@ -8,5 +8,6 @@ export { jobService } from "./job.service";
 export { testimonialService } from "./testimonial.service";
 export { teamService } from "./team.service";
 export { partnerService } from "./partner.service";
+export { heroSlideService } from "./heroSlide.service";
 export { contactService } from "./contact.service";
 export { applicationService } from "./application.service";

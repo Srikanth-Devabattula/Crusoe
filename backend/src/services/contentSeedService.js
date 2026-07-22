@@ -1,6 +1,7 @@
 const Testimonial = require("../models/Testimonial");
 const TeamMember = require("../models/TeamMember");
 const Partner = require("../models/Partner");
+const HeroSlide = require("../models/HeroSlide");
 
 const DEFAULT_TESTIMONIALS = [
   {
@@ -166,6 +167,36 @@ const DEFAULT_PARTNERS = [
   },
 ];
 
+const DEFAULT_HERO_SLIDES = [
+  {
+    title: "Quality Assurance",
+    description:
+      "Ensuring reliable, scalable, and high-quality software solutions through advanced QA processes and automation testing.",
+    image: "/images/hero/card1.png",
+    icon: "/images/hero/card1icon.png",
+    published: true,
+    sortOrder: 1,
+  },
+  {
+    title: "Engineering Services",
+    description:
+      "Expert CAD platform migration, engineering solutions, and custom design services tailored for modern industries.",
+    image: "/images/hero/card2.png",
+    icon: "/images/hero/card2icon.png",
+    published: true,
+    sortOrder: 2,
+  },
+  {
+    title: "Software Development",
+    description:
+      "Building modern MCAD tools, scalable applications, and REST API solutions using advanced technologies and best practices.",
+    image: "/images/hero/card3.png",
+    icon: "/images/hero/card3icon.png",
+    published: true,
+    sortOrder: 3,
+  },
+];
+
 const seedContentIfEmpty = async () => {
   try {
     const testimonialCount = await Testimonial.countDocuments();
@@ -184,6 +215,12 @@ const seedContentIfEmpty = async () => {
     if (partnerCount === 0) {
       await Partner.insertMany(DEFAULT_PARTNERS);
       console.log(`Seeded ${DEFAULT_PARTNERS.length} partner logos`);
+    }
+
+    const heroSlideCount = await HeroSlide.countDocuments();
+    if (heroSlideCount === 0) {
+      await HeroSlide.insertMany(DEFAULT_HERO_SLIDES);
+      console.log(`Seeded ${DEFAULT_HERO_SLIDES.length} hero slides`);
     }
   } catch (error) {
     console.error("Content seed failed:", error.message);

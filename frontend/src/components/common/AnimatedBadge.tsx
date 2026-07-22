@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 
+import { cn } from "@/lib/cn";
+
 interface AnimatedBadgeProps {
   children: React.ReactNode;
   className?: string;
@@ -10,7 +12,7 @@ interface AnimatedBadgeProps {
 
 export function AnimatedBadge({ children, className }: AnimatedBadgeProps) {
   return (
-    <div className={`relative inline-flex overflow-hidden rounded-full p-[2px] ${className ?? ""}`}>
+    <div className={cn("relative inline-flex w-fit max-w-full overflow-hidden rounded-full p-[2px]", className)}>
       <motion.span
         className="absolute inset-[-120%] bg-[conic-gradient(from_0deg,transparent_0deg,#7EA849_70deg,transparent_140deg,transparent_220deg,#7EA849_290deg,transparent_360deg)]"
         animate={{ rotate: 360 }}

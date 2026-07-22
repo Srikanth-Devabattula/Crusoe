@@ -37,6 +37,7 @@ export const ROUTES = {
     testimonials: "/admin/testimonials",
     team: "/admin/team",
     partners: "/admin/partners",
+    heroSlides: "/admin/hero-slides",
     contacts: "/admin/contacts",
     applications: "/admin/applications",
   },

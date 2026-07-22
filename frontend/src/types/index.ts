@@ -11,6 +11,7 @@ export type AdminPermission =
   | "testimonials"
   | "team"
   | "partners"
+  | "heroSlides"
   | "contacts"
   | "applications";
 
@@ -202,6 +203,27 @@ export interface PartnerFormData {
   name: string;
   logo?: string;
   websiteUrl?: string;
+  published: boolean;
+  sortOrder?: number;
+}
+
+export interface HeroSlide {
+  _id: string;
+  title: string;
+  description: string;
+  image: string;
+  icon: string;
+  published: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface HeroSlideFormData {
+  title: string;
+  description: string;
+  image?: string;
+  icon?: string;
   published: boolean;
   sortOrder?: number;
 }

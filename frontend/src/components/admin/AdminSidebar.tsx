@@ -2,7 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileText, Newspaper, Briefcase, LogOut, MessageSquareQuote, Users, Building2, Mail, ClipboardList } from "lucide-react";
+import {
+  FileText,
+  Newspaper,
+  Briefcase,
+  LogOut,
+  MessageSquareQuote,
+  Users,
+  Building2,
+  Mail,
+  ClipboardList,
+  LayoutPanelTop,
+} from "lucide-react";
 import { cn } from "@/lib/cn";
 import { ROUTES } from "@/constants";
 import { useAuth } from "@/contexts/AuthContext";
@@ -30,6 +41,12 @@ const sectionLinks: Array<{
     label: "Partner Logos",
     icon: Building2,
     permission: "partners",
+  },
+  {
+    href: ROUTES.admin.heroSlides,
+    label: "Hero Slides",
+    icon: LayoutPanelTop,
+    permission: "heroSlides",
   },
   {
     href: ROUTES.admin.contacts,

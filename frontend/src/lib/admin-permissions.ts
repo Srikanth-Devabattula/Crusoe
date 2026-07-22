@@ -11,6 +11,7 @@ export const ADMIN_PERMISSIONS: Array<{
   { key: "testimonials", label: "Testimonials" },
   { key: "team", label: "Team" },
   { key: "partners", label: "Partner Logos" },
+  { key: "heroSlides", label: "Hero Slides" },
   { key: "contacts", label: "Contact Forms" },
   { key: "applications", label: "Job Applications" },
 ];
@@ -22,6 +23,7 @@ export const EMPTY_PERMISSIONS: Record<AdminPermission, boolean> = {
   testimonials: false,
   team: false,
   partners: false,
+  heroSlides: false,
   contacts: false,
   applications: false,
 };
@@ -57,6 +59,7 @@ export const PERMISSION_ROUTES: Record<AdminPermission, string> = {
   testimonials: ROUTES.admin.testimonials,
   team: ROUTES.admin.team,
   partners: ROUTES.admin.partners,
+  heroSlides: ROUTES.admin.heroSlides,
   contacts: ROUTES.admin.contacts,
   applications: ROUTES.admin.applications,
 };

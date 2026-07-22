@@ -95,6 +95,15 @@ const uploadPartnerLogo = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 }).single("logoFile");
 
+const uploadHeroSlideImages = multer({
+  storage: memoryStorage,
+  fileFilter: imageFilter,
+  limits: { fileSize: 5 * 1024 * 1024, files: 2 },
+}).fields([
+  { name: "imageFile", maxCount: 1 },
+  { name: "iconFile", maxCount: 1 },
+]);
+
 module.exports = {
   uploadResume,
   uploadBlogCover,
@@ -102,6 +111,7 @@ module.exports = {
   uploadTestimonialPhoto,
   uploadTeamPhoto,
   uploadPartnerLogo,
+  uploadHeroSlideImages,
   blogCoverDir,
   newsCoverDir,
 };

@@ -11,6 +11,8 @@ const BUCKET_NAMES = {
   "testimonial-photos": "testimonialPhotos",
   "team-photos": "teamPhotos",
   "partner-logos": "partnerLogos",
+  "hero-slide-images": "heroSlideImages",
+  "hero-slide-icons": "heroSlideIcons",
 };
 
 const isExternalCover = (cover) => /^https?:\/\//i.test(cover || "");

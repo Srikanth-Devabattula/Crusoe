@@ -10,6 +10,7 @@ const permissionsSchema = new mongoose.Schema(
     testimonials: { type: Boolean, default: false },
     team: { type: Boolean, default: false },
     partners: { type: Boolean, default: false },
+    heroSlides: { type: Boolean, default: false },
     contacts: { type: Boolean, default: false },
     applications: { type: Boolean, default: false },
   },
