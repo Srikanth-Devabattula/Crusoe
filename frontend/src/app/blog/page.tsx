@@ -5,7 +5,7 @@ import { ROUTES } from "@/constants";
 import { createPageMetadata } from "@/lib/createPageMetadata";
 
 export const metadata = createPageMetadata(
-  "Blogs & News",
+  "Blog & News",
   "Insights, articles, and company news from Crusoe Tech.",
   { path: ROUTES.blog }
 );

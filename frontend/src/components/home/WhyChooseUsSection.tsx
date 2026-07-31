@@ -114,11 +114,10 @@ export function WhyChooseUsSection() {
 
               <div className="mt-6 rounded-[20px] border border-brand/20 bg-white/70 p-4 backdrop-blur sm:mt-7 sm:p-5 lg:mt-5 lg:rounded-[16px] lg:p-3.5 desktop:mt-7 desktop:rounded-[20px] desktop:p-5">
                 <p className="text-xs font-bold uppercase tracking-[0.12em] text-brand sm:text-sm">
-                  Vision
+                  Mission
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-[#5b6472] lg:text-xs lg:leading-relaxed desktop:mt-2.5 desktop:text-[15px] desktop:leading-relaxed">
-                  Become a Top-Tier Technology &amp; Services Company catering
-                  to the leading Global Software &amp; Engineering Companies.
+                  Crusoe is a Software & Engineering Services Company helping to build some of the world's best engineering softwares in CAD, PDM and PLM areas. Also helping world's top engineering companies to build cutting edge and innovative products.
                 </p>
               </div>
 

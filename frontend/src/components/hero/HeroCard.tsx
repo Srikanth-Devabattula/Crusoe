@@ -55,45 +55,45 @@ export function HeroCard({
       </div>
 
       <motion.div
-        className="hero-card-content relative z-10 order-2 flex w-full shrink-0 select-text flex-col items-center justify-center overflow-visible px-5 pb-6 pt-1 text-center sm:px-8 sm:pb-8 lg:order-1 lg:min-h-0 lg:w-[42%] lg:items-start lg:justify-start lg:p-6 lg:pb-5 lg:text-left lg:shrink-0 xl:p-8 desktop:w-[40%] desktop:px-12 desktop:py-12"
+        className="hero-card-content relative z-10 order-2 flex w-full shrink-0 select-text flex-col items-start justify-center overflow-visible px-5 pb-6 pt-1 text-left sm:px-8 sm:pb-8 lg:order-1 lg:min-h-0 lg:w-[35%] lg:items-start lg:justify-start lg:p-6 lg:pb-5 lg:text-left lg:shrink-0 xl:p-8 desktop:w-[35%] desktop:px-12 desktop:py-12"
         initial={{ opacity: 0, x: -12 }}
         animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0.94 }}
         transition={{ duration: 0.45 }}
       >
-        <div className="w-full max-w-full lg:max-w-[min(100%,420px)]">
-          <AnimatedBadge className="w-full max-w-full [&>div]:w-full [&>div]:max-w-full [&>div]:items-start [&>div]:gap-x-2 [&>div]:gap-y-1 [&>div]:px-3 [&>div]:py-2 [&>div]:text-[11px] [&>div]:leading-snug sm:[&>div]:px-3.5 sm:[&>div]:text-xs xl:[&>div]:items-center xl:[&>div]:px-4 xl:[&>div]:py-2.5 xl:[&>div]:text-xs desktop:[&>div]:px-5 desktop:[&>div]:py-3 desktop:[&>div]:text-[15px] max-lg:[&>div]:justify-center max-lg:[&_.animated-badge-label]:text-center xl:[&_.animated-badge-label]:text-left">
-            Software Quality, Engineered to Perfection.
-          </AnimatedBadge>
+        <div className="flex items-center gap-3 w-full max-w-full justify-start">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white p-2 shadow-sm sm:h-14 sm:w-14 sm:rounded-2xl sm:p-3 desktop:h-16 desktop:w-16">
+            <Image
+              src={slide.icon}
+              alt=""
+              width={56}
+              height={56}
+              className="h-8 w-8 object-contain sm:h-10 sm:w-10 desktop:h-11 desktop:w-11"
+            />
+          </div>
+
+          <div className="w-full max-w-full lg:max-w-[min(100%,420px)]">
+            <AnimatedBadge className="w-full max-w-full [&>div]:w-full [&>div]:max-w-full [&>div]:items-start [&>div]:gap-x-2 [&>div]:gap-y-1 [&>div]:px-3 [&>div]:py-2 [&>div]:text-[11px] [&>div]:leading-snug sm:[&>div]:px-3.5 sm:[&>div]:text-xs xl:[&>div]:items-center xl:[&>div]:px-4 xl:[&>div]:py-2.5 xl:[&>div]:text-xs desktop:[&>div]:px-5 desktop:[&>div]:py-3 desktop:[&>div]:text-[15px] max-lg:[&>div]:justify-start max-lg:[&_.animated-badge-label]:text-left xl:[&_.animated-badge-label]:text-left">
+              Software Quality, Engineered to Perfection.
+            </AnimatedBadge>
+          </div>
         </div>
 
-        <span className="mt-3 inline-flex w-fit items-center rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand shadow-sm sm:mt-4 sm:px-4 sm:py-1.5 sm:text-sm desktop:mt-5">
-          {number} / {total}
-        </span>
+        <div className="lg:my-auto flex flex-col items-start w-full">
+          <h3 className="text-heading mt-4 w-full text-[26px] leading-tight sm:mt-5 sm:text-[32px] lg:mt-0 lg:text-[22px] xl:text-[28px] desktop:text-[42px] 2xl:text-[46px]">
+            {slide.title}
+          </h3>
 
-        <div className="mt-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white p-2 shadow-sm sm:mt-4 sm:h-14 sm:w-14 sm:rounded-2xl sm:p-3 desktop:mt-5 desktop:h-16 desktop:w-16">
-          <Image
-            src={slide.icon}
-            alt=""
-            width={56}
-            height={56}
-            className="h-8 w-8 object-contain sm:h-10 sm:w-10 desktop:h-11 desktop:w-11"
+          <span
+            className="mt-2 block h-1 w-12 rounded-full bg-brand sm:mt-3 sm:h-1.5 sm:w-16 desktop:mt-5"
+            aria-hidden
           />
+
+          <p className="text-description !text-gray-800 mt-2 w-full max-w-lg select-text text-base leading-relaxed sm:mt-3 sm:text-lg lg:mt-2 lg:max-w-none lg:text-left lg:text-[13px] lg:leading-snug xl:mt-3 xl:text-base xl:leading-relaxed desktop:mt-5 desktop:text-xl desktop:leading-relaxed">
+            {slide.description}
+          </p>
         </div>
 
-        <h3 className="text-heading mt-2 w-full text-[26px] leading-tight sm:mt-3 sm:text-[32px] lg:mt-2.5 lg:text-[22px] xl:mt-3 xl:text-[28px] desktop:mt-4 desktop:text-[42px] 2xl:text-[46px]">
-          {slide.title}
-        </h3>
-
-        <span
-          className="mx-auto mt-2 block h-1 w-12 rounded-full bg-brand sm:mt-3 sm:h-1.5 sm:w-16 lg:mx-0 desktop:mt-5"
-          aria-hidden
-        />
-
-        <p className="text-description !text-gray-800 mt-2 w-full max-w-lg select-text text-base leading-relaxed max-lg:mx-auto sm:mt-3 sm:text-lg lg:mx-0 lg:mt-2 lg:max-w-none lg:text-left lg:text-[13px] lg:leading-snug xl:mt-3 xl:text-base xl:leading-relaxed desktop:mt-5 desktop:text-xl desktop:leading-relaxed">
-          {slide.description}
-        </p>
-
-        <div className="mt-4 flex w-full max-w-md shrink-0 flex-col gap-2.5 max-lg:mx-auto sm:mt-5 sm:gap-3 lg:mx-0 lg:mt-3 lg:max-w-none lg:flex-row lg:flex-wrap lg:justify-start lg:gap-2 xl:mt-4 xl:gap-3 desktop:mt-7 desktop:gap-4">
+        <div className="mt-4 flex w-full max-w-md shrink-0 flex-col gap-2.5 sm:mt-5 sm:gap-3 lg:mt-0 lg:max-w-none lg:flex-row lg:flex-wrap lg:justify-start lg:gap-2 xl:gap-3 desktop:gap-4">
           <CTAButton
             href={ROUTES.services}
             variant="primary"

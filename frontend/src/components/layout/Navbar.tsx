@@ -33,7 +33,7 @@ const navLinks = [
   //   href: ROUTES.testimonials,
   //   label: "Testimonials",
   // },
-  { href: ROUTES.blog, label: "Blogs & News" },
+  { href: ROUTES.blog, label: "Blog & News" },
   { href: ROUTES.contact, label: "Contact" },
 ];
 

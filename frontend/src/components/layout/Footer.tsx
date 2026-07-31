@@ -14,15 +14,15 @@ const quickLinks = [
   { href: ROUTES.home, label: "Home" },
   { href: ROUTES.about, label: "About Us" },
   { href: ROUTES.services, label: "Services" },
-  { href: ROUTES.blog, label: "Blogs & News" },
+  { href: ROUTES.blog, label: "Blog & News" },
   { href: ROUTES.careers, label: "Careers" },
   { href: ROUTES.contact, label: "Contact Us" },
 ];
 
 const services = [
+  { label: "Engineering Services", href: ROUTES.servicesEngineering },
   { label: "CAD CAM CAE Software Testing", href: ROUTES.servicesCadCam },
   { label: "Software Quality", href: ROUTES.servicesQuality },
-  { label: "Engineering Services", href: ROUTES.servicesEngineering },
   { label: "Software Development", href: ROUTES.servicesDevelopment },
 ];
 
@@ -83,10 +83,10 @@ export function Footer() {
                   className="h-auto w-[150px] sm:w-[170px] lg:w-[180px]"
                 />
               </Link>
-              <p className="mb-3 max-w-xs text-xs leading-snug text-[#5b6472] sm:text-[13px]">
+              {/* <p className="mb-3 max-w-xs text-xs leading-snug text-[#5b6472] sm:text-[13px]">
                 Quality software solutions that help businesses innovate and
                 grow.
-              </p>
+              </p> */}
               <div className="flex items-center gap-3">
                 <Image
                   src="/images/global/iso.png"

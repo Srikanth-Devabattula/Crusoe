@@ -105,8 +105,8 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
     const rating = testimonial.rating ?? 5;
 
     return (
-      <div className="flex h-[340px] w-full flex-col rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:h-[360px] sm:p-5 lg:h-[420px] lg:p-4 lg:pb-5 desktop:h-[440px] desktop:p-6">
-        <div className="mb-3 flex items-center justify-between sm:mb-4">
+      <div className="flex h-full w-full min-h-[280px] sm:min-h-[300px] lg:min-h-[320px] desktop:min-h-[340px] flex-col rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md sm:p-7 lg:p-6 desktop:p-8">
+        <div className="mb-4 flex items-center justify-between sm:mb-5">
           <FaQuoteLeft className="h-6 w-6 text-brand sm:h-7 sm:w-7 lg:h-6 lg:w-6 desktop:h-8 desktop:w-8" />
           <div className="flex gap-0.5 sm:gap-1">
             {[...Array(rating)].map((_, starIndex) => (
@@ -117,7 +117,7 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
             ))}
           </div>
         </div>
-        <p className="mb-3 line-clamp-[7] flex-grow overflow-hidden text-xs leading-relaxed text-gray-700 sm:line-clamp-[8] sm:text-sm lg:line-clamp-[11] lg:text-[11px] lg:leading-[1.55] desktop:line-clamp-[10] desktop:text-sm desktop:leading-relaxed">
+        <p className="mb-4 line-clamp-[7] overflow-hidden text-xs leading-relaxed text-gray-700 sm:line-clamp-[8] sm:text-sm lg:line-clamp-[11] lg:text-[11px] lg:leading-[1.55] desktop:line-clamp-[10] desktop:text-sm desktop:leading-relaxed">
           {testimonial.quote}
         </p>
         <div className="mt-auto flex items-center gap-2.5 sm:gap-3">
@@ -212,7 +212,9 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
         ) : (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {testimonials.map((testimonial) => (
-              <div key={testimonial._id}>{renderCard(testimonial)}</div>
+              <div key={testimonial._id} className="flex w-full">
+                {renderCard(testimonial)}
+              </div>
             ))}
           </div>
         )}

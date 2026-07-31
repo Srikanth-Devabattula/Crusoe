@@ -84,7 +84,7 @@ export function BlogNewsPageContent() {
             variants={fadeUp}
           >
             <motion.div custom={0.05} variants={fadeUp}>
-              <AnimatedBadge>Blogs &amp; News</AnimatedBadge>
+              <AnimatedBadge>Blog &amp; News</AnimatedBadge>
             </motion.div>
 
             <motion.h1
