@@ -17,6 +17,7 @@ export const ROUTES = {
   servicesQuality: "/services/software-quality",
   servicesEngineering: "/services/engineering-services",
   servicesDevelopment: "/services/software-development",
+  smartsourcing: "/smartsourcing",
   careers: "/careers",
   careerJob: (id: string) => `/careers/${id}`,
   testimonials: "/testimonials",

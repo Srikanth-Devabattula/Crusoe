@@ -27,6 +27,19 @@ export function HeroCard({
   const number = String(slideIndex + 1).padStart(2, "0");
   const total = String(totalSlides).padStart(2, "0");
 
+  const ctaHref =
+    slide.ctaLink && slide.ctaLink.trim()
+      ? slide.ctaLink.trim()
+      : slideIndex === 0
+      ? ROUTES.servicesQuality
+      : slideIndex === 1
+      ? ROUTES.servicesEngineering
+      : slideIndex === 2
+      ? ROUTES.servicesDevelopment
+      : slideIndex === 3
+      ? ROUTES.smartsourcing
+      : ROUTES.services;
+
   return (
     <motion.article
       className={cn(
@@ -95,7 +108,7 @@ export function HeroCard({
 
         <div className="mt-4 flex w-full max-w-md shrink-0 flex-col gap-2.5 sm:mt-5 sm:gap-3 lg:mt-0 lg:max-w-none lg:flex-row lg:flex-wrap lg:justify-start lg:gap-2 xl:gap-3 desktop:gap-4">
           <CTAButton
-            href={ROUTES.services}
+            href={ctaHref}
             variant="primary"
             className="w-full !px-5 !py-3 !text-sm lg:!px-4 lg:!py-2.5 lg:!text-xs xl:!px-5 xl:!py-3 xl:!text-sm lg:w-auto desktop:!px-8 desktop:!py-4 desktop:!text-base"
           >

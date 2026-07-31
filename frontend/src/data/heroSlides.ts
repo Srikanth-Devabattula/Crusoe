@@ -8,6 +8,7 @@ export interface HeroSlideView {
   /** Full card background artwork */
   background: string;
   icon: string;
+  ctaLink?: string;
 }
 
 /** Fallback slides when API is unavailable */

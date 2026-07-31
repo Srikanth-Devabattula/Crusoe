@@ -20,6 +20,7 @@ const schema = z.object({
   icon: z.string().optional(),
   published: z.boolean(),
   sortOrder: z.number().optional(),
+  ctaLink: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -31,6 +32,7 @@ const defaultValues: FormValues = {
   icon: "",
   published: true,
   sortOrder: 0,
+  ctaLink: "",
 };
 
 const inputClass =
@@ -80,6 +82,7 @@ export function AdminHeroSlideForm({
         icon: isExternalIcon || editing.icon?.startsWith("/") ? editing.icon ?? "" : "",
         published: editing.published,
         sortOrder: editing.sortOrder ?? 0,
+        ctaLink: editing.ctaLink ?? "",
       });
       setImageFile(null);
       setIconFile(null);
@@ -100,6 +103,7 @@ export function AdminHeroSlideForm({
       description: values.description.trim(),
       published: values.published,
       sortOrder: values.sortOrder ?? 0,
+      ctaLink: values.ctaLink?.trim() || "",
     };
 
     const imageChanged = Boolean(imageFile) || imageRemoved || Boolean(values.image?.trim());
@@ -182,6 +186,16 @@ export function AdminHeroSlideForm({
             type="number"
             {...form.register("sortOrder", { valueAsNumber: true })}
             className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label className="mb-1.5 block text-sm font-medium text-gray-800">CTA Link</label>
+          <input
+            type="text"
+            {...form.register("ctaLink")}
+            className={inputClass}
+            placeholder="e.g. /services/software-quality or /contact"
           />
         </div>
 

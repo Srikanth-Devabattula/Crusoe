@@ -13,7 +13,7 @@ import { CONTACT_EMAIL, contactInfoBlocks } from "@/data/contactPage";
 const quickLinks = [
   { href: ROUTES.home, label: "Home" },
   { href: ROUTES.about, label: "About Us" },
-  { href: ROUTES.services, label: "Services" },
+  { href: ROUTES.smartsourcing, label: "SmartSourcing" },
   { href: ROUTES.blog, label: "Blog & News" },
   { href: ROUTES.careers, label: "Careers" },
   { href: ROUTES.contact, label: "Contact Us" },
@@ -128,7 +128,11 @@ export function Footer() {
             </div>
 
             <div>
-              <h3 className={headingClass}>Services</h3>
+              <Link href={ROUTES.services} className="group inline-block">
+                <h3 className={`${headingClass} group-hover:text-brand transition-colors duration-300`}>
+                  Services
+                </h3>
+              </Link>
               <ul className="space-y-1.5">
                 {services.map((service, index) => (
                   <li key={index}>

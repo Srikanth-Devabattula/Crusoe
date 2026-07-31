@@ -30,6 +30,11 @@ const heroSlideSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    ctaLink: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   { timestamps: true }
 );

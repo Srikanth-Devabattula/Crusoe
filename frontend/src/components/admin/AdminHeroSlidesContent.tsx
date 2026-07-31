@@ -115,6 +115,11 @@ export function AdminHeroSlidesContent() {
                           >
                             {item.published ? "Published" : "Draft"}
                           </span>
+                          {item.ctaLink && (
+                            <span className="mt-2 ml-2 inline-block rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600">
+                              Link: {item.ctaLink}
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="flex shrink-0 gap-1">

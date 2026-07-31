@@ -15,6 +15,7 @@ function appendFields(formData: FormData, data: Partial<HeroSlideFormData>) {
   if (data.icon !== undefined) formData.append("icon", data.icon);
   if (data.published !== undefined) formData.append("published", String(data.published));
   if (data.sortOrder !== undefined) formData.append("sortOrder", String(data.sortOrder));
+  if (data.ctaLink !== undefined) formData.append("ctaLink", data.ctaLink);
 }
 
 function needsFormData(data: Partial<HeroSlideFormData>, options?: HeroSlideMediaOptions) {

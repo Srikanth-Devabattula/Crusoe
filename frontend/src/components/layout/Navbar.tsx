@@ -28,6 +28,7 @@ function isNavLinkActive(pathname: string, href: string) {
 const navLinks = [
   { href: ROUTES.home, label: "Home" },
   { href: ROUTES.about, label: "About Us" },
+  { href: ROUTES.smartsourcing, label: "SmartSourcing" },
   { href: ROUTES.careers, label: "Careers" },
   // {
   //   href: ROUTES.testimonials,

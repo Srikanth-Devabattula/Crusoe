@@ -16,6 +16,7 @@ const parseHeroSlideBody = (body) => ({
   icon: body.icon,
   published: body.published === true || body.published === "true",
   sortOrder: body.sortOrder !== undefined ? Number(body.sortOrder) : undefined,
+  ctaLink: body.ctaLink,
   removeImage: body.removeImage === true || body.removeImage === "true",
   removeIcon: body.removeIcon === true || body.removeIcon === "true",
 });
@@ -83,6 +84,7 @@ const sanitizeHeroSlideBody = (body) => {
   if (body.icon !== undefined) payload.icon = String(body.icon).trim();
   if (body.published !== undefined) payload.published = Boolean(body.published);
   if (body.sortOrder !== undefined) payload.sortOrder = Number(body.sortOrder) || 0;
+  if (body.ctaLink !== undefined) payload.ctaLink = String(body.ctaLink).trim();
 
   return payload;
 };

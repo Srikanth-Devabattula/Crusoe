@@ -233,6 +233,7 @@ export interface HeroSlide {
   icon: string;
   published: boolean;
   sortOrder: number;
+  ctaLink?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -244,6 +245,7 @@ export interface HeroSlideFormData {
   icon?: string;
   published: boolean;
   sortOrder?: number;
+  ctaLink?: string;
 }
 
 export interface ContactFormData {

@@ -10,5 +10,6 @@ export function mapHeroSlides(slides: ApiHeroSlide[]): HeroSlideView[] {
     description: slide.description,
     background: getHeroSlideImageUrl(slide.image) ?? "",
     icon: getHeroSlideIconUrl(slide.icon) ?? "",
+    ctaLink: slide.ctaLink ?? "",
   }));
 }
