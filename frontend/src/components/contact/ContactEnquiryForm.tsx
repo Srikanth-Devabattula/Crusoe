@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -172,9 +173,12 @@ export function ContactEnquiryForm() {
           />
           <span>
             I agree to the{" "}
-            <a href="#" className="font-medium text-brand hover:underline">
+            <Link
+              href={ROUTES.privacyPolicy}
+              className="font-medium text-brand hover:underline"
+            >
               Privacy Policy
-            </a>{" "}
+            </Link>{" "}
             and{" "}
             <a href="#" className="font-medium text-brand hover:underline">
               Terms of Service

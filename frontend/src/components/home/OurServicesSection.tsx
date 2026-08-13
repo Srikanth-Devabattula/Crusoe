@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-import { ROUTES } from "@/constants";
 import { homeServicesCardImages, servicesList } from "@/data/servicesPage";
 
 const fadeUp = {
@@ -37,9 +36,7 @@ export function OurServicesSection() {
       </div>
 
       <div className="hero-container relative z-10">
-        {/* top content */}
-        <div className="grid gap-10 lg:grid-cols-1 lg:gap-8 desktop:grid-cols-[1fr_minmax(0,360px)] desktop:items-start desktop:gap-12 xl:grid-cols-[1fr_420px] xl:gap-16">
-          {/* left heading */}
+        <div className="mb-8 sm:mb-9 lg:mb-10">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -51,36 +48,10 @@ export function OurServicesSection() {
               Our Services
             </p>
 
-            <h2 className="text-heading mt-4 max-w-[720px] text-[32px] leading-[1.08] sm:text-[44px] lg:text-[28px] lg:leading-[1.12] desktop:text-[34px] xl:text-[46px] 2xl:text-[50px]">
-              Solutions That Drive
-              <br />
+            <h2 className="text-heading mt-4 max-w-[920px] text-[32px] leading-[1.08] sm:text-[44px] lg:text-[28px] lg:leading-[1.12] desktop:text-[34px] xl:text-[46px] 2xl:text-[50px]">
+              Solutions That Drive{" "}
               <span className="text-brand">Quality and Innovation</span>
             </h2>
-          </motion.div>
-
-          {/* right text */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={0.08}
-            className="lg:max-w-none desktop:pt-2 xl:pt-4"
-          >
-            <p className="max-w-[420px] text-[15px] leading-[1.75] text-[#4b5563] lg:max-w-none desktop:text-[16px] xl:text-[17px] xl:leading-[2]">
-              We combine deep domain expertise with modern engineering
-              practices to deliver high-quality solutions tailored to your
-              business needs.
-            </p>
-
-            <Link
-              href={ROUTES.services}
-              className="group mt-7 inline-flex items-center gap-3 text-[17px] font-semibold text-brand transition-all duration-300 hover:gap-4"
-            >
-              View All Services
-
-              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
           </motion.div>
         </div>
 

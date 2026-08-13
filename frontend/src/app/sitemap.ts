@@ -28,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry(ROUTES.testimonials, 0.7),
     entry(ROUTES.blog, 0.8),
     entry(ROUTES.contact, 0.8),
+    entry(ROUTES.privacyPolicy, 0.4, "yearly"),
     ...servicePageSlugs.map((slug) =>
       entry(`${ROUTES.services}/${slug}`, 0.85)
     ),

@@ -86,7 +86,7 @@ export function HeroCard({
 
           <div className="w-full max-w-full lg:max-w-[min(100%,420px)]">
             <AnimatedBadge className="w-full max-w-full [&>div]:w-full [&>div]:max-w-full [&>div]:items-start [&>div]:gap-x-2 [&>div]:gap-y-1 [&>div]:px-3 [&>div]:py-2 [&>div]:text-[11px] [&>div]:leading-snug sm:[&>div]:px-3.5 sm:[&>div]:text-xs xl:[&>div]:items-center xl:[&>div]:px-4 xl:[&>div]:py-2.5 xl:[&>div]:text-xs desktop:[&>div]:px-5 desktop:[&>div]:py-3 desktop:[&>div]:text-[15px] max-lg:[&>div]:justify-start max-lg:[&_.animated-badge-label]:text-left xl:[&_.animated-badge-label]:text-left">
-              Software Quality, Engineered to Perfection.
+            Onshape 3D CAD Engineering Services Experts
             </AnimatedBadge>
           </div>
         </div>
@@ -106,20 +106,13 @@ export function HeroCard({
           </p>
         </div>
 
-        <div className="mt-4 flex w-full max-w-md shrink-0 flex-col gap-2.5 sm:mt-5 sm:gap-3 lg:mt-0 lg:max-w-none lg:flex-row lg:flex-wrap lg:justify-start lg:gap-2 xl:gap-3 desktop:gap-4">
+        <div className="mt-4 flex w-full max-w-md shrink-0 sm:mt-5 lg:mt-0 lg:max-w-none">
           <CTAButton
             href={ctaHref}
             variant="primary"
             className="w-full !px-5 !py-3 !text-sm lg:!px-4 lg:!py-2.5 lg:!text-xs xl:!px-5 xl:!py-3 xl:!text-sm lg:w-auto desktop:!px-8 desktop:!py-4 desktop:!text-base"
           >
             Explore Our Services
-          </CTAButton>
-          <CTAButton
-            href={ROUTES.about}
-            variant="secondary"
-            className="w-full !px-5 !py-3 !text-sm lg:!px-4 lg:!py-2.5 lg:!text-xs xl:!px-5 xl:!py-3 xl:!text-sm lg:w-auto desktop:!px-8 desktop:!py-4 desktop:!text-base"
-          >
-            About Us
           </CTAButton>
         </div>
       </motion.div>

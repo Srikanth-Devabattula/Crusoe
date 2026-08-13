@@ -36,7 +36,7 @@ export function AboutTimeline() {
             OUR JOURNEY
           </p>
           <h2 className="text-heading mt-3 text-2xl sm:text-3xl lg:text-[34px]">
-            Milestones that shaped Crusoe Technologies
+            Company History
           </h2>
         </motion.div>
 
@@ -53,7 +53,7 @@ export function AboutTimeline() {
 
               return (
                 <motion.li
-                  key={item.year}
+                  key={`${item.year}-${item.title}`}
                   initial="hidden"
                   whileInView="visible"
                   viewport={viewportOnce}

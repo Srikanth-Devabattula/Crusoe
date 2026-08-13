@@ -5,7 +5,7 @@ export const ADMIN_PERMISSIONS: Array<{
   key: AdminPermission;
   label: string;
 }> = [
-  { key: "blogs", label: "Blogs" },
+  { key: "blogs", label: "Blog" },
   { key: "news", label: "News" },
   { key: "jobs", label: "Jobs" },
   { key: "testimonials", label: "Testimonials" },

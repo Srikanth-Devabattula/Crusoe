@@ -18,7 +18,7 @@ export function AdminDashboardContent() {
         {bannerText}
       </p>
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {["Blogs", "Jobs", "Applications"].map((item) => (
+        {["Blog", "Jobs", "Applications"].map((item) => (
           <Section key={item} title={item}>
             <p className="text-sm text-gray-600">{item} stats placeholder.</p>
           </Section>

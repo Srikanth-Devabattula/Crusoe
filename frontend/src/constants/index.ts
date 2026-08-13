@@ -28,6 +28,7 @@ export const ROUTES = {
   news: "/news",
   newsArticle: (slug: string) => `/news/${slug}`,
   contact: "/contact",
+  privacyPolicy: "/privacy-policy",
   thankYou: "/thank-you",
   admin: {
     login: "/admin/login",

@@ -1,9 +1,8 @@
 "use client";
 
 import { motion, animate, useInView } from "framer-motion";
-import { FaAward } from "react-icons/fa";
+import { FaAward, FaBuilding } from "react-icons/fa";
 import { MdOutlineRocketLaunch } from "react-icons/md";
-import { PiUsersThreeBold } from "react-icons/pi";
 import { RxGlobe } from "react-icons/rx";
 import { useEffect, useRef } from "react";
 import type { IconType } from "react-icons";
@@ -15,22 +14,22 @@ const stats: {
   label: string;
 }[] = [
   {
-    icon: FaAward,
-    value: 10,
-    suffix: "+",
-    label: "Years of Excellence",
-  },
-  {
     icon: RxGlobe,
-    value: 25,
+    value: 9,
     suffix: "+",
     label: "Countries Served",
   },
   {
-    icon: PiUsersThreeBold,
-    value: 150,
+    icon: FaBuilding,
+    value: 9,
     suffix: "+",
-    label: "Happy Clients",
+    label: "MNC's",
+  },
+  {
+    icon: FaAward,
+    value: 11,
+    suffix: "+",
+    label: "Years of Excellence",
   },
   {
     icon: MdOutlineRocketLaunch,
@@ -38,8 +37,6 @@ const stats: {
     suffix: "+",
     label: "Projects Delivered",
   },
-  
- 
 ];
 
 function Counter({

@@ -26,8 +26,6 @@ import {
 
 export function SoftwareQualityServicePage() {
   const introPairOne = softwareQualityContentSections.slice(0, 2);
-  const smartSourcingSection = softwareQualityContentSections[2];
-  const specsSection = softwareQualityContentSections[3];
 
   return (
     <>
@@ -171,96 +169,6 @@ export function SoftwareQualityServicePage() {
               </div>
             </div>
           </motion.div>
-
-          {/* SmartSourcing — content + image (right) */}
-          {smartSourcingSection && (
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-              variants={fadeUp}
-              custom={0.08}
-              className="relative mt-8 overflow-hidden rounded-[32px] border border-[#e7efe0] bg-[linear-gradient(145deg,#ffffff_0%,#f6fbf2_55%,#eef8e7_100%)] p-6 shadow-[0_16px_50px_rgba(15,23,42,0.06)] sm:mt-10 sm:p-8 lg:p-10"
-            >
-              <div className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-brand/10 blur-3xl" />
-
-              <div className="relative grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
-                <div className="flex flex-col justify-center">
-                  <span className="inline-flex w-fit items-center rounded-full bg-brand/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-brand">
-                    {softwareQualityIntroLabels[2]}
-                  </span>
-                  <h3 className="text-heading mt-4 text-2xl font-bold sm:text-[28px]">
-                    {smartSourcingSection.heading}
-                  </h3>
-                  {"emphasis" in smartSourcingSection &&
-                    smartSourcingSection.emphasis && (
-                      <p className="mt-3 text-left text-sm font-semibold italic leading-relaxed text-brand sm:text-[15px]">
-                        {smartSourcingSection.emphasis}
-                      </p>
-                    )}
-                  <div className="mt-4 space-y-4 text-left text-sm leading-[1.75] text-slate-600 sm:text-[15px]">
-                    {smartSourcingSection.paragraphs.map((paragraph) => (
-                      <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="overflow-hidden rounded-[24px] border border-white/80 bg-white shadow-[0_12px_36px_rgba(15,23,42,0.08)] ring-1 ring-black/[0.04]">
-                  <div className="relative aspect-[4/3] w-full sm:aspect-[3/2] lg:aspect-auto lg:min-h-[320px] lg:h-full xl:min-h-[360px]">
-                    <Image
-                      src={SOFTWARE_QUALITY_IMAGES.smartSourcing}
-                      alt="SmartSourcing collaboration model — client and Crusoe locations with domain expertise"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-contain p-4 sm:p-6"
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* SPECS — image + content */}
-          {specsSection && (
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-              variants={fadeUp}
-              custom={0.09}
-              className="relative mt-8 overflow-hidden rounded-[32px] border border-[#e7efe0] bg-[linear-gradient(145deg,#ffffff_0%,#f6fbf2_55%,#eef8e7_100%)] p-6 shadow-[0_16px_50px_rgba(15,23,42,0.06)] sm:mt-10 sm:p-8 lg:p-10"
-            >
-              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand/10 blur-3xl" />
-
-              <div className="relative grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
-                <div className="overflow-hidden rounded-[24px] border border-white/80 bg-white shadow-[0_12px_36px_rgba(15,23,42,0.08)] ring-1 ring-black/[0.04]">
-                  <div className="relative aspect-[21/9] w-full sm:aspect-[2.2/1] lg:aspect-auto lg:min-h-[280px] lg:h-full xl:min-h-[320px]">
-                    <Image
-                      src={SOFTWARE_QUALITY_IMAGES.specs}
-                      alt="SPECS test plan, execution, bug reporting and release workflow"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-contain p-4 sm:p-6"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col justify-center">
-                  <span className="inline-flex w-fit items-center rounded-full bg-brand/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-brand">
-                    {softwareQualityIntroLabels[3]}
-                  </span>
-                  <h3 className="text-heading mt-4 text-2xl font-bold sm:text-[28px]">
-                    {specsSection.heading}
-                  </h3>
-                  <div className="mt-4 space-y-4 text-left text-sm leading-[1.75] text-slate-600 sm:text-[15px]">
-                    {specsSection.paragraphs.map((paragraph) => (
-                      <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
         </div>
       </section>
 

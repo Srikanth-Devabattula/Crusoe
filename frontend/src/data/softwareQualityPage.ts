@@ -1,7 +1,5 @@
 export const SOFTWARE_QUALITY_IMAGES = {
   hero: "/images/services/QA/QA1.png",
-  smartSourcing: "/images/services/QA/QA3.jpg",
-  specs: "/images/services/QA/QA4.jpg",
 } as const;
 
 export const SOFTWARE_QUALITY_PLACEHOLDER_IMAGE = SOFTWARE_QUALITY_IMAGES.hero;
@@ -9,8 +7,6 @@ export const SOFTWARE_QUALITY_PLACEHOLDER_IMAGE = SOFTWARE_QUALITY_IMAGES.hero;
 export const softwareQualityIntroLabels = [
   "Our Promise",
   "Make It Simple",
-  "SmartSourcing",
-  "SPECS Review",
 ] as const;
 
 export const softwareQualityAdvantageTagline =
@@ -134,20 +130,5 @@ export const softwareQualityContentSections = [
       "In the modern tech world, everyday we witness college students or young software developers developing a software or an application in a few weeks time, and within no time, it receives ridiculously high downloads.This is also true with enterprise software too. A young entrepreneur, who has spent a few years in a Fortune 500 company, developing his/her own enterprise software product.",
       "Some of the prime concerns of enterprises is to identify tangible benefits of engaging into a Third Party QA Service, control issues and affordability of such a service. Having worked in large software MNCs across the world, we understand that such companies have in-house capabilities to understand and execute quality strategies in a seemingly better-controlled manner.",
     ],
-  },
-  {
-    heading: "CRUSOE TECHNOLOGIES SMARTSOURCING MODEL",
-    emphasis: "The future of innovation through collaboration",
-    emphasisItalic: true,
-    paragraphs: [
-      "At Crusoe, we truly believe in a SmartSourcing Model – which is NOT equivalent to Outsourcing. The primary purpose of Outsourcing is to achieve cost benefit. However, in a SmartSourcing, cost benefit is an added advantage, while the primary objective is to empower the principal company to focus on their core competencies, so that they can innovate.",
-    ],
-  },
-  {
-    heading: "SPECS bug fixes review",
-    paragraphs: [
-      "Being at the leadership positions across the software industry for the past two-plus decades, we have the acumen to understand your business dynamics in addition to techno-functional expertise. It's a simple yet powerful model to synergistically function as your extended arm. The secure collaboration technology makes it irrelevant if we work from your office or from ours.",
-    ],
-    showImages: true,
   },
 ];

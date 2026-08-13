@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  ArrowRight,
   BadgeCheck,
   Clock3,
   ShieldCheck,
@@ -97,9 +95,8 @@ export function WhyChooseUsSection() {
                 Why Choose Us
               </p>
 
-              <h2 className="text-heading mt-3 max-w-[520px] text-[26px] leading-[1.1] sm:mt-4 sm:text-[30px] lg:mt-3 lg:max-w-none lg:text-[28px] lg:leading-[1.12] xl:text-[34px] 2xl:text-[38px]">
-                World&apos;s leading 
-                <br />
+              <h2 className="text-heading mt-3 max-w-[720px] text-[26px] leading-[1.1] sm:mt-4 sm:text-[30px] lg:mt-3 lg:max-w-none lg:text-[28px] lg:leading-[1.12] xl:text-[34px] 2xl:text-[38px]">
+                World&apos;s leading{" "}
                 <span className="text-brand">Companies Trust Us</span>
               </h2>
 
@@ -111,23 +108,6 @@ export function WhyChooseUsSection() {
                 products. Also helping leading Engineering companies to develop
                 cutting edge products.
               </p>
-
-              <div className="mt-6 rounded-[20px] border border-brand/20 bg-white/70 p-4 backdrop-blur sm:mt-7 sm:p-5 lg:mt-5 lg:rounded-[16px] lg:p-3.5 desktop:mt-7 desktop:rounded-[20px] desktop:p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.12em] text-brand sm:text-sm">
-                  Mission
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-[#5b6472] lg:text-xs lg:leading-relaxed desktop:mt-2.5 desktop:text-[15px] desktop:leading-relaxed">
-                  Crusoe is a Software & Engineering Services Company helping to build some of the world's best engineering softwares in CAD, PDM and PLM areas. Also helping world's top engineering companies to build cutting edge and innovative products.
-                </p>
-              </div>
-
-              <Link
-                href="/about"
-                className="group mt-7 inline-flex items-center gap-2.5 rounded-[18px] bg-brand px-6 py-3.5 text-[15px] font-semibold text-white shadow-[0_14px_34px_rgba(126, 168, 73,0.28)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(126, 168, 73,0.38)] desktop:mt-10 desktop:gap-3 desktop:rounded-[20px] desktop:px-8 desktop:py-5 desktop:text-[17px]"
-              >
-                Know More About Us
-                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
             </motion.div>
 
             <motion.div

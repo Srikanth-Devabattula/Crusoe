@@ -1,10 +1,10 @@
 export const CONTACT_HERO_IMAGE = "/images/services/contact/contact1.png";
 export const CONTACT_CTA_IMAGE = "/images/global/contactlast.png";
 
-export const WHATSAPP_URL = "https://wa.me/919948059533";
+export const WHATSAPP_URL = "https://wa.me/919948059333";
 export const CONTACT_EMAIL = "info@crusoetec.com";
 /** Head office — Visakhapatnam */
-export const CONTACT_PHONE_VIZAG = "+919948059533";
+export const CONTACT_PHONE_VIZAG = "+919948059333";
 /** Hyderabad branch */
 export const CONTACT_PHONE_HYDERABAD = "+918179467755";
 
@@ -68,7 +68,7 @@ export const contactInfoBlocks = [
     title: "Head Office — Visakhapatnam",
     address: VIZAG_ADDRESS,
     phone: CONTACT_PHONE_VIZAG,
-    tel: "tel:+919948059533",
+    tel: "tel:+919948059333",
     email: CONTACT_EMAIL,
     directionsUrl: MAPS_SHARE_VIZAG,
   },

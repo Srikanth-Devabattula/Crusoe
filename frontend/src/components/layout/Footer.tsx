@@ -200,10 +200,16 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="mt-4 border-t border-[#e7efe0] pt-3">
-            <p className="text-center text-xs text-[#6b7280]">
+          <div className="mt-4 flex flex-col gap-2 border-t border-[#e7efe0] pt-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-left text-xs text-[#6b7280]">
               Copyright © {year} {SITE_NAME}. All Rights Reserved.
             </p>
+            <Link
+              href={ROUTES.privacyPolicy}
+              className="text-left text-xs text-[#6b7280] transition-colors hover:text-brand sm:text-right sm:text-[13px]"
+            >
+              Privacy Policy
+            </Link>
           </div>
         </div>
       </div>
