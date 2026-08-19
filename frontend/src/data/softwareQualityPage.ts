@@ -1,5 +1,5 @@
 export const SOFTWARE_QUALITY_IMAGES = {
-  hero: "/images/services/QA/QA1.png",
+  hero: "/images/services/qahero.png",
 } as const;
 
 export const SOFTWARE_QUALITY_PLACEHOLDER_IMAGE = SOFTWARE_QUALITY_IMAGES.hero;
