@@ -1,5 +1,5 @@
 export const SOFTWARE_DEVELOPMENT_IMAGES = {
-  hero: "/images/stock/st9.png",
+  hero: "/images/global/sehero.png",
   partnership: "/images/services/SE/se2.png",
 } as const;
 
@@ -117,7 +117,7 @@ export const softwareDevelopmentPartnershipSection = {
   heading: "Extended development team with industry depth",
   paragraphs: [
     "We realize the importance of collaborative work culture that demands expertise, transparency, accountability and synergy between your team and ours.",
-    "From FeatureScript tools to REST API apps and custom component libraries — we bring the same rigor and quality consciousness you expect from an in-house engineering group.",
+    "From FeatureScript tools to REST API apps and integrations — we bring the same rigor and quality consciousness you expect from an in-house engineering group.",
   ],
 };
 
@@ -131,21 +131,15 @@ export const softwareDevelopmentCapabilities: SoftwareDevelopmentCapability[] =
   [
     {
       number: 1,
-      title: "Onshape FeatureScript Tools",
+      title: "FeatureScript Tools",
       description:
-        "FeatureScript is the programming language designed by Onshape for building 3D parametric models. We develop custom commands, geometry checkers, productivity tools, design automation and more.",
+        "FeatureScript is the programming language designed for building 3D parametric models. We develop custom commands, geometry checkers, productivity tools, design automation and more.",
     },
     {
       number: 2,
-      title: "Onshape REST API Apps & Integrations",
+      title: "REST API Apps & Integrations",
       description:
-        "Client-specific apps on the Onshape App store and integrations between Onshape and other systems like PLM and ERP — built to your requirements.",
-    },
-    {
-      number: 3,
-      title: "Component Libraries in Onshape",
-      description:
-        "Custom component libraries similar to Standard Content in Onshape. Onshape's Standard Content library was developed by Crusoe using FeatureScript with ANSI, ISO and other standards.",
+        "Client-specific apps on the App store and integrations between CAD platforms and other systems like PLM and ERP — built to your requirements.",
     },
   ];
 

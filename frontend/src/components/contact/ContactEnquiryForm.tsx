@@ -19,24 +19,35 @@ import {
 import { z } from "zod";
 
 import { ROUTES } from "@/constants";
-import { SERVICE_OPTIONS } from "@/data/contactPage";
+import { OTHER_SERVICE_OPTION, SERVICE_OPTIONS } from "@/data/contactPage";
 import { contactService } from "@/services/contact.service";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 import { ContactInput, ContactSelect, ContactTextarea } from "./ContactInput";
 
-const schema = z.object({
-  fullName: z.string().min(2, "Full name is required"),
-  companyName: z.string().min(1, "Company name is required"),
-  email: z.string().email("Enter a valid email address"),
-  phone: z.string().min(8, "Phone number is required"),
-  service: z.string().min(1, "Please select a service"),
-  subject: z.string().min(3, "Subject is required"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-  agreeToTerms: z.boolean().refine((v) => v === true, {
-    message: "You must accept the terms to continue",
-  }),
-});
+const schema = z
+  .object({
+    fullName: z.string().min(2, "Full name is required"),
+    companyName: z.string().min(1, "Company name is required"),
+    email: z.string().email("Enter a valid email address"),
+    phone: z.string().min(8, "Phone number is required"),
+    service: z.string().min(1, "Please select a service"),
+    otherService: z.string().optional(),
+    subject: z.string().min(3, "Subject is required"),
+    message: z.string().min(10, "Message must be at least 10 characters"),
+    agreeToTerms: z.boolean().refine((v) => v === true, {
+      message: "You must accept the Privacy Policy to continue",
+    }),
+  })
+  .superRefine((data, ctx) => {
+    if (data.service === OTHER_SERVICE_OPTION && !data.otherService?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Please specify the service",
+        path: ["otherService"],
+      });
+    }
+  });
 
 type FormValues = z.infer<typeof schema>;
 
@@ -47,6 +58,7 @@ export function ContactEnquiryForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -56,11 +68,15 @@ export function ContactEnquiryForm() {
       email: "",
       phone: "",
       service: "",
+      otherService: "",
       subject: "",
       message: "",
       agreeToTerms: false,
     },
   });
+
+  const selectedService = watch("service");
+  const showOtherService = selectedService === OTHER_SERVICE_OPTION;
 
   const onSubmit = async (values: FormValues) => {
     setSubmitting(true);
@@ -69,12 +85,17 @@ export function ContactEnquiryForm() {
         ? `${values.fullName} (${values.companyName})`
         : values.fullName;
 
+      const service =
+        values.service === OTHER_SERVICE_OPTION
+          ? values.otherService?.trim() ?? ""
+          : values.service;
+
       await contactService.submit({
         name,
         email: values.email,
         phone: values.phone,
         company: values.companyName,
-        service: values.service,
+        service,
         subject: values.subject,
         message: values.message,
       });
@@ -150,6 +171,15 @@ export function ContactEnquiryForm() {
           {...register("service")}
         />
 
+        {showOtherService && (
+          <ContactInput
+            icon={<FiBriefcase className="h-[18px] w-[18px]" />}
+            placeholder="Please specify the service"
+            error={errors.otherService?.message}
+            {...register("otherService")}
+          />
+        )}
+
         <ContactInput
           icon={<FiEdit3 className="h-[18px] w-[18px]" />}
           placeholder="Subject"
@@ -178,11 +208,7 @@ export function ContactEnquiryForm() {
               className="font-medium text-brand hover:underline"
             >
               Privacy Policy
-            </Link>{" "}
-            and{" "}
-            <a href="#" className="font-medium text-brand hover:underline">
-              Terms of Service
-            </a>
+            </Link>
             .
           </span>
         </label>

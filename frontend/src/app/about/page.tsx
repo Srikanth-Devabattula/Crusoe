@@ -5,7 +5,6 @@ import {
   AboutHero,
   AboutLeadership,
   AboutMissionVision,
-  AboutStorySection,
   AboutTimeline,
 } from "@/components/about";
 import { ROUTES } from "@/constants";
@@ -21,10 +20,9 @@ export default function AboutPage() {
   return (
     <>
       <AboutHero />
-      <AboutStorySection />
       <AboutMissionVision />
-      <AboutLeadership />
       <AboutCoreValues />
+      <AboutLeadership />
       <AboutTimeline />
       <AboutCulture />
       {/* <AboutCtaSection /> */}

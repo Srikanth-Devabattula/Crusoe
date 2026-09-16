@@ -62,9 +62,9 @@ export function EngineeringServicesPage() {
                 Engineering & Design
               </div>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/90 sm:text-base lg:text-lg">
-                Platform migration, Onshape CAD design, conceptual models and
-                product configurators — delivered with decades of engineering
-                expertise.
+                Platform migration, Onshape based CAD Design Services, Conceptual
+                Designs and product configurators — delivered with decades of
+                engineering expertise.
               </p>
             </div>
           </motion.div>
@@ -242,7 +242,7 @@ export function EngineeringServicesPage() {
             viewport={viewportOnce}
             variants={fadeUp}
             custom={0.08}
-            className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+            className="mt-8 grid gap-5 sm:grid-cols-2"
           >
             {engineeringServiceCards.map((card) => (
               <div

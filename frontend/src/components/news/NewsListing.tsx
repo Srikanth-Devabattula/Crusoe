@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { BlogDateSortButton } from "@/components/blog/BlogDateSortButton";
 import { NewsCard } from "@/components/news/NewsCard";
 import { NewsCategoryFilters, type NewsFilterCategory } from "@/components/news/NewsCategoryFilters";
 import { NewsFeaturedHero } from "@/components/news/NewsFeaturedHero";
 import { useNewsCategories } from "@/hooks/useNewsCategories";
 import { getApiErrorMessage } from "@/lib/api-error";
-import { getFeaturedNews } from "@/lib/news";
+import { getFeaturedNews, sortNewsByDate, type NewsDateSort } from "@/lib/news";
 import { newsService } from "@/services";
 import type { News } from "@/types";
 
@@ -15,6 +16,7 @@ export function NewsListing() {
   const { categories, getLabel } = useNewsCategories();
   const [allItems, setAllItems] = useState<News[]>([]);
   const [activeCategory, setActiveCategory] = useState<NewsFilterCategory>("all");
+  const [dateSort, setDateSort] = useState<NewsDateSort>("latest");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,9 +49,13 @@ export function NewsListing() {
   );
 
   const filteredItems = useMemo(() => {
-    if (activeCategory === "all") return allItems;
-    return allItems.filter((item) => item.category === activeCategory);
-  }, [allItems, activeCategory]);
+    const items =
+      activeCategory === "all"
+        ? allItems
+        : allItems.filter((item) => item.category === activeCategory);
+
+    return sortNewsByDate(items, dateSort);
+  }, [allItems, activeCategory, dateSort]);
 
   const categoryCounts = useMemo(() => {
     const counts: Partial<Record<NewsFilterCategory, number>> = { all: allItems.length };
@@ -67,13 +73,16 @@ export function NewsListing() {
 
       <section className="bg-transparent py-12 sm:py-16 lg:py-20">
         <div className="hero-container">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">
-              Latest updates
-            </p>
-            <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
-              Browse by category
-            </h2>
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">
+                Latest updates
+              </p>
+              <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
+                Browse by category
+              </h2>
+            </div>
+            <BlogDateSortButton value={dateSort} onChange={setDateSort} />
           </div>
 
           <div className="mt-8">

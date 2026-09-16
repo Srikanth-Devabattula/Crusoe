@@ -1,4 +1,4 @@
-export const ABOUT_HERO_IMAGE = "/images/aboutus/about1.png";
+export const ABOUT_HERO_IMAGE = "/images/global/aboutnew.png";
 export const ABOUT_STORY_IMAGE = "/images/aboutus/about2.png";
 export const ABOUT_CTA_IMAGE = "/images/aboutus/about7.png";
 
@@ -9,10 +9,13 @@ export const cultureImages = [
   "/images/aboutus/about4.png",
 ] as const;
 
+export const storyTitle = "Global Teams. World-Class Quality.";
+
 export const storyParagraphs = [
-  "Founded in 2015, Crusoe Technologies began with a clear mission: help businesses build better software with engineering discipline and quality at the core.",
-  "Over the years we have grown into a trusted partner for QA automation, CAD customisation, software tooling, and full-cycle engineering services — serving startups and global enterprises alike.",
-  "Today we combine deep technical expertise with agile delivery to ship scalable, secure solutions that accelerate innovation and long-term product success.",
+  "Cloud technologies have brought countries and people across the globe closer than ever; and the current times are proof of this.",
+  "Crusoe Technologies (formerly Everglades) was established on the same ideology that it doesn't matter whether you sit in the US or a small city like Tanuku/Visakhapatnam, India. It's the presence of smart teams and robust broadband infrastructure that matters the most.",
+  "Crusoe Technologies was established as a SmartSourcing Company with strong emphasis on delivering world class Quality, Productivity and always on Time.",
+  "Over the years we have grown into a trusted partner for CAD Software QA, CAD Platform Migration, Complex Modelling & Design Services and development of Standard Content & Product Libraries — serving startups and global enterprises across the globe.",
 ] as const;
 
 export const missionVision = [
@@ -20,15 +23,13 @@ export const missionVision = [
     icon: "target" as const,
     title: "Our Mission",
     description:
-      "Deliver scalable and high-quality engineering solutions that empower businesses to innovate faster.",
-    href: "#our-story",
+      "Empower leading software firms to create superior CAD, PDM, and PLM tools, and engineering companies to build truly innovative products.",
   },
   {
     icon: "eye" as const,
     title: "Our Vision",
     description:
-      "Become a globally trusted technology partner known for innovation, reliability, and engineering excellence.",
-    href: "#core-values",
+      "Become a Top-Tier Technology & Services Company powering the growth of leading Global Software & Engineering Companies.",
   },
 ] as const;
 
@@ -97,7 +98,7 @@ export const timelineMilestones = [
     year: "2015",
     title: "Company Founded",
     description:
-      "Crusoe Technologies (formerly Everglades Technologies) launched with a focus on software quality and engineering services.",
+      "Crusoe Technologies (formerly Everglades Technologies) was started at Tanuku, a small town in Andhra Pradesh, with a focus on software quality and engineering services.",
     icon: "rocket" as const,
   },
   {
@@ -115,7 +116,7 @@ export const timelineMilestones = [
   {
     year: "2022",
     title: "Engineering Services",
-    description: "Started offering Engineering Services to our Clients.",
+    description: "Started offering Engineering Services to Onshape Customers.",
     icon: "cpu" as const,
   },
   {
@@ -136,7 +137,7 @@ export const cultureFeatures = [
   "Collaborative Environment",
   "Agile Mindset",
   "Continuous Learning",
-  "Global Opportunities",
+  "Growth Opportunities",
 ] as const;
 
 export const statsStrip = [

@@ -18,3 +18,18 @@ export function getPublishDisplayDate(item: {
 }): string {
   return item.publishedAt || item.createdAt;
 }
+
+export type DateSort = "latest" | "oldest";
+
+export function sortByPublishDate<T extends { publishedAt?: string | null; createdAt: string }>(
+  items: T[],
+  order: DateSort
+): T[] {
+  const direction = order === "latest" ? -1 : 1;
+
+  return [...items].sort((a, b) => {
+    const dateA = new Date(getPublishDisplayDate(a)).getTime();
+    const dateB = new Date(getPublishDisplayDate(b)).getTime();
+    return (dateA - dateB) * direction;
+  });
+}

@@ -4,12 +4,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+import {
+  ApplicationMessageField,
+  applicationInputClass,
+  APPLICATION_PHONE_PLACEHOLDER,
+} from "@/components/careers/ApplicationMessageField";
 import { ROUTES } from "@/constants";
 import { getApiErrorMessage } from "@/lib/api-error";
+import { validateApplicationMessage } from "@/lib/wordCount";
 import { applicationService } from "@/services";
-
-const inputClass =
-  "w-full rounded-xl border border-[#E8EEF5] bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
 
 interface JobApplicationFormProps {
   jobId: string;
@@ -21,11 +24,18 @@ export function JobApplicationForm({ jobId, jobTitle }: JobApplicationFormProps)
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
   const [resume, setResume] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const messageError = validateApplicationMessage(message);
+    if (messageError) {
+      toast.error(messageError);
+      return;
+    }
 
     if (!resume) {
       toast.error("Please attach your resume (PDF or Word).");
@@ -37,6 +47,7 @@ export function JobApplicationForm({ jobId, jobTitle }: JobApplicationFormProps)
     formData.append("name", name.trim());
     formData.append("email", email.trim());
     if (phone.trim()) formData.append("phone", phone.trim());
+    formData.append("message", message.trim());
     formData.append("resume", resume);
 
     setIsSubmitting(true);
@@ -73,7 +84,7 @@ export function JobApplicationForm({ jobId, jobTitle }: JobApplicationFormProps)
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className={inputClass}
+            className={applicationInputClass}
             placeholder="Your name"
           />
         </div>
@@ -88,7 +99,7 @@ export function JobApplicationForm({ jobId, jobTitle }: JobApplicationFormProps)
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={inputClass}
+            className={applicationInputClass}
             placeholder="you@example.com"
           />
         </div>
@@ -102,10 +113,16 @@ export function JobApplicationForm({ jobId, jobTitle }: JobApplicationFormProps)
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className={inputClass}
-            placeholder="+1 (555) 000-0000"
+            className={applicationInputClass}
+            placeholder={APPLICATION_PHONE_PLACEHOLDER}
           />
         </div>
+
+        <ApplicationMessageField
+          id="apply-message"
+          value={message}
+          onChange={setMessage}
+        />
 
         <div>
           <label htmlFor="apply-resume" className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -125,7 +142,7 @@ export function JobApplicationForm({ jobId, jobTitle }: JobApplicationFormProps)
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-6 w-full rounded-2xl bg-brand px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(126, 168, 73,0.35)] transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+        className="mt-6 w-full rounded-2xl bg-brand px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(126,168,73,0.35)] transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
       >
         {isSubmitting ? "Submitting..." : "Submit application"}
       </button>

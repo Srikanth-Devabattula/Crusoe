@@ -13,7 +13,7 @@ export const ADMIN_PERMISSIONS: Array<{
   { key: "partners", label: "Partner Logos" },
   { key: "heroSlides", label: "Hero Slides" },
   { key: "contacts", label: "Contact Forms" },
-  { key: "applications", label: "Job Applications" },
+  { key: "applications", label: "Applications" },
 ];
 
 export const EMPTY_PERMISSIONS: Record<AdminPermission, boolean> = {

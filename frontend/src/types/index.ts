@@ -275,21 +275,28 @@ export interface ContactSubmission {
 }
 
 export interface ApplicationFormData {
-  jobId: string;
+  jobId?: string;
   name: string;
   email: string;
   phone?: string;
+  message: string;
   resume?: File;
 }
 
 export type ApplicationStatus = "pending" | "reviewed" | "accepted" | "rejected";
+export type ApplicationType = "job" | "general";
 
 export interface JobApplication {
   _id: string;
-  job: { _id: string; title: string; location?: string; experience?: string } | string;
+  job:
+    | { _id: string; title: string; location?: string; experience?: string }
+    | string
+    | null;
+  applicationType?: ApplicationType;
   name: string;
   email: string;
   phone?: string;
+  message?: string;
   resume: string;
   status: ApplicationStatus;
   createdAt: string;

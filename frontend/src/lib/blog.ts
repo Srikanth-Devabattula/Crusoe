@@ -12,7 +12,7 @@ export function estimateReadTime(content: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
-import { getPublishDisplayDate } from "@/lib/publishDate";
+import { getPublishDisplayDate, sortByPublishDate, type DateSort } from "@/lib/publishDate";
 
 export function formatBlogDate(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -34,3 +34,7 @@ export function getBlogDisplayDate(post: {
 }): string {
   return getPublishDisplayDate(post);
 }
+
+export type BlogDateSort = DateSort;
+
+export const sortBlogsByDate = sortByPublishDate;

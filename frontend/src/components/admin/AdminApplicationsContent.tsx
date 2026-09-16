@@ -11,7 +11,7 @@ import { getApiErrorMessage } from "@/lib/api-error";
 import { matchesSearchQuery } from "@/lib/admin-search";
 import { getResumeUrl } from "@/lib/uploads";
 import { applicationService } from "@/services";
-import type { ApplicationStatus, JobApplication } from "@/types";
+import type { ApplicationStatus, ApplicationType, JobApplication } from "@/types";
 
 const STATUS_OPTIONS: ApplicationStatus[] = ["pending", "reviewed", "accepted", "rejected"];
 
@@ -31,7 +31,15 @@ function formatDate(value: string) {
   });
 }
 
+function getApplicationType(application: JobApplication): ApplicationType {
+  if (application.applicationType) return application.applicationType;
+  return application.job ? "job" : "general";
+}
+
 function getJobTitle(application: JobApplication) {
+  if (getApplicationType(application) === "general") {
+    return "General application";
+  }
   if (typeof application.job === "object" && application.job?.title) {
     return application.job.title;
   }
@@ -39,6 +47,7 @@ function getJobTitle(application: JobApplication) {
 }
 
 function getJobId(application: JobApplication): string | null {
+  if (getApplicationType(application) === "general") return null;
   if (typeof application.job === "object" && application.job?._id) {
     return application.job._id;
   }
@@ -57,6 +66,7 @@ export function AdminApplicationsContent() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedType, setSelectedType] = useState<"" | ApplicationType>("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const loadItems = useCallback(async () => {
@@ -87,6 +97,7 @@ export function AdminApplicationsContent() {
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
+      if (selectedType && getApplicationType(item) !== selectedType) return false;
       if (selectedJobId && getJobId(item) !== selectedJobId) return false;
       if (selectedStatus && item.status !== selectedStatus) return false;
       if (
@@ -94,6 +105,7 @@ export function AdminApplicationsContent() {
           item.name,
           item.email,
           item.phone,
+          item.message,
           getJobTitle(item),
           typeof item.job === "object" ? item.job?.location : undefined,
           typeof item.job === "object" ? item.job?.experience : undefined,
@@ -103,9 +115,11 @@ export function AdminApplicationsContent() {
       }
       return true;
     });
-  }, [items, selectedJobId, selectedStatus, searchQuery]);
+  }, [items, selectedJobId, selectedStatus, selectedType, searchQuery]);
 
-  const hasActiveFilter = Boolean(selectedJobId || selectedStatus || searchQuery.trim());
+  const hasActiveFilter = Boolean(
+    selectedJobId || selectedStatus || selectedType || searchQuery.trim()
+  );
 
   const visibleIds = useMemo(() => filteredItems.map((item) => item._id), [filteredItems]);
   const {
@@ -168,12 +182,12 @@ export function AdminApplicationsContent() {
 
   return (
     <>
-      <AdminHeader title="Job applications" />
+      <AdminHeader title="Applications" />
 
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Applications</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Job & general applications</h2>
             <p className="mt-1 text-sm text-gray-500">
               {filteredItems.length} application{filteredItems.length === 1 ? "" : "s"}
               {hasActiveFilter && items.length !== filteredItems.length && (
@@ -195,6 +209,22 @@ export function AdminApplicationsContent() {
               placeholder="Search name, email, phone, role…"
               className="w-full sm:w-auto sm:min-w-[280px]"
             />
+
+            <div className="min-w-[200px]">
+              <label htmlFor="application-type-filter" className="mb-1.5 block text-xs font-semibold uppercase text-gray-500">
+                Filter by type
+              </label>
+              <select
+                id="application-type-filter"
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value as "" | ApplicationType)}
+                className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+              >
+                <option value="">All types</option>
+                <option value="job">Job applications</option>
+                <option value="general">General applications</option>
+              </select>
+            </div>
 
             <div className="min-w-[200px]">
               <label htmlFor="job-status-filter" className="mb-1.5 block text-xs font-semibold uppercase text-gray-500">
@@ -244,7 +274,7 @@ export function AdminApplicationsContent() {
           <p className="mt-6 rounded-lg bg-gray-50 px-4 py-8 text-center text-sm text-gray-500">
             {hasActiveFilter
               ? "No applications match your search or filters."
-              : "No job applications yet."}
+              : "No applications yet."}
           </p>
         ) : (
           <>
@@ -312,6 +342,12 @@ export function AdminApplicationsContent() {
                         </div>
 
                         <p className="mt-1 text-sm font-medium text-gray-800">{jobTitle}</p>
+
+                        {item.message?.trim() && (
+                          <p className="mt-3 whitespace-pre-wrap rounded-lg border border-gray-100 bg-white px-3 py-2 text-sm text-gray-700">
+                            {item.message}
+                          </p>
+                        )}
 
                         <p className="mt-1 flex flex-wrap items-center gap-x-1 text-xs text-gray-500">
                           <a

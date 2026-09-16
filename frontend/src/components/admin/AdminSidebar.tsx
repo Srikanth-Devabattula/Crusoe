@@ -57,7 +57,7 @@ const sectionLinks: Array<{
   },
   {
     href: ROUTES.admin.applications,
-    label: "Job Applications",
+    label: "Applications",
     icon: ClipboardList,
     permission: "applications",
   },

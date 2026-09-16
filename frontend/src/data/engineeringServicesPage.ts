@@ -64,12 +64,18 @@ export const engineeringServiceCards: EngineeringServiceCard[] = [
     number: 2,
     title: "CAD Content & Conceptual Designs",
     description:
-      "Conceptual and reference designs for consumer and engineering products, including sales and marketing-ready models built for Onshape.",
+      "Conceptual and reference designs for consumer and engineering products built for Onshape.",
   },
   {
     number: 3,
     title: "Product Configurators",
     description:
       "Parts and assembly configuration functionality in Onshape to build product configurators that showcase engineering products on digital platforms.",
+  },
+  {
+    number: 4,
+    title: "Component Libraries",
+    description:
+      "Custom component library, similar to Standard Content in Onshape based on ANSI, ISO and others Global Standards. Crusoe team has lot of expertise on Onshape's builtin Standard Content Library",
   },
 ];
