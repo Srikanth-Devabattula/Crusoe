@@ -131,7 +131,7 @@ export function SmartSourcingDetails() {
                   </div>
                   <h4 className="mt-3 text-sm font-bold text-gray-900 sm:text-base">Location Agility</h4>
                   <p className="mt-1.5 text-xs leading-relaxed text-slate-500 sm:text-[13px]">
-                    Our tech stack makes it irrelevant whether we work from your office or ours; the result has always unlocked unparalleled levels of efficiency and accuracy.
+                    Our approach to Project Management makes it irrelevant whether we work from your office or ours; the result has always unlocked unparalleled levels of efficiency and accuracy.
                   </p>
                 </motion.div>
 
@@ -173,7 +173,7 @@ export function SmartSourcingDetails() {
                 <div className="pointer-events-none absolute left-0 top-0 h-full w-1.5 bg-brand" aria-hidden />
                 
                 <p className="text-sm leading-relaxed text-slate-700 sm:text-base sm:leading-relaxed">
-                  Our leadership brings three decades of experience working with top CAD software companies. This deep-seated industry knowledge allows us to understand your specific business dynamics and provide unrivaled techno-functional expertise. This background helps us formulate a smooth transition plan tailored specifically for your organization.
+                  Our leadership brings three decades of experience working with top CAD software companies. This deep-seated industry knowledge allows us to understand your specific business dynamics and provide unrivaled techno-functional expertise. This background helps us formulate a smooth Project Implementation plan tailored specifically for your organization.
                 </p>
               </div>
             </motion.div>

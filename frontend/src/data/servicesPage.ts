@@ -27,6 +27,7 @@ export const servicesList: ServiceItem[] = [
       "Advanced engineering solutions focused on product innovation, system optimization and scalable technology implementation for modern businesses.",
     features: [
       "Platform Migration & Integration",
+      "Component Libraries",
       "Onshape Design Services",
       "CAD Content & Conceptual Designs",
       "Product Configurators",
@@ -48,7 +49,7 @@ export const servicesList: ServiceItem[] = [
       "Mobile & Custom Testing",
       "CAD / PDM / PLM Validation",
     ],
-    image: "/images/service/Cad.png",
+    image: "/images/service/cad66.png",
     href: ROUTES.servicesCadCam,
     accent: "purple",
     bgColor: "#F5F0FB",
@@ -65,7 +66,7 @@ export const servicesList: ServiceItem[] = [
       "Performance & Automation",
       "Release Quality Assurance",
     ],
-    image: "/images/stock/st7.png",
+    image: "/images/service/sqa66.png",
     href: ROUTES.servicesQuality,
     accent: "green",
     bgColor: "#F3F8EE",
@@ -77,9 +78,8 @@ export const servicesList: ServiceItem[] = [
     description:
       "Custom software applications built with modern technologies to deliver secure, scalable and high-performance digital experiences.",
     features: [
-      "Onshape FeatureScript Tools",
+      "FeatureScript Tools",
       "REST API Apps & Integrations",
-      "Component Libraries",
       "Extended Development Teams",
     ],
     image: "/images/stock/st8.png",
@@ -94,8 +94,8 @@ export const servicesList: ServiceItem[] = [
 export const homeServicesCardImages: Record<string, string> = {
   "engineering-services": "/images/services/service1.png",
   "software-development": "/images/services/service2.png",
-  "software-qa": "/images/services/service3.png",
-  "cad-testing": "/images/services/service4.png",
+  "software-qa": "/images/service/sqa66.png",
+  "cad-testing": "/images/service/cad66.png",
 };
 
 export const whyChooseServices = [

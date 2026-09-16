@@ -14,8 +14,8 @@ export default function CareersPage() {
   return (
     <>
       <CareersHero />
-      <AboutCulture />
       <CareersJobsList />
+      <AboutCulture />
     </>
   );
 }

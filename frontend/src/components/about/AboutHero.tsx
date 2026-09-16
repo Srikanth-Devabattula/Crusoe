@@ -7,7 +7,7 @@ import { FiArrowRight, FiUsers } from "react-icons/fi";
 
 import { AnimatedBadge } from "@/components/common/AnimatedBadge";
 import { PageHeroOverlay } from "@/components/common/PageHeroOverlay";
-import { ABOUT_HERO_IMAGE } from "@/data/aboutPage";
+import { ABOUT_HERO_IMAGE, storyParagraphs, storyTitle } from "@/data/aboutPage";
 
 import { DottedPattern, FloatingOrb } from "./AboutDecor";
 
@@ -22,7 +22,7 @@ const fadeUp = {
 
 export function AboutHero() {
   return (
-    <section className="relative overflow-hidden bg-transparent">
+    <section id="our-story" className="relative scroll-mt-24 overflow-hidden bg-transparent">
       <PageHeroOverlay>
         <DottedPattern />
       </PageHeroOverlay>
@@ -39,20 +39,23 @@ export function AboutHero() {
             variants={fadeUp}
           >
             <motion.div custom={0.05} variants={fadeUp}>
-              <AnimatedBadge>ABOUT CRUSOE</AnimatedBadge>
+              <AnimatedBadge>OUR STORY</AnimatedBadge>
             </motion.div>
 
             <h1 className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[34px] lg:mt-5 lg:text-[36px] xl:text-[42px]">
-              Engineering Innovation
-              <br />
-              <span className="text-brand">Driven by Passion</span>
+              {storyTitle}
             </h1>
 
-            <p className="text-description mx-auto mt-4 max-w-lg text-sm leading-relaxed sm:text-base lg:mx-0 lg:mt-5">
-              Since 2015, Crusoe Technologies has been helping businesses accelerate
-              growth through innovative software engineering, QA automation, and
-              enterprise solutions.
-            </p>
+            <div className="mx-auto mt-4 max-w-lg space-y-4 lg:mx-0 lg:mt-5">
+              {storyParagraphs.map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 24)}
+                  className="text-description text-sm leading-relaxed sm:text-base"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
 
             <motion.div
               custom={0.12}
@@ -82,9 +85,9 @@ export function AboutHero() {
             variants={fadeUp}
           >
             <div className="relative mx-auto w-full lg:mx-0">
-              <div className="relative overflow-hidden rounded-[32px] border border-[#e7efe0] bg-[linear-gradient(145deg,#f6fbf2_0%,#ffffff_100%)] p-3 shadow-[0_20px_60px_rgba(15,23,42,0.08)] sm:p-4 lg:p-5">
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[32px] border border-[#e7efe0] shadow-[0_20px_60px_rgba(15,23,42,0.08)] sm:aspect-[16/9] lg:aspect-[2/1]">
                 <div
-                  className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-brand/15 blur-3xl"
+                  className="pointer-events-none absolute -right-8 -top-8 z-10 h-40 w-40 rounded-full bg-brand/15 blur-3xl"
                   aria-hidden
                 />
                 <FloatingOrb
@@ -92,16 +95,14 @@ export function AboutHero() {
                   delay={0.3}
                 />
 
-                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[20px] sm:rounded-[24px] lg:aspect-[2/1]">
-                  <Image
-                    src={ABOUT_HERO_IMAGE}
-                    alt="Crusoe Technologies engineering innovation"
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 55vw"
-                    className="object-contain object-center"
-                  />
-                </div>
+                <Image
+                  src={ABOUT_HERO_IMAGE}
+                  alt="Crusoe Technologies engineering innovation"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  className="object-cover object-center"
+                />
               </div>
             </div>
           </motion.div>

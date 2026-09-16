@@ -13,7 +13,6 @@ import {
   softwareDevelopmentContentSections,
   softwareDevelopmentCtaBanner,
   softwareDevelopmentIntroLabels,
-  softwareDevelopmentPartnershipSection,
 } from "@/data/softwareDevelopmentPage";
 import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
 
@@ -62,9 +61,9 @@ export function SoftwareDevelopmentPage() {
                 CAD Software Development
               </div>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/90 sm:text-base lg:text-lg">
-                FeatureScript tools, REST API apps, integrations and component
-                libraries — an extended development team with the same expertise
-                and accountability as your own.
+                FeatureScript tools, REST API apps and integrations — an extended
+                development team with the same expertise and accountability as
+                your own.
               </p>
             </div>
           </motion.div>
@@ -171,48 +170,6 @@ export function SoftwareDevelopmentPage() {
               </div>
             </div>
           </motion.div>
-
-          {/* Partnership — content + image (right) */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            variants={fadeUp}
-            custom={0.08}
-            className="relative mt-8 overflow-hidden rounded-[32px] border border-[#e7efe0] bg-[linear-gradient(145deg,#ffffff_0%,#f6fbf2_55%,#eef8e7_100%)] p-6 shadow-[0_16px_50px_rgba(15,23,42,0.06)] sm:mt-10 sm:p-8 lg:p-10"
-          >
-            <div className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-brand/10 blur-3xl" />
-
-            <div className="relative grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
-              <div className="flex flex-col justify-center">
-                <span className="inline-flex w-fit items-center rounded-full bg-brand/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-brand">
-                  Partnership Model
-                </span>
-                <h3 className="text-heading mt-4 text-2xl font-bold sm:text-[28px]">
-                  {softwareDevelopmentPartnershipSection.heading}
-                </h3>
-                <div className="mt-4 space-y-4 text-left text-sm leading-[1.75] text-slate-600 sm:text-[15px]">
-                  {softwareDevelopmentPartnershipSection.paragraphs.map(
-                    (paragraph) => (
-                      <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-                    )
-                  )}
-                </div>
-              </div>
-
-              <div className="overflow-hidden rounded-[24px] border border-white/80 bg-white shadow-[0_12px_36px_rgba(15,23,42,0.08)] ring-1 ring-black/[0.04]">
-                <div className="relative aspect-[16/10] w-full sm:aspect-[3/2] lg:aspect-auto lg:min-h-[320px] lg:h-full xl:min-h-[360px]">
-                  <Image
-                    src={SOFTWARE_DEVELOPMENT_IMAGES.partnership}
-                    alt="CAD software development partnership"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
 
@@ -244,7 +201,7 @@ export function SoftwareDevelopmentPage() {
             viewport={viewportOnce}
             variants={fadeUp}
             custom={0.08}
-            className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+            className="mt-8 grid gap-5 sm:grid-cols-2"
           >
             {softwareDevelopmentCapabilities.map((capability) => (
               <div

@@ -7,10 +7,11 @@ import {
   BlogCategoryFilters,
   type BlogFilterCategory,
 } from "@/components/blog/BlogCategoryFilters";
+import { BlogDateSortButton } from "@/components/blog/BlogDateSortButton";
 import { BlogFeaturedHero } from "@/components/blog/BlogFeaturedHero";
 import { useBlogCategories } from "@/hooks/useBlogCategories";
 import { getApiErrorMessage } from "@/lib/api-error";
-import { getFeaturedBlog } from "@/lib/blog";
+import { getFeaturedBlog, sortBlogsByDate, type BlogDateSort } from "@/lib/blog";
 import { blogService } from "@/services";
 import type { Blog } from "@/types";
 
@@ -18,6 +19,7 @@ export function BlogListing() {
   const { categories, getLabel } = useBlogCategories();
   const [allPosts, setAllPosts] = useState<Blog[]>([]);
   const [activeCategory, setActiveCategory] = useState<BlogFilterCategory>("all");
+  const [dateSort, setDateSort] = useState<BlogDateSort>("latest");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,9 +53,13 @@ export function BlogListing() {
   );
 
   const filteredPosts = useMemo(() => {
-    if (activeCategory === "all") return allPosts;
-    return allPosts.filter((p) => p.category === activeCategory);
-  }, [allPosts, activeCategory]);
+    const posts =
+      activeCategory === "all"
+        ? allPosts
+        : allPosts.filter((p) => p.category === activeCategory);
+
+    return sortBlogsByDate(posts, dateSort);
+  }, [allPosts, activeCategory, dateSort]);
 
   const categoryCounts = useMemo(() => {
     const counts: Partial<Record<BlogFilterCategory, number>> = { all: allPosts.length };
@@ -83,6 +89,7 @@ export function BlogListing() {
                 Browse by category
               </h2>
             </div>
+            <BlogDateSortButton value={dateSort} onChange={setDateSort} />
           </div>
 
           <div className="mt-8">

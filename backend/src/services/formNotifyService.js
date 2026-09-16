@@ -70,7 +70,7 @@ const notifyJobApplication = async ({ application, job, resumeFile }) => {
   if (!to) return;
 
   const jobTitle = job?.title || "Unknown position";
-  const { name, email, phone } = application;
+  const { name, email, phone, message } = application;
 
   const rows = [
     row("Name", name),
@@ -79,6 +79,9 @@ const notifyJobApplication = async ({ application, job, resumeFile }) => {
     row("Position", jobTitle),
     row("Location", job?.location),
     row("Experience required", job?.experience),
+    message
+      ? `<tr><td colspan="2" style="padding:12px"><strong style="color:#374151">Message</strong><pre style="margin:8px 0 0;white-space:pre-wrap;font-family:inherit;color:#111827">${escapeHtml(message)}</pre></td></tr>`
+      : "",
   ].join("");
 
   const textLines = [
@@ -89,6 +92,7 @@ const notifyJobApplication = async ({ application, job, resumeFile }) => {
     `Position: ${jobTitle}`,
     job?.location ? `Location: ${job.location}` : null,
     job?.experience ? `Experience: ${job.experience}` : null,
+    message ? `\nMessage:\n${message}` : null,
     resumeFile ? `\nResume attached: ${resumeFile.originalname || resumeFile.filename}` : "",
   ]
     .filter(Boolean)
@@ -112,7 +116,55 @@ const notifyJobApplication = async ({ application, job, resumeFile }) => {
   });
 };
 
+const notifyGeneralApplication = async ({ application, resumeFile }) => {
+  if (!isEmailConfigured()) return;
+
+  const to = getNotifyEmail();
+  if (!to) return;
+
+  const { name, email, phone, message } = application;
+
+  const rows = [
+    row("Name", name),
+    row("Email", email),
+    row("Phone", phone),
+    row("Type", "General application"),
+    message
+      ? `<tr><td colspan="2" style="padding:12px"><strong style="color:#374151">Message</strong><pre style="margin:8px 0 0;white-space:pre-wrap;font-family:inherit;color:#111827">${escapeHtml(message)}</pre></td></tr>`
+      : "",
+  ].join("");
+
+  const textLines = [
+    `New general application`,
+    `Name: ${name}`,
+    `Email: ${email}`,
+    phone ? `Phone: ${phone}` : null,
+    message ? `\nMessage:\n${message}` : null,
+    resumeFile ? `\nResume attached: ${resumeFile.originalname || resumeFile.filename}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const attachments = resumeFile
+    ? [
+        {
+          filename: resumeFile.originalname || resumeFile.filename,
+          path: path.join(__dirname, "..", "uploads", "resumes", resumeFile.filename),
+        },
+      ]
+    : undefined;
+
+  await sendEmail({
+    to,
+    subject: `New general application: ${name}`,
+    html: wrapHtml("New general application", rows, "Resume is attached to this email."),
+    text: textLines,
+    attachments,
+  });
+};
+
 module.exports = {
   notifyContactSubmission,
   notifyJobApplication,
+  notifyGeneralApplication,
 };

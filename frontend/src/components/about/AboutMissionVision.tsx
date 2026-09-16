@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { FiArrowRight, FiEye, FiTarget } from "react-icons/fi";
+import { FiEye, FiTarget } from "react-icons/fi";
 
 import { missionVision } from "@/data/aboutPage";
 import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
@@ -40,13 +39,6 @@ export function AboutMissionVision() {
                 <p className="text-description mt-4 text-sm leading-relaxed sm:text-base">
                   {item.description}
                 </p>
-                <Link
-                  href={item.href}
-                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand transition-colors hover:text-brand-dark"
-                >
-                  Learn More
-                  <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </Link>
               </motion.article>
             );
           })}

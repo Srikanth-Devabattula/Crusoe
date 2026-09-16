@@ -67,7 +67,7 @@ export function AboutCulture() {
               <p className="text-description mt-4 max-w-lg text-sm leading-relaxed sm:text-[15px]">
                 We foster a culture where engineers, designers, and consultants
                 collaborate openly — learning continuously, delivering with integrity,
-                and celebrating wins together across our global teams.
+                and celebrating together with our global partners.
               </p>
               <ul className="mt-6 space-y-3.5 sm:mt-7 sm:space-y-4">
                 {cultureFeatures.map((feature) => (

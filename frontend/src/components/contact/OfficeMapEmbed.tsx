@@ -12,7 +12,7 @@ export function OfficeMapEmbed({ embedUrl, title }: OfficeMapEmbedProps) {
         className="absolute inset-0 h-full w-full border-0"
         loading="lazy"
         allowFullScreen
-        referrerPolicy="no-referrer-when-downgrade"
+        referrerPolicy="strict-origin-when-cross-origin"
       />
     </div>
   );

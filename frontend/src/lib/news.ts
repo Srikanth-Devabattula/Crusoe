@@ -1,4 +1,4 @@
-import { getPublishDisplayDate } from "@/lib/publishDate";
+import { getPublishDisplayDate, sortByPublishDate, type DateSort } from "@/lib/publishDate";
 
 export function estimateNewsReadTime(content: string): number {
   const words = content.trim().split(/\s+/).filter(Boolean).length;
@@ -23,3 +23,7 @@ export function getNewsDisplayDate(item: {
 }): string {
   return getPublishDisplayDate(item);
 }
+
+export type NewsDateSort = DateSort;
+
+export const sortNewsByDate = sortByPublishDate;

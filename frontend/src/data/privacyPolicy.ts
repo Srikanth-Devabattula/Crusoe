@@ -19,7 +19,6 @@ export const privacyPolicyContent = {
         "Careers information such as résumé/CV, cover letter, work history, and other details you provide when applying for a role.",
         "Communications you send to us, including support requests and feedback.",
         "Technical data such as IP address, browser type, device information, pages visited, and approximate location derived from IP.",
-        "Cookies and similar technologies used to operate and improve our website (see Cookies below).",
       ],
     },
     {
@@ -81,7 +80,7 @@ export const privacyPolicyContent = {
       id: "cookies",
       title: "Cookies",
       paragraphs: [
-        "Our website may use cookies and similar technologies to enable core functionality, remember preferences, and understand how visitors use the site. You can control cookies through your browser settings. Disabling cookies may affect some features of the website.",
+        `${SITE_NAME} does not use cookies for analytics, advertising, or tracking on this website. We do not place marketing or third-party tracking cookies on our public pages. If our practices change, we will update this Privacy Policy accordingly.`,
       ],
     },
     {

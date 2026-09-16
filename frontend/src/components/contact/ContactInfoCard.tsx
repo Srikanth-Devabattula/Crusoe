@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { FaWhatsapp } from "react-icons/fa";
 import {
   FiClock,
   FiMail,
@@ -11,11 +9,7 @@ import {
   FiUser,
 } from "react-icons/fi";
 
-import {
-  CONTACT_EMAIL,
-  WHATSAPP_URL,
-  contactInfoBlocks,
-} from "@/data/contactPage";
+import { contactInfoBlocks } from "@/data/contactPage";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
 export function ContactInfoCard() {
@@ -35,18 +29,19 @@ export function ContactInfoCard() {
         <h2 className="text-heading text-xl sm:text-2xl">Contact Information</h2>
       </div>
 
-      <div className="space-y-6">
+      <div className="flex flex-1 flex-col justify-between pt-4 sm:pt-6">
+        <div className="space-y-8">
         {contactInfoBlocks.map((office, index) => (
           <div
             key={office.id}
             className={
-              index > 0 ? "border-t border-[#e7efe0] pt-6" : undefined
+              index > 0 ? "border-t border-[#e7efe0] pt-8" : undefined
             }
           >
             <h3 className="text-sm font-bold uppercase tracking-[0.06em] text-[#111827]">
               {office.title}
             </h3>
-            <ul className="mt-4 space-y-3.5">
+            <ul className="mt-5 space-y-4">
               <li className="flex items-start gap-3 text-sm text-[#6B7280]">
                 <FiMapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden />
                 <a
@@ -79,8 +74,9 @@ export function ContactInfoCard() {
             </ul>
           </div>
         ))}
+        </div>
 
-        <div className="border-t border-[#e7efe0] pt-6">
+        <div className="mt-10 border-t border-[#e7efe0] pt-8 pb-2">
           <div className="flex items-center gap-3 text-sm text-[#6B7280]">
             <FiClock className="h-4 w-4 shrink-0 text-brand" aria-hidden />
             <div>
@@ -88,28 +84,6 @@ export function ContactInfoCard() {
               <p className="mt-1">Monday–Friday · 9AM–6PM IST</p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="mt-8 border-t border-[#e7efe0] pt-6">
-        <p className="text-sm font-semibold text-[#111827]">Connect Instantly</p>
-        <div className="mt-4 flex flex-col gap-3">
-          {/* <Link
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-5 py-3.5 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(126, 168, 73,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-dark"
-          >
-            <FaWhatsapp className="h-4 w-4" aria-hidden />
-            Chat on WhatsApp
-          </Link> */}
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-brand/30 bg-white px-5 py-3.5 text-sm font-semibold text-brand transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:bg-brand-muted/40"
-          >
-            <FiMail className="h-4 w-4" aria-hidden />
-            Email Us
-          </a>
         </div>
       </div>
     </motion.div>

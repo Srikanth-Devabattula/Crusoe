@@ -80,7 +80,7 @@ export const servicePages: Record<string, ServicePageData> = {
     headline: "Custom Software Built for",
     highlight: "Scale and Impact",
     description:
-      "Leverage Crusoe CAD expertise for Onshape FeatureScript tools, REST API apps, integrations, and component libraries — an extended development team with same expertise and accountability.",
+      "Leverage Crusoe CAD expertise for FeatureScript tools, REST API apps and integrations — an extended development team with same expertise and accountability.",
     features: [
       "Full-stack application development",
       "Cloud-native and microservices architecture",

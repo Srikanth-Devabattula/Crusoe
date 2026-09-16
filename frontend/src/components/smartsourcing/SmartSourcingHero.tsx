@@ -3,11 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { FiArrowRight, FiMail } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
 
 import { AnimatedBadge } from "@/components/common/AnimatedBadge";
 import { PageHeroOverlay } from "@/components/common/PageHeroOverlay";
-import { ROUTES } from "@/constants";
 import { DottedPattern, FloatingOrb } from "@/components/about/AboutDecor";
 
 const fadeUp = {
@@ -65,13 +64,6 @@ export function SmartSourcingHero() {
               >
                 Learn More
                 <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-              <Link
-                href={ROUTES.contact}
-                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-xl border border-gray-200 bg-white px-7 py-3.5 text-sm font-semibold text-brand shadow-sm transition-all duration-300 hover:border-brand/30 hover:bg-brand-muted/40 sm:w-auto"
-              >
-                <FiMail className="h-4 w-4" />
-                Contact Us
               </Link>
             </motion.div>
           </motion.div>
