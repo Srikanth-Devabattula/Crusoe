@@ -4,10 +4,7 @@ export const SOFTWARE_QUALITY_IMAGES = {
 
 export const SOFTWARE_QUALITY_PLACEHOLDER_IMAGE = SOFTWARE_QUALITY_IMAGES.hero;
 
-export const softwareQualityIntroLabels = [
-  "Our Promise",
-  "Make It Simple",
-] as const;
+export const softwareQualityIntroLabels = ["Our Promise"] as const;
 
 export const softwareQualityAdvantageTagline =
   "We help you build Robust, Secure, Scalable product";
@@ -122,13 +119,6 @@ export const softwareQualityContentSections = [
       "Building a SOFTWARE PRODUCT is EASY; Building a GREAT & SUSTAINABLE one is tough.",
       "At Crusoe Technologies, we combine deep business knowledge with strictly process-driven QA — so every release meets the highest standards of reliability, not just on paper, but in production.",
       "Whether you need rapid product validation, complete confidentiality, or value-added testing insights, our consultative approach helps you ship faster while protecting brand reputation and customer trust.",
-    ],
-  },
-  {
-    heading: "WE HELP YOU TO MAKE IT SIMPLE",
-    paragraphs: [
-      "In the modern tech world, everyday we witness college students or young software developers developing a software or an application in a few weeks time, and within no time, it receives ridiculously high downloads.This is also true with enterprise software too. A young entrepreneur, who has spent a few years in a Fortune 500 company, developing his/her own enterprise software product.",
-      "Some of the prime concerns of enterprises is to identify tangible benefits of engaging into a Third Party QA Service, control issues and affordability of such a service. Having worked in large software MNCs across the world, we understand that such companies have in-house capabilities to understand and execute quality strategies in a seemingly better-controlled manner.",
     ],
   },
 ];
