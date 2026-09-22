@@ -59,7 +59,7 @@ function TeamMemberModal({
       onClick={onClose}
     >
       <div
-        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[28px] border border-[#e7efe0] bg-white p-6 shadow-[0_24px_64px_rgba(15,23,42,0.18)] sm:p-8"
+        className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[28px] border border-[#e7efe0] bg-white p-6 shadow-[0_24px_64px_rgba(15,23,42,0.18)] sm:max-w-3xl sm:p-8 lg:p-10"
         onClick={(event) => event.stopPropagation()}
       >
         <button
