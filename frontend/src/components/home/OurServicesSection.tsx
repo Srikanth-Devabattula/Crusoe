@@ -95,7 +95,7 @@ export function OurServicesSection() {
                   {service.title}
                 </h3>
 
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-[#4b5563] sm:mt-3 sm:text-[15px] lg:mt-2 lg:text-[11px] lg:leading-[1.5] desktop:mt-3 desktop:text-[14px] desktop:leading-[1.65] xl:mt-4 xl:text-[16px] xl:leading-[1.95]">
+                <p className="mt-2 flex-1 text-justify text-sm leading-relaxed text-[#4b5563] sm:mt-3 sm:text-[15px] lg:mt-2 lg:text-[11px] lg:leading-[1.5] desktop:mt-3 desktop:text-[14px] desktop:leading-[1.65] xl:mt-4 xl:text-[16px] xl:leading-[1.95]">
                   {service.description}
                 </p>
 

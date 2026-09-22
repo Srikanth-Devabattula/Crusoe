@@ -1,7 +1,8 @@
+import { plainTextFromHtml } from "@/lib/htmlContent";
 import { getPublishDisplayDate, sortByPublishDate, type DateSort } from "@/lib/publishDate";
 
 export function estimateNewsReadTime(content: string): number {
-  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  const words = plainTextFromHtml(content).split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 200));
 }
 

@@ -59,10 +59,10 @@ export function EngineeringServicesPage() {
             <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 lg:p-10">
               <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-md sm:text-sm">
                 <Sparkles className="size-3.5 text-brand-light" />
-                Engineering & Design
+                Engineering Design Services
               </div>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/90 sm:text-base lg:text-lg">
-                Platform migration, Onshape based CAD Design Services, Conceptual
+                CAD platform migration, Onshape based CAD Design Services, Conceptual
                 Designs and product configurators — delivered with decades of
                 engineering expertise.
               </p>
@@ -114,7 +114,7 @@ export function EngineeringServicesPage() {
                     </p>
                   )}
 
-                  <div className="mt-3 flex flex-1 flex-col space-y-4 text-left text-sm leading-[1.75] text-slate-600 sm:mt-4 sm:text-[15px]">
+                  <div className="mt-3 flex flex-1 flex-col space-y-4 text-justify text-sm leading-[1.75] text-slate-600 sm:mt-4 sm:text-[15px]">
                     {section.paragraphs.map((paragraph) => (
                       <p key={paragraph.slice(0, 40)}>{paragraph}</p>
                     ))}
@@ -188,7 +188,7 @@ export function EngineeringServicesPage() {
                 <div className="relative aspect-[16/10] w-full sm:aspect-[3/2] lg:aspect-auto lg:min-h-[320px] lg:h-full xl:min-h-[360px]">
                   <Image
                     src={ENGINEERING_IMAGES.migration}
-                    alt="Strategic platform migration and engineering workflow"
+                    alt="Strategic CAD platform migration and engineering workflow"
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
@@ -203,7 +203,7 @@ export function EngineeringServicesPage() {
                 <h3 className="text-heading mt-4 text-2xl font-bold sm:text-[28px]">
                   {engineeringMigrationSection.heading}
                 </h3>
-                <div className="mt-4 space-y-4 text-left text-sm leading-[1.75] text-slate-600 sm:text-[15px]">
+                <div className="mt-4 space-y-4 text-justify text-sm leading-[1.75] text-slate-600 sm:text-[15px]">
                   {engineeringMigrationSection.paragraphs.map((paragraph) => (
                     <p key={paragraph.slice(0, 40)}>{paragraph}</p>
                   ))}

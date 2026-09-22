@@ -48,7 +48,7 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
           {service.title}
         </h3>
 
-        <p className="mt-1 text-[11px] leading-snug text-[#5b6472] sm:mt-1.5 sm:text-[12px] lg:mt-1 lg:text-[10px] lg:leading-[1.4] xl:text-[14px] xl:leading-[1.5]">
+        <p className="mt-1 text-justify text-[11px] leading-snug text-[#5b6472] sm:mt-1.5 sm:text-[12px] lg:mt-1 lg:text-[10px] lg:leading-[1.4] xl:text-[14px] xl:leading-[1.5]">
           {service.description}
         </p>
 

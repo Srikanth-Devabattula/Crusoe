@@ -4,7 +4,7 @@ export const ENGINEERING_IMAGES = {
 } as const;
 
 export const engineeringIntroLabels = [
-  "Platform Migration",
+  "CAD Platform Migration",
   "Design Excellence",
 ] as const;
 
@@ -25,7 +25,7 @@ export const engineeringContentSections = [
     heading: "Migration — smooth, meticulous & effective",
     emphasis: "Draw value from every unit of investment",
     paragraphs: [
-      "Platform migration might seem overwhelming; we ensure it's smooth, and you draw value from every smallest unit of investment. We will be Meticulous, Thorough & Effective.",
+      "CAD platform migration might seem overwhelming; we ensure it's smooth, and you draw value from every smallest unit of investment. We will be Meticulous, Thorough & Effective.",
       "Getting adjusted to a newer platform is one thing, but gaining expertise at it seems too optimistic. Not really! With a detailed plan in place, Crusoe helps you become productive in the shortest time.",
     ],
   },
@@ -39,7 +39,7 @@ export const engineeringContentSections = [
 ];
 
 export const engineeringMigrationSection = {
-  heading: "Strategic platform migration",
+  heading: "Strategic CAD platform migration",
   paragraphs: [
     "We study and understand your current setup, chalk out a plan, identify the period of migration, manage relevant notifications, explain the process in detail to the stakeholders, migrate critical customer data from other CAD platforms, set up and migrate information from the existing PDM and PLM systems to the new platform, test the systems in a new environment, and ensure business continuity.",
     "This may seem simple as well as intricate at the same time. Our engineers perfectly orchestrate every single element, so that the new platform performs at its best.",
@@ -56,13 +56,13 @@ export interface EngineeringServiceCard {
 export const engineeringServiceCards: EngineeringServiceCard[] = [
   {
     number: 1,
-    title: "Design Services",
+    title: "Engineering Design Services",
     description:
       "Complex 3D geometry creation, parts and assembly configurations, and release/production drawings — delivered by seasoned Onshape CAD specialists.",
   },
   {
     number: 2,
-    title: "CAD Content & Conceptual Designs",
+    title: "3D CAD Conceptual Designs",
     description:
       "Conceptual and reference designs for consumer and engineering products built for Onshape.",
   },

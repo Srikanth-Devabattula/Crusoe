@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { FiMail, FiX } from "react-icons/fi";
 
+import { splitBioParagraphs } from "@/lib/bioText";
 import { getTeamPhotoUrl } from "@/lib/uploads";
 import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
 import { teamService } from "@/services";
@@ -99,9 +100,16 @@ function TeamMemberModal({
           </p>
 
           {member.bio?.trim() ? (
-            <p className="mt-5 text-left text-sm leading-relaxed text-[#6B7280] sm:text-[15px]">
-              {member.bio}
-            </p>
+            <div className="mt-5 w-full space-y-4">
+              {splitBioParagraphs(member.bio).map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 48)}
+                  className="text-justify text-sm leading-relaxed text-[#6B7280] sm:text-[15px]"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           ) : null}
 
           {showSocial ? (

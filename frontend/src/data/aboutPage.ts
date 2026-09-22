@@ -9,7 +9,7 @@ export const cultureImages = [
   "/images/aboutus/about4.png",
 ] as const;
 
-export const storyTitle = "Global Teams. World-Class Quality.";
+export const storyTitle = "Building Reliable Engineering Solutions Since 2015";
 
 export const storyParagraphs = [
   "Cloud technologies have brought countries and people across the globe closer than ever; and the current times are proof of this.",

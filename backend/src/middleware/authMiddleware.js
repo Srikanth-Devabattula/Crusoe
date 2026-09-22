@@ -74,10 +74,20 @@ const requirePermission = (permission) => (req, res, next) => {
   return sendError(res, 403, "You do not have access to this section");
 };
 
+const requireAnyPermission =
+  (...permissions) =>
+  (req, res, next) => {
+    if (permissions.some((permission) => userHasPermission(req.user, permission))) {
+      return next();
+    }
+    return sendError(res, 403, "You do not have access to this section");
+  };
+
 module.exports = {
   protect,
   superAdminOnly,
   requirePermission,
+  requireAnyPermission,
   userHasPermission,
   staffHasAnyPermission,
 };

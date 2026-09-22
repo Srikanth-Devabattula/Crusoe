@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
@@ -10,7 +10,9 @@ import {
   AdminMediaFields,
   type AdminMediaState,
 } from "@/components/admin/AdminMediaFields";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { Button } from "@/components/ui/Button";
+import { plainTextFromHtml, plainTextToEditorHtml } from "@/lib/htmlContent";
 import { dateInputToIso, toDateInputValue } from "@/lib/publishDate";
 import { getNewsCoverUrl } from "@/lib/uploads";
 import { getPostVideoUrls } from "@/lib/video";
@@ -27,7 +29,10 @@ const newsSchema = z.object({
       "Slug: lowercase letters, numbers, hyphens only"
     ),
   excerpt: z.string().min(20, "Excerpt is required (min 20 characters)").max(400),
-  content: z.string().min(50, "Content is required (min 50 characters)"),
+  content: z.string().refine(
+    (val) => plainTextFromHtml(val).length >= 50,
+    "Content is required (min 50 characters)"
+  ),
   category: z.string().min(1, "Category is required"),
   publishDate: z.string().min(1, "Publish date is required"),
   featured: z.boolean(),
@@ -132,7 +137,7 @@ export function AdminNewsForm({
         title: editingNews.title,
         slug: editingNews.slug,
         excerpt: editingNews.excerpt ?? "",
-        content: editingNews.content ?? "",
+        content: plainTextToEditorHtml(editingNews.content ?? ""),
         category: categorySlug,
         publishDate: toDateInputValue(editingNews.publishedAt ?? editingNews.createdAt),
         featured: editingNews.featured ?? false,
@@ -264,13 +269,23 @@ export function AdminNewsForm({
           <textarea {...form.register("excerpt")} rows={3} className={inputClass} placeholder="Short summary" required />
         </Field>
 
-        <Field label="Content" required error={form.formState.errors.content?.message}>
-          <textarea
-            {...form.register("content")}
-            rows={12}
-            className={inputClass}
-            placeholder="Full news body. Line breaks are preserved."
-            required
+        <Field
+          label="Content"
+          required
+          hint="Use the toolbar for bold, lists, alignment, and justified text."
+          error={form.formState.errors.content?.message}
+        >
+          <Controller
+            name="content"
+            control={form.control}
+            render={({ field }) => (
+              <RichTextEditor
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="Full news body…"
+                aria-invalid={Boolean(form.formState.errors.content)}
+              />
+            )}
           />
         </Field>
 

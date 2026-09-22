@@ -3,8 +3,14 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 
 const { blogCoverDir, newsCoverDir } = require("../middleware/uploadMiddleware");
-const { getBucket, BUCKET_NAMES } = require("../utils/gridfsStorage");
-const { sendError } = require("../utils/responseHandler");
+const {
+  getBucket,
+  BUCKET_NAMES,
+  uploadCoverToGridFS,
+} = require("../utils/gridfsStorage");
+const { sendError, sendSuccess } = require("../utils/responseHandler");
+
+const CONTENT_IMAGE_BUCKET = "content-images";
 
 const LEGACY_DIRS = {
   "blog-covers": blogCoverDir,
@@ -60,4 +66,21 @@ const streamLegacyDiskFile = (req, res) => {
   return res.sendFile(filePath);
 };
 
-module.exports = { streamGridFsFile, streamLegacyDiskFile };
+const uploadContentImage = async (req, res) => {
+  if (!req.file) {
+    return sendError(res, 400, "No image file provided");
+  }
+
+  try {
+    const fileId = await uploadCoverToGridFS(CONTENT_IMAGE_BUCKET, req.file);
+    const url = `/api/files/${CONTENT_IMAGE_BUCKET}/${fileId}`;
+    return sendSuccess(res, 201, "Image uploaded", {
+      ref: `gridfs:${fileId}`,
+      url,
+    });
+  } catch {
+    return sendError(res, 500, "Failed to upload image");
+  }
+};
+
+module.exports = { streamGridFsFile, streamLegacyDiskFile, uploadContentImage };

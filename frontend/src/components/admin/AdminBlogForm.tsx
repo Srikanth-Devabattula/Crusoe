@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
@@ -10,7 +10,9 @@ import {
   AdminMediaFields,
   type AdminMediaState,
 } from "@/components/admin/AdminMediaFields";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { Button } from "@/components/ui/Button";
+import { plainTextFromHtml, plainTextToEditorHtml } from "@/lib/htmlContent";
 import { dateInputToIso, toDateInputValue } from "@/lib/publishDate";
 import { getBlogCoverUrl } from "@/lib/uploads";
 import { getPostVideoUrls } from "@/lib/video";
@@ -27,7 +29,10 @@ const blogSchema = z.object({
       "Slug: lowercase letters, numbers, hyphens only"
     ),
   excerpt: z.string().min(20, "Excerpt must be at least 20 characters").max(400),
-  content: z.string().min(50, "Content must be at least 50 characters"),
+  content: z.string().refine(
+    (val) => plainTextFromHtml(val).length >= 50,
+    "Content must be at least 50 characters"
+  ),
   category: z.string().min(1, "Category is required"),
   publishDate: z.string().min(1, "Publish date is required"),
   featured: z.boolean(),
@@ -132,7 +137,7 @@ export function AdminBlogForm({
         title: editingBlog.title,
         slug: editingBlog.slug,
         excerpt: editingBlog.excerpt ?? "",
-        content: editingBlog.content ?? "",
+        content: plainTextToEditorHtml(editingBlog.content ?? ""),
         category: categorySlug,
         publishDate: toDateInputValue(editingBlog.publishedAt ?? editingBlog.createdAt),
         featured: editingBlog.featured ?? false,
@@ -274,12 +279,23 @@ export function AdminBlogForm({
           />
         </Field>
 
-        <Field label="Content" required error={form.formState.errors.content?.message}>
-          <textarea
-            {...form.register("content")}
-            rows={12}
-            className={inputClass}
-            placeholder="Full article body. Line breaks are preserved on the post page."
+        <Field
+          label="Content"
+          required
+          hint="Use the toolbar for bold, lists, alignment, and justified text."
+          error={form.formState.errors.content?.message}
+        >
+          <Controller
+            name="content"
+            control={form.control}
+            render={({ field }) => (
+              <RichTextEditor
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="Full article body…"
+                aria-invalid={Boolean(form.formState.errors.content)}
+              />
+            )}
           />
         </Field>
 

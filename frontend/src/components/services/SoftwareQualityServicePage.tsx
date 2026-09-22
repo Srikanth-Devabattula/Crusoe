@@ -15,7 +15,7 @@ import {
   softwareQualityIntroLabels,
   softwareQualityTestingCards,
 } from "@/data/softwareQualityPage";
-import { fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
+import { fadeUp, viewportOnce } from "@/lib/motion";
 
 import { RelatedServicesSection } from "./RelatedServicesSection";
 import { ServiceAdvantageSection } from "./ServiceAdvantageSection";
@@ -25,7 +25,7 @@ import {
 } from "./ServiceBreadcrumbHero";
 
 export function SoftwareQualityServicePage() {
-  const introPairOne = softwareQualityContentSections.slice(0, 2);
+  const introSection = softwareQualityContentSections[0];
 
   return (
     <>
@@ -81,49 +81,43 @@ export function SoftwareQualityServicePage() {
         />
 
         <div className="hero-container relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            variants={staggerContainer}
-            className="grid gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-8"
-          >
-            {introPairOne.map((section, index) => (
-              <motion.article
-                key={section.heading}
-                variants={fadeUp}
-                custom={index * 0.06}
-                className="relative flex h-full flex-col overflow-hidden rounded-[28px] border border-[#e7efe0] bg-white p-6 shadow-[0_12px_40px_rgba(15,23,42,0.05)] sm:p-8"
-              >
-                <div
-                  className="pointer-events-none absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-brand via-brand-light to-brand/30"
-                  aria-hidden
-                />
+          {introSection ? (
+            <motion.article
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              variants={fadeUp}
+              custom={0}
+              className="relative flex w-full flex-col overflow-hidden rounded-[28px] border border-[#e7efe0] bg-white p-6 shadow-[0_12px_40px_rgba(15,23,42,0.05)] sm:p-8 lg:p-10"
+            >
+              <div
+                className="pointer-events-none absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-brand via-brand-light to-brand/30"
+                aria-hidden
+              />
 
-                <div className="flex flex-1 flex-col">
-                  <span className="inline-flex w-fit items-center rounded-full bg-brand/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-brand">
-                    {softwareQualityIntroLabels[index]}
-                  </span>
+              <div className="flex flex-1 flex-col">
+                <span className="inline-flex w-fit items-center rounded-full bg-brand/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-brand">
+                  {softwareQualityIntroLabels[0]}
+                </span>
 
-                  <h2 className="text-heading mt-4 text-left text-lg font-bold leading-snug sm:text-xl lg:text-[20px] xl:text-[22px]">
-                    {section.heading}
-                  </h2>
+                <h2 className="text-heading mt-4 text-left text-lg font-bold leading-snug sm:text-xl lg:text-[22px] xl:text-[26px]">
+                  {introSection.heading}
+                </h2>
 
-                  {"emphasis" in section && section.emphasis && (
-                    <p className="mt-3 text-left text-sm font-semibold leading-relaxed text-brand sm:text-[15px]">
-                      {section.emphasis}
-                    </p>
-                  )}
+                {"emphasis" in introSection && introSection.emphasis && (
+                  <p className="mt-3 text-justify text-sm font-semibold leading-relaxed text-brand sm:text-[15px] lg:text-base">
+                    {introSection.emphasis}
+                  </p>
+                )}
 
-                  <div className="mt-3 flex flex-1 flex-col space-y-4 text-left text-sm leading-[1.75] text-slate-600 sm:mt-4 sm:text-[15px]">
-                    {section.paragraphs.map((paragraph) => (
-                      <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-                    ))}
-                  </div>
+                <div className="mt-3 flex flex-1 flex-col space-y-4 text-justify text-sm leading-[1.75] text-slate-600 sm:mt-5 sm:text-[15px] lg:text-base lg:leading-[1.8]">
+                  {introSection.paragraphs.map((paragraph) => (
+                    <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+                  ))}
                 </div>
-              </motion.article>
-            ))}
-          </motion.div>
+              </div>
+            </motion.article>
+          ) : null}
 
           {/* Quality highlight */}
           <motion.div

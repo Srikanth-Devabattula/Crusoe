@@ -8,6 +8,7 @@ import {
   HiOutlineClock,
 } from "react-icons/hi";
 
+import { ArticleRichContent } from "@/components/common/ArticleRichContent";
 import { PostGallery, PostVideo } from "@/components/common/PostMediaSection";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { getCategoryStyle } from "@/data/blogCategories";
@@ -136,16 +137,8 @@ export function BlogPostView({ slug }: BlogPostViewProps) {
       <PostGallery images={galleryImages} title={post.title} />
 
       <div className="hero-container min-w-0 pt-10 lg:pt-12">
-        <div className="prose-blog mx-auto max-w-3xl">
-          {post.content.split("\n").map((paragraph, index) =>
-            paragraph.trim() ? (
-              <p key={index} className="mb-5 break-words text-left text-base leading-relaxed text-slate-700 sm:text-lg">
-                {paragraph}
-              </p>
-            ) : (
-              <br key={index} />
-            )
-          )}
+        <div className="prose-blog w-full max-w-none">
+          <ArticleRichContent content={post.content} />
         </div>
       </div>
 
