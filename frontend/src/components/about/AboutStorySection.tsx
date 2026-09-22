@@ -60,7 +60,7 @@ export function AboutStorySection() {
               {storyParagraphs.map((paragraph) => (
                 <p
                   key={paragraph.slice(0, 24)}
-                  className="text-description text-sm sm:text-base"
+                  className="text-description text-justify text-sm sm:text-base"
                 >
                   {paragraph}
                 </p>

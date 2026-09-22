@@ -1,4 +1,6 @@
 import type { BlogCategoryItem } from "@/types";
+import { plainTextFromHtml } from "@/lib/htmlContent";
+import { getPublishDisplayDate, sortByPublishDate, type DateSort } from "@/lib/publishDate";
 
 export function getCategoryLabel(
   slug: string,
@@ -8,11 +10,9 @@ export function getCategoryLabel(
 }
 
 export function estimateReadTime(content: string): number {
-  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  const words = plainTextFromHtml(content).split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 200));
 }
-
-import { getPublishDisplayDate, sortByPublishDate, type DateSort } from "@/lib/publishDate";
 
 export function formatBlogDate(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, {

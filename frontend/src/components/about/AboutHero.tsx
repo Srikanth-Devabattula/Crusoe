@@ -50,7 +50,7 @@ export function AboutHero() {
               {storyParagraphs.map((paragraph) => (
                 <p
                   key={paragraph.slice(0, 24)}
-                  className="text-description text-sm leading-relaxed sm:text-base"
+                  className="text-description text-justify text-sm leading-relaxed sm:text-base"
                 >
                   {paragraph}
                 </p>

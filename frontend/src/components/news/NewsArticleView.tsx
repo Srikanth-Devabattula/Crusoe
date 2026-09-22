@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { HiOutlineArrowLeft, HiOutlineCalendar, HiOutlineClock } from "react-icons/hi";
 
+import { ArticleRichContent } from "@/components/common/ArticleRichContent";
 import { PostGallery, PostVideo } from "@/components/common/PostMediaSection";
 import { NewsCard } from "@/components/news/NewsCard";
 import { getNewsCategoryStyle } from "@/data/newsCategories";
@@ -128,15 +129,7 @@ export function NewsArticleView({ slug }: NewsArticleViewProps) {
 
       <div className="hero-container min-w-0 pt-10 lg:pt-12">
         <div className="prose-blog mx-auto max-w-3xl">
-          {item.content.split("\n").map((paragraph, index) =>
-            paragraph.trim() ? (
-              <p key={index} className="mb-5 text-base leading-relaxed text-slate-700 sm:text-lg">
-                {paragraph}
-              </p>
-            ) : (
-              <br key={index} />
-            )
-          )}
+          <ArticleRichContent content={item.content} />
         </div>
       </div>
 

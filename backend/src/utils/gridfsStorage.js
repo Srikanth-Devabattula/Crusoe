@@ -13,6 +13,7 @@ const BUCKET_NAMES = {
   "partner-logos": "partnerLogos",
   "hero-slide-images": "heroSlideImages",
   "hero-slide-icons": "heroSlideIcons",
+  "content-images": "contentImages",
 };
 
 const isExternalCover = (cover) => /^https?:\/\//i.test(cover || "");

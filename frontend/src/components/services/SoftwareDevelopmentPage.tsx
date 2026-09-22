@@ -113,7 +113,7 @@ export function SoftwareDevelopmentPage() {
                     </p>
                   )}
 
-                  <div className="mt-3 flex flex-1 flex-col space-y-4 text-left text-sm leading-[1.75] text-slate-600 sm:mt-4 sm:text-[15px]">
+                  <div className="mt-3 flex flex-1 flex-col space-y-4 text-justify text-sm leading-[1.75] text-slate-600 sm:mt-4 sm:text-[15px]">
                     {section.paragraphs.map((paragraph) => (
                       <p key={paragraph.slice(0, 40)}>{paragraph}</p>
                     ))}

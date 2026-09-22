@@ -1,5 +1,10 @@
 /** Origins always allowed (local dev calling production API) */
-const DEV_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"];
+const DEV_ORIGINS = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "http://localhost:3004",
+  "http://127.0.0.1:3004",
+];
 
 /**
  * Allowed origins from CLIENT_URL (comma-separated) + dev defaults

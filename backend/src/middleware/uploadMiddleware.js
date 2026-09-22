@@ -95,6 +95,22 @@ const uploadPartnerLogo = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 }).single("logoFile");
 
+const imageMimeFilter = (req, file, cb) => {
+  const mime = (file.mimetype || "").toLowerCase();
+  if (mime.startsWith("image/")) {
+    cb(null, true);
+    return;
+  }
+  imageFilter(req, file, cb);
+};
+
+/** Inline images for blog/news rich text (GridFS) */
+const uploadContentImage = multer({
+  storage: memoryStorage,
+  fileFilter: imageMimeFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
+}).single("image");
+
 const uploadHeroSlideImages = multer({
   storage: memoryStorage,
   fileFilter: imageFilter,
@@ -112,6 +128,7 @@ module.exports = {
   uploadTeamPhoto,
   uploadPartnerLogo,
   uploadHeroSlideImages,
+  uploadContentImage,
   blogCoverDir,
   newsCoverDir,
 };

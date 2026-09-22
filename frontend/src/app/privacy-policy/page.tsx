@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
           <p className="mt-3 text-sm text-[#6b7280]">
             Last updated: {lastUpdated}
           </p>
-          <p className="mt-5 text-base leading-relaxed text-[#4b5563]">
+          <p className="mt-5 text-justify text-base leading-relaxed text-[#4b5563]">
             {intro}
           </p>
         </header>
@@ -40,13 +40,13 @@ export default function PrivacyPolicyPage() {
               {section.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph.slice(0, 48)}
-                  className="mt-3 text-sm leading-relaxed text-[#4b5563] sm:text-[15px]"
+                  className="mt-3 text-justify text-sm leading-relaxed text-[#4b5563] sm:text-[15px]"
                 >
                   {paragraph}
                 </p>
               ))}
               {"bullets" in section && section.bullets ? (
-                <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-[#4b5563] sm:text-[15px]">
+                <ul className="mt-3 list-disc space-y-2 pl-5 text-justify text-sm leading-relaxed text-[#4b5563] sm:text-[15px]">
                   {section.bullets.map((item) => (
                     <li key={item.slice(0, 48)}>{item}</li>
                   ))}
@@ -55,7 +55,7 @@ export default function PrivacyPolicyPage() {
             </section>
           ))}
 
-          <p className="rounded-2xl border border-[#e7efe0] bg-[#f8fbf4] px-5 py-4 text-sm leading-relaxed text-[#4b5563]">
+          <p className="rounded-2xl border border-[#e7efe0] bg-[#f8fbf4] px-5 py-4 text-justify text-sm leading-relaxed text-[#4b5563]">
             {contactNote}
           </p>
 

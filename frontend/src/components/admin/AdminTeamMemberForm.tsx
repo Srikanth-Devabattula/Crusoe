@@ -146,7 +146,7 @@ export function AdminTeamMemberForm({
         </div>
         <div>
           <label className="mb-1.5 block text-sm font-medium text-gray-800">Bio</label>
-          <textarea {...form.register("bio")} rows={3} className={inputClass} />
+          <textarea {...form.register("bio")} rows={8} className={inputClass} />
         </div>
         <div>
           <label className="mb-1.5 block text-sm font-medium text-gray-800">Sort order</label>

@@ -64,7 +64,7 @@ export function AboutCulture() {
                 People First.{" "}
                 <span className="text-brand">Innovation Always.</span>
               </h2>
-              <p className="text-description mt-4 max-w-lg text-sm leading-relaxed sm:text-[15px]">
+              <p className="text-description mt-4 max-w-lg text-justify text-sm leading-relaxed sm:text-[15px]">
                 We foster a culture where engineers, designers, and consultants
                 collaborate openly — learning continuously, delivering with integrity,
                 and celebrating together with our global partners.
