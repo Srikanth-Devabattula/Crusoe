@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 
 import { AnimatedBadge } from "@/components/common/AnimatedBadge";
 import { CTAButton } from "@/components/hero/CTAButton";
-import { ROUTES } from "@/constants";
 import type { HeroSlideView } from "@/data/heroSlides";
+import { resolveHeroSlideCta } from "@/lib/heroSlideCta";
 import { cn } from "@/lib/cn";
 
 interface HeroCardProps {
@@ -27,18 +27,7 @@ export function HeroCard({
   const number = String(slideIndex + 1).padStart(2, "0");
   const total = String(totalSlides).padStart(2, "0");
 
-  const ctaHref =
-    slide.ctaLink && slide.ctaLink.trim()
-      ? slide.ctaLink.trim()
-      : slideIndex === 0
-      ? ROUTES.servicesQuality
-      : slideIndex === 1
-      ? ROUTES.servicesEngineering
-      : slideIndex === 2
-      ? ROUTES.servicesDevelopment
-      : slideIndex === 3
-      ? ROUTES.smartsourcing
-      : ROUTES.services;
+  const ctaHref = resolveHeroSlideCta(slide.title, slide.ctaLink);
 
   return (
     <motion.article

@@ -14,11 +14,16 @@ export interface ServiceNavItem {
 
 export const servicesNavItems: ServiceNavItem[] = [
   {
+    id: "engineering-services",
+    label: "Engineering Services",
+    href: ROUTES.servicesEngineering,
+  },
+  {
     id: "software-qa",
     label: "Software QA",
     children: [
       {
-        label: "CAD CAM CAE Software Testing",
+        label: "CAD/CAM/CAE Software Testing",
         href: ROUTES.servicesCadCam,
       },
       {
@@ -26,11 +31,6 @@ export const servicesNavItems: ServiceNavItem[] = [
         href: ROUTES.servicesQuality,
       },
     ],
-  },
-  {
-    id: "engineering-services",
-    label: "Engineering Services",
-    href: ROUTES.servicesEngineering,
   },
   {
     id: "software-development",

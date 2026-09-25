@@ -2,12 +2,13 @@ export const ABOUT_HERO_IMAGE = "/images/global/aboutnew.png";
 export const ABOUT_STORY_IMAGE = "/images/aboutus/about2.png";
 export const ABOUT_CTA_IMAGE = "/images/aboutus/about7.png";
 
-export const cultureImages = [
-  "/images/aboutus/about3.png",
-  "/images/aboutus/about5.png",
-  "/images/aboutus/about6.png",
-  "/images/aboutus/about4.png",
-] as const;
+// Previous Our Culture section — uncomment when restoring photo grid layout in AboutCulture.tsx
+// export const cultureImages = [
+//   "/images/aboutus/about3.png",
+//   "/images/aboutus/about5.png",
+//   "/images/aboutus/about6.png",
+//   "/images/aboutus/about4.png",
+// ] as const;
 
 export const storyTitle = "Building Reliable Engineering Solutions Since 2015";
 
@@ -98,7 +99,7 @@ export const timelineMilestones = [
     year: "2015",
     title: "Company Founded",
     description:
-      "Crusoe Technologies (formerly Everglades Technologies) was started at Tanuku, a small town in Andhra Pradesh, with a focus on software quality and engineering services.",
+      "Crusoe Technologies (formerly Everglades Technologies) was started at Tanuku, a small town in Andhra Pradesh, with a focus on CAD Software Quality",
     icon: "rocket" as const,
   },
   {
@@ -133,12 +134,12 @@ export const timelineMilestones = [
   },
 ] as const;
 
-export const cultureFeatures = [
-  "Collaborative Environment",
-  "Agile Mindset",
-  "Continuous Learning",
-  "Growth Opportunities",
-] as const;
+// export const cultureFeatures = [
+//   "Collaborative Environment",
+//   "Agile Mindset",
+//   "Continuous Learning",
+//   "Growth Opportunities",
+// ] as const;
 
 export const statsStrip = [
   { icon: "users" as const, value: 150, suffix: "+", label: "Happy Clients" },

@@ -7,6 +7,7 @@ import {
   DEFAULT_KEYWORDS,
   DEFAULT_OG_IMAGE,
   FAVICON_PATH,
+  HOME_SEO_TITLE,
   SITE_URL,
 } from "@/lib/seo";
 import "./globals.css";
@@ -14,7 +15,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: SITE_NAME,
+    default: HOME_SEO_TITLE,
     template: `%s | ${SITE_NAME}`,
   },
   description: DEFAULT_DESCRIPTION,
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     apple: FAVICON_PATH,
   },
   openGraph: {
-    title: SITE_NAME,
+    title: HOME_SEO_TITLE,
     description: DEFAULT_DESCRIPTION,
     type: "website",
     locale: "en_IN",
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_NAME,
+    title: HOME_SEO_TITLE,
     description: DEFAULT_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE],
   },

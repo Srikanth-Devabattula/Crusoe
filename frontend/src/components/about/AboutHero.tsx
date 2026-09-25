@@ -42,7 +42,7 @@ export function AboutHero() {
               <AnimatedBadge>OUR STORY</AnimatedBadge>
             </motion.div>
 
-            <h1 className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[34px] lg:mt-5 lg:text-[36px] xl:text-[42px]">
+            <h1 className="text-heading mt-4 text-[34px] leading-[1.12] lg:mt-5">
               {storyTitle}
             </h1>
 

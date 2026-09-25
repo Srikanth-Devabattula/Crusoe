@@ -3,6 +3,7 @@ const {
   streamGridFsFile,
   streamLegacyDiskFile,
   uploadContentImage,
+  uploadNewsGalleryImage,
 } = require("../controllers/fileController");
 const {
   protect,
@@ -19,6 +20,14 @@ router.post(
   requireAnyPermission("blogs", "news"),
   uploadContentImageMiddleware,
   asyncHandler(uploadContentImage)
+);
+
+router.post(
+  "/news-covers/upload",
+  protect,
+  requireAnyPermission("news"),
+  uploadContentImageMiddleware,
+  asyncHandler(uploadNewsGalleryImage)
 );
 
 router.get("/:bucket/:fileId", asyncHandler(streamGridFsFile));

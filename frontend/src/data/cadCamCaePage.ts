@@ -1,5 +1,5 @@
 export const CAD_CAM_IMAGES = {
-  hero: "/images/services/CAD/CAD1.png",
+  hero: "/images/global/sat.png",
   ensures: "/images/services/CAD/cad2.jpg",
   gamut: [
     "/images/services/CAD/cad3.png",

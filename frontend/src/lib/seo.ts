@@ -10,12 +10,20 @@ export const FAVICON_PATH = "/images/global/favicon.png";
 
 export const DEFAULT_OG_IMAGE = "/images/global/crusoe_logo.svg";
 
+export const HOME_SEO_TITLE = "Crusoe | Onshape 3D CAD Engineering Services Experts";
+
 export const DEFAULT_DESCRIPTION =
-  "Crusoe Tech delivers software quality assurance, CAD/CAM/CAE testing, engineering services, and custom software development for reliable, high-impact solutions.";
+  "Crusoe provides Onshape 3D CAD engineering services, CAD software QA, platform migration, engineering design, and custom software development for global teams.";
+
+export const HOME_SEO_DESCRIPTION =
+  "Crusoe provides Onshape 3D CAD engineering services, CAD/CAM/CAE software testing, CAD platform migration, and engineering design support for software and manufacturing companies.";
 
 export const DEFAULT_KEYWORDS = [
   "Crusoe Tech",
   "Crusoe Technologies",
+  "Onshape",
+  "3D CAD engineering services",
+  "Onshape engineering services",
   "software testing",
   "CAD CAM CAE testing",
   "software quality assurance",

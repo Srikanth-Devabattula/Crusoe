@@ -49,7 +49,7 @@ export const servicesList: ServiceItem[] = [
       "Mobile & Custom Testing",
       "CAD / PDM / PLM Validation",
     ],
-    image: "/images/global/cam.png",
+    image: "/images/global/sat.png",
     href: ROUTES.servicesCadCam,
     accent: "purple",
     bgColor: "#F5F0FB",
@@ -95,7 +95,7 @@ export const homeServicesCardImages: Record<string, string> = {
   "engineering-services": "/images/services/service1.png",
   "software-development": "/images/services/service2.png",
   "software-qa": "/images/service/sqa66.png",
-  "cad-testing": "/images/global/cam.png",
+  "cad-testing": "/images/global/sat.png",
 };
 
 export const whyChooseServices = [
