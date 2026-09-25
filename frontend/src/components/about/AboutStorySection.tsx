@@ -53,7 +53,7 @@ export function AboutStorySection() {
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">
               OUR STORY
             </p>
-            <h2 className="text-heading mt-3 text-2xl sm:text-3xl lg:text-[34px]">
+            <h2 className="text-heading mt-3 text-[34px] leading-[1.12]">
               Building Reliable Engineering Solutions Since 2015
             </h2>
             <div className="mt-5 space-y-4">

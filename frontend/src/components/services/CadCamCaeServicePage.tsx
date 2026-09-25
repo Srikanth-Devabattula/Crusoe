@@ -65,7 +65,7 @@ export function CadCamCaeServicePage() {
             <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 lg:p-10">
               <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-md sm:text-sm">
                 <Sparkles className="size-3.5 text-brand-light" />
-                Engineering Design QA
+                Engineering Software QA
               </div>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/90 sm:text-base lg:text-lg">
                 End-to-end quality assurance for CAD, CAM, CAE, PDM and PLM

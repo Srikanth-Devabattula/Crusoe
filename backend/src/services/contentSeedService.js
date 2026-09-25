@@ -167,24 +167,55 @@ const DEFAULT_PARTNERS = [
   },
 ];
 
+const HERO_SLIDE_CTA_RULES = [
+  [/^engineering services$/i, "/services/engineering-services"],
+  [/cad.*cae.*testing|cad\/cam\/cae/i, "/services/cad-cam-cae-software-testing"],
+  [/software quality|quality assurance$/i, "/services/software-quality"],
+  [/^software development$/i, "/services/software-development"],
+  [/smartsourcing/i, "/smartsourcing"],
+];
+
+const resolveHeroSlideCtaLink = (title, existing) => {
+  const trimmed = String(existing ?? "").trim();
+  if (trimmed) return trimmed;
+
+  const normalizedTitle = String(title ?? "").trim();
+  for (const [pattern, href] of HERO_SLIDE_CTA_RULES) {
+    if (pattern.test(normalizedTitle)) return href;
+  }
+  return "";
+};
+
 const DEFAULT_HERO_SLIDES = [
-  {
-    title: "Quality Assurance",
-    description:
-      "Ensuring reliable, scalable, and high-quality software solutions through advanced QA processes and automation testing.",
-    image: "/images/hero/card1.png",
-    icon: "/images/hero/card1icon.png",
-    published: true,
-    sortOrder: 1,
-  },
   {
     title: "Engineering Services",
     description:
       "Expert CAD platform migration, engineering solutions, and custom design services tailored for modern industries.",
     image: "/images/hero/card2.png",
     icon: "/images/hero/card2icon.png",
+    ctaLink: "/services/engineering-services",
+    published: true,
+    sortOrder: 1,
+  },
+  {
+    title: "CAD/CAM/CAE Testing",
+    description:
+      "Specialized CAD validation and testing services designed to improve design accuracy, workflow efficiency and manufacturing quality.",
+    image: "/images/hero/card1.png",
+    icon: "/images/hero/card1icon.png",
+    ctaLink: "/services/cad-cam-cae-software-testing",
     published: true,
     sortOrder: 2,
+  },
+  {
+    title: "Software Quality Assurance",
+    description:
+      "Comprehensive quality assurance and automated testing services to ensure reliability, performance and seamless user experiences.",
+    image: "/images/hero/card1.png",
+    icon: "/images/hero/card1icon.png",
+    ctaLink: "/services/software-quality",
+    published: true,
+    sortOrder: 3,
   },
   {
     title: "Software Development",
@@ -192,10 +223,41 @@ const DEFAULT_HERO_SLIDES = [
       "Building modern MCAD tools, scalable applications, and REST API solutions using advanced technologies and best practices.",
     image: "/images/hero/card3.png",
     icon: "/images/hero/card3icon.png",
+    ctaLink: "/services/software-development",
     published: true,
-    sortOrder: 3,
+    sortOrder: 4,
+  },
+  {
+    title: "SmartSourcing",
+    description:
+      "SmartSourcing at Crusoe Technologies — global talent, rigorous quality, and on-time delivery for your engineering and software goals.",
+    image: "/images/hero/card1.png",
+    icon: "/images/hero/card1icon.png",
+    ctaLink: "/smartsourcing",
+    published: true,
+    sortOrder: 5,
   },
 ];
+
+const syncHeroSlideCtaLinks = async () => {
+  const slides = await HeroSlide.find({});
+  let updated = 0;
+
+  for (const slide of slides) {
+    if (String(slide.ctaLink ?? "").trim()) continue;
+
+    const href = resolveHeroSlideCtaLink(slide.title, slide.ctaLink);
+    if (!href) continue;
+
+    slide.ctaLink = href;
+    await slide.save();
+    updated += 1;
+  }
+
+  if (updated > 0) {
+    console.log(`Updated CTA links on ${updated} hero slide(s)`);
+  }
+};
 
 const seedContentIfEmpty = async () => {
   try {
@@ -222,6 +284,8 @@ const seedContentIfEmpty = async () => {
       await HeroSlide.insertMany(DEFAULT_HERO_SLIDES);
       console.log(`Seeded ${DEFAULT_HERO_SLIDES.length} hero slides`);
     }
+
+    await syncHeroSlideCtaLinks();
   } catch (error) {
     console.error("Content seed failed:", error.message);
   }

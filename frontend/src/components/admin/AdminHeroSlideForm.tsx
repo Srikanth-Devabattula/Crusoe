@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/Button";
 import { getApiErrorMessage } from "@/lib/api-error";
+import { resolveHeroSlideCta } from "@/lib/heroSlideCta";
 import { getHeroSlideIconUrl, getHeroSlideImageUrl } from "@/lib/uploads";
 import { heroSlideService } from "@/services";
 import type { HeroSlide, HeroSlideFormData } from "@/types";
@@ -82,7 +83,7 @@ export function AdminHeroSlideForm({
         icon: isExternalIcon || editing.icon?.startsWith("/") ? editing.icon ?? "" : "",
         published: editing.published,
         sortOrder: editing.sortOrder ?? 0,
-        ctaLink: editing.ctaLink ?? "",
+        ctaLink: resolveHeroSlideCta(editing.title, editing.ctaLink),
       });
       setImageFile(null);
       setIconFile(null);
@@ -103,7 +104,7 @@ export function AdminHeroSlideForm({
       description: values.description.trim(),
       published: values.published,
       sortOrder: values.sortOrder ?? 0,
-      ctaLink: values.ctaLink?.trim() || "",
+      ctaLink: resolveHeroSlideCta(values.title, values.ctaLink?.trim() || ""),
     };
 
     const imageChanged = Boolean(imageFile) || imageRemoved || Boolean(values.image?.trim());

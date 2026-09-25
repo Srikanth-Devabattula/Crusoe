@@ -20,7 +20,7 @@ export function AboutMissionVision() {
           whileInView="visible"
           viewport={viewportOnce}
           variants={staggerContainer}
-          className="grid gap-6 lg:grid-cols-2 lg:gap-8"
+          className="grid gap-6 sm:grid-cols-2 lg:gap-8"
         >
           {missionVision.map((item, index) => {
             const Icon = iconMap[item.icon];
@@ -28,15 +28,15 @@ export function AboutMissionVision() {
               <motion.article
                 key={item.title}
                 variants={fadeUp}
-                custom={index * 0.08}
+                custom={index * 0.05}
                 whileHover={{ y: -6 }}
-                className="group rounded-[32px] border border-[#e7efe0] bg-[linear-gradient(145deg,#ffffff_0%,#f6fbf2_100%)] p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0_20px_56px_rgba(126, 168, 73,0.12)] sm:p-10"
+                className="group rounded-3xl border border-[#e7efe0] bg-white p-6 text-center shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all hover:border-brand/30 hover:shadow-[0_12px_40px_rgba(126,168,73,0.12)] sm:p-8"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
-                  <Icon className="h-7 w-7" aria-hidden />
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
+                  <Icon className="h-6 w-6" aria-hidden />
                 </div>
-                <h3 className="text-heading mt-6 text-xl sm:text-2xl">{item.title}</h3>
-                <p className="text-description mt-4 text-sm leading-relaxed sm:text-base">
+                <h3 className="mt-5 text-lg font-semibold text-[#111827]">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#6B7280]">
                   {item.description}
                 </p>
               </motion.article>

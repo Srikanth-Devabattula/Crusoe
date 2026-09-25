@@ -1,5 +1,5 @@
 export const CAD_CAM_IMAGES = {
-  hero: "/images/services/CAD/CAD1.png",
+  hero: "/images/global/sat.png",
   ensures: "/images/services/CAD/cad2.jpg",
   gamut: [
     "/images/services/CAD/cad3.png",
@@ -33,7 +33,7 @@ export const cadCamGamutTabs: CadCamGamutTab[] = [
     id: "new-projects",
     label: "New projects",
     title: "We conduct end-to-end QA for your 3D Design Software",
-    image: CAD_CAM_IMAGES.gamut[0],
+    image: "/images/global/newproject.png",
     items: [
       "UI & UX Testing",
       "Functional testing",
@@ -45,7 +45,7 @@ export const cadCamGamutTabs: CadCamGamutTab[] = [
     id: "release-testing",
     label: "Release Testing",
     title: "Process-driven release validation with clear phases",
-    image: "/images/stock/st3.png",
+    image: "/images/global/strt.jpg",
     items: [
       "Regression & performance testing",
       "Multi-platform & multi-browser testing",
@@ -68,7 +68,7 @@ export const cadCamGamutTabs: CadCamGamutTab[] = [
     id: "custom-testing",
     label: "Custom Testing",
     title: "Customized QA Services to ensure full portability",
-    image: CAD_CAM_IMAGES.gamut[3],
+    image: "/images/global/customtesting.png",
     items: [
       "Testing of apps on App Stores",
       "Peripherals testing",

@@ -11,6 +11,7 @@ const {
 const { sendError, sendSuccess } = require("../utils/responseHandler");
 
 const CONTENT_IMAGE_BUCKET = "content-images";
+const NEWS_COVER_BUCKET = "news-covers";
 
 const LEGACY_DIRS = {
   "blog-covers": blogCoverDir,
@@ -66,14 +67,14 @@ const streamLegacyDiskFile = (req, res) => {
   return res.sendFile(filePath);
 };
 
-const uploadContentImage = async (req, res) => {
+const uploadGridFsImage = async (req, res, bucketKey) => {
   if (!req.file) {
     return sendError(res, 400, "No image file provided");
   }
 
   try {
-    const fileId = await uploadCoverToGridFS(CONTENT_IMAGE_BUCKET, req.file);
-    const url = `/api/files/${CONTENT_IMAGE_BUCKET}/${fileId}`;
+    const fileId = await uploadCoverToGridFS(bucketKey, req.file);
+    const url = `/api/files/${bucketKey}/${fileId}`;
     return sendSuccess(res, 201, "Image uploaded", {
       ref: `gridfs:${fileId}`,
       url,
@@ -83,4 +84,13 @@ const uploadContentImage = async (req, res) => {
   }
 };
 
-module.exports = { streamGridFsFile, streamLegacyDiskFile, uploadContentImage };
+const uploadContentImage = (req, res) => uploadGridFsImage(req, res, CONTENT_IMAGE_BUCKET);
+
+const uploadNewsGalleryImage = (req, res) => uploadGridFsImage(req, res, NEWS_COVER_BUCKET);
+
+module.exports = {
+  streamGridFsFile,
+  streamLegacyDiskFile,
+  uploadContentImage,
+  uploadNewsGalleryImage,
+};

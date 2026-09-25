@@ -21,7 +21,7 @@ const quickLinks = [
 
 const services = [
   { label: "Engineering Services", href: ROUTES.servicesEngineering },
-  { label: "CAD CAM CAE Software Testing", href: ROUTES.servicesCadCam },
+  { label: "CAD/CAM/CAE Software Testing", href: ROUTES.servicesCadCam },
   { label: "Software Quality", href: ROUTES.servicesQuality },
   { label: "Software Development", href: ROUTES.servicesDevelopment },
 ];

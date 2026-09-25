@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaLinkedinIn, FaTwitter } from "react-icons/fa";
-import { FiMail, FiX } from "react-icons/fi";
+import { FiMail, FiPlus, FiX } from "react-icons/fi";
 
 import { splitBioParagraphs } from "@/lib/bioText";
 import { getTeamPhotoUrl } from "@/lib/uploads";
@@ -229,6 +229,7 @@ export function AboutLeadership() {
                   custom={index * 0.06}
                   whileHover={{ y: -6 }}
                   onClick={() => setSelectedMember(member)}
+                  aria-label={`View ${member.name}'s profile`}
                   className="group flex h-full min-h-[280px] w-full flex-col items-center rounded-[32px] border border-[#e7efe0] bg-white p-5 text-center shadow-[0_12px_40px_rgba(15,23,42,0.05)] transition-shadow hover:border-brand/25 hover:shadow-[0_16px_48px_rgba(126,168,73,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 sm:min-h-[300px] sm:p-6"
                 >
                   <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl bg-gray-100 sm:h-32 sm:w-32">
@@ -254,6 +255,10 @@ export function AboutLeadership() {
                     <p className="mt-2 line-clamp-3 text-sm font-semibold leading-snug text-brand">
                       {member.role}
                     </p>
+                    <span className="mt-auto inline-flex items-center gap-1 pt-4 text-xs font-semibold text-brand lg:hidden">
+                      <FiPlus className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                      More..
+                    </span>
                   </div>
                 </motion.button>
               );

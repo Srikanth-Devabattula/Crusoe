@@ -12,6 +12,7 @@ import {
 } from "@/components/admin/AdminMediaFields";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { Button } from "@/components/ui/Button";
+import { getApiErrorMessage } from "@/lib/api-error";
 import { plainTextFromHtml, plainTextToEditorHtml } from "@/lib/htmlContent";
 import { dateInputToIso, toDateInputValue } from "@/lib/publishDate";
 import { getNewsCoverUrl } from "@/lib/uploads";
@@ -190,6 +191,11 @@ export function AdminNewsForm({
             }
           : undefined;
 
+    const uploadToast =
+      mediaState.galleryFiles.length > 0
+        ? toast.loading("Uploading images…")
+        : undefined;
+
     try {
       if (isEditing && editingNews) {
         await newsService.update(editingNews._id, payload, mediaOptions);
@@ -204,6 +210,8 @@ export function AdminNewsForm({
       onSuccess();
     } catch (error) {
       toast.error(getApiErrorMessage(error));
+    } finally {
+      if (uploadToast) toast.dismiss(uploadToast);
     }
   };
 

@@ -66,7 +66,7 @@ const MAPS_EMBED_HYDERABAD = buildGooglePlaceEmbedUrl({
 export const SERVICE_OPTIONS = [
   "Quality Assurance",
   "Automated Testing",
-  "CAD Customisation",
+  "CAD Customization",
   "Software Tooling",
   "Engineering Services",
   "Others",

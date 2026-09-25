@@ -64,7 +64,7 @@ export const engineeringServiceCards: EngineeringServiceCard[] = [
     number: 2,
     title: "3D CAD Conceptual Designs",
     description:
-      "Conceptual and reference designs for consumer and engineering products built for Onshape.",
+      "Conceptual and reference designs for consumer and engineering products built in Onshape.",
   },
   {
     number: 3,

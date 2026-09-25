@@ -1,5 +1,40 @@
 "use client";
 
+import { motion } from "framer-motion";
+
+import { fadeUp, viewportOnce } from "@/lib/motion";
+
+export function AboutCulture() {
+  return (
+    <section aria-label="Our culture" className="section-padding bg-[#F7F9F4]">
+      <div className="hero-container">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={fadeUp}
+          custom={0}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">
+            OUR CULTURE
+          </p>
+          <h2 className="text-heading mt-3 text-2xl leading-tight sm:text-3xl lg:text-[34px]">
+            People First, Innovation Always.
+          </h2>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/*
+ * --- Previous Our Culture layout (photos + intro + feature list) ---
+ * To restore: uncomment `cultureImages` / `cultureFeatures` in aboutPage.ts,
+ * then replace the export above with the block below.
+ *
+"use client";
+
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiCheckCircle } from "react-icons/fi";
@@ -122,3 +157,6 @@ export function AboutCulture() {
     </section>
   );
 }
+ *
+ * --- end previous layout ---
+ */
