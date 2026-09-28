@@ -134,12 +134,12 @@ export const timelineMilestones = [
   },
 ] as const;
 
-// export const cultureFeatures = [
-//   "Collaborative Environment",
-//   "Agile Mindset",
-//   "Continuous Learning",
-//   "Growth Opportunities",
-// ] as const;
+export const cultureFeatures = [
+  "Collaborative Environment",
+  "Agile Mindset",
+  "Continuous Learning",
+  "Growth Opportunities",
+] as const;
 
 export const statsStrip = [
   { icon: "users" as const, value: 150, suffix: "+", label: "Happy Clients" },
