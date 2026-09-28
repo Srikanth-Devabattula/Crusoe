@@ -255,7 +255,7 @@ export function AboutLeadership() {
                     <p className="mt-2 line-clamp-3 text-sm font-semibold leading-snug text-brand">
                       {member.role}
                     </p>
-                    <span className="mt-auto inline-flex items-center gap-1 pt-4 text-xs font-semibold text-brand lg:hidden">
+                    <span className="mt-auto inline-flex items-center gap-1 pt-4 text-xs font-semibold text-brand">
                       <FiPlus className="h-3.5 w-3.5 shrink-0" aria-hidden />
                       More..
                     </span>

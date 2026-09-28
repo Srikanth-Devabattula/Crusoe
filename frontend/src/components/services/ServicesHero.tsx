@@ -5,9 +5,7 @@ import { motion } from "framer-motion";
 
 import { DottedPattern, FloatingOrb } from "@/components/about/AboutDecor";
 import { AnimatedBadge } from "@/components/common/AnimatedBadge";
-import { CTAButton } from "@/components/hero/CTAButton";
 import { PageHeroOverlay } from "@/components/common/PageHeroOverlay";
-import { ROUTES } from "@/constants";
 import { SERVICES_HERO_IMAGE } from "@/data/servicesPage";
 
 const fadeUp = {
@@ -50,19 +48,6 @@ export function ServicesHero() {
               We help businesses build better software, ensure quality at every step,
               and accelerate innovation with reliable engineering solutions.
             </p>
-
-            <motion.div
-              custom={0.12}
-              variants={fadeUp}
-              className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4 lg:justify-start"
-            >
-              <CTAButton href={ROUTES.contact} variant="primary">
-                Talk to Experts
-              </CTAButton>
-              <CTAButton href={ROUTES.contact} variant="secondary">
-                Request Consultation
-              </CTAButton>
-            </motion.div>
           </motion.div>
 
           <motion.div
