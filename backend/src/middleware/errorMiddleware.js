@@ -5,7 +5,12 @@ const errorMiddleware = (err, req, res, next) => {
   let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   let message = err.message || "Internal Server Error";
 
-  // Mongoose validation
+  // Prisma / validation-style errors
+  if (err.code === "P2002") {
+    statusCode = 409;
+    message = "A record with this value already exists";
+  }
+
   if (err.name === "ValidationError") {
     statusCode = 400;
     message = Object.values(err.errors)
@@ -13,7 +18,6 @@ const errorMiddleware = (err, req, res, next) => {
       .join(", ");
   }
 
-  // Mongoose invalid ObjectId
   if (err.name === "CastError") {
     statusCode = 400;
     message = "Invalid resource ID";

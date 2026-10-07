@@ -1,47 +1,16 @@
-const mongoose = require("mongoose");
+const { newObjectId } = require("../utils/objectId");
+const { toMongoShape } = require("../utils/serialize");
+const { createSimpleAdapter } = require("../db/adapterHelpers");
 
-const contactSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Name is required"],
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: [true, "Email is required"],
-      trim: true,
-    },
-    phone: {
-      type: String,
-      default: "",
-    },
-    company: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    service: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    subject: {
-      type: String,
-      required: [true, "Subject is required"],
-      trim: true,
-    },
-    message: {
-      type: String,
-      required: [true, "Message is required"],
-    },
-    status: {
-      type: String,
-      enum: ["new", "read", "replied"],
-      default: "new",
-    },
-  },
-  { timestamps: true }
-);
+const mapOut = (row) => toMongoShape(row);
+const mapIn = (data, { partial } = {}) => {
+  const payload = { ...data };
+  if (payload._id) {
+    payload.id = payload._id;
+    delete payload._id;
+  }
+  if (!partial && !payload.id) payload.id = newObjectId();
+  return payload;
+};
 
-module.exports = mongoose.model("Contact", contactSchema);
+module.exports = createSimpleAdapter("contact", { mapOut, mapIn });

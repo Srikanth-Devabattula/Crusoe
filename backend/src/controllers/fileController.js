@@ -1,13 +1,13 @@
 const path = require("path");
 const fs = require("fs");
-const mongoose = require("mongoose");
 
 const { blogCoverDir, newsCoverDir } = require("../middleware/uploadMiddleware");
 const {
-  getBucket,
   BUCKET_NAMES,
   uploadCoverToGridFS,
 } = require("../utils/gridfsStorage");
+const { isValidObjectId } = require("../utils/objectId");
+const { prisma } = require("../lib/prisma");
 const { sendError, sendSuccess } = require("../utils/responseHandler");
 
 const CONTENT_IMAGE_BUCKET = "content-images";
@@ -26,23 +26,19 @@ const streamGridFsFile = async (req, res) => {
     return sendError(res, 404, "File bucket not found");
   }
 
-  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+  if (!isValidObjectId(fileId)) {
     return sendError(res, 400, "Invalid file id");
   }
 
   try {
-    const gfsBucket = getBucket(bucket);
-    const objectId = new mongoose.Types.ObjectId(fileId);
-
-    const files = await gfsBucket.find({ _id: objectId }).toArray();
-    if (!files.length) {
+    const file = await prisma.storedFile.findUnique({ where: { id: fileId } });
+    if (!file || file.bucket !== bucket) {
       return sendError(res, 404, "File not found");
     }
 
-    res.set("Content-Type", files[0].contentType || "application/octet-stream");
+    res.set("Content-Type", file.contentType || "application/octet-stream");
     res.set("Cache-Control", "public, max-age=31536000, immutable");
-
-    gfsBucket.openDownloadStream(objectId).pipe(res);
+    return res.send(Buffer.from(file.data));
   } catch {
     return sendError(res, 404, "File not found");
   }

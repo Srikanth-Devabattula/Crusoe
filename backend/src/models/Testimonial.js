@@ -1,56 +1,20 @@
-const mongoose = require("mongoose");
+const { newObjectId } = require("../utils/objectId");
+const { toMongoShape } = require("../utils/serialize");
+const { createSimpleAdapter } = require("../db/adapterHelpers");
 
-const testimonialSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Name is required"],
-      trim: true,
-    },
-    title: {
-      type: String,
-      required: [true, "Title is required"],
-      trim: true,
-    },
-    company: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    quote: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    photo: {
-      type: String,
-      default: "",
-    },
-    rating: {
-      type: Number,
-      default: 5,
-      min: 1,
-      max: 5,
-    },
-    type: {
-      type: String,
-      enum: ["text", "video"],
-      default: "text",
-    },
-    videoUrl: {
-      type: String,
-      default: "",
-    },
-    published: {
-      type: Boolean,
-      default: true,
-    },
-    sortOrder: {
-      type: Number,
-      default: 0,
-    },
-  },
-  { timestamps: true }
-);
+const mapOut = (row) => toMongoShape(row);
+const mapIn = (data, { partial } = {}) => {
+  const payload = { ...data };
+  if (payload._id) {
+    payload.id = payload._id;
+    delete payload._id;
+  }
+  if (!partial && !payload.id) payload.id = newObjectId();
+  return payload;
+};
 
-module.exports = mongoose.model("Testimonial", testimonialSchema);
+module.exports = createSimpleAdapter("testimonial", {
+  mapOut,
+  mapIn,
+  defaultOrderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+});

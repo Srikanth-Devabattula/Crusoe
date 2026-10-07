@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
-const { Readable } = require("stream");
-const mongoose = require("mongoose");
+const { prisma } = require("../lib/prisma");
+const { newObjectId, isValidObjectId } = require("./objectId");
 
 const GRIDFS_PREFIX = "gridfs:";
 
@@ -31,34 +31,28 @@ const getBucket = (bucketKey) => {
   if (!bucketName) {
     throw new Error(`Unknown file bucket: ${bucketKey}`);
   }
-
-  if (mongoose.connection.readyState !== 1) {
-    throw new Error("Database not connected");
-  }
-
-  return new mongoose.mongo.GridFSBucket(mongoose.connection.db, { bucketName });
+  return bucketName;
 };
 
 const uploadCoverToGridFS = async (bucketKey, file) => {
-  const bucket = getBucket(bucketKey);
-  const uploadStream = bucket.openUploadStream(file.originalname || "cover", {
-    contentType: file.mimetype || "application/octet-stream",
+  getBucket(bucketKey);
+  const id = newObjectId();
+  await prisma.storedFile.create({
+    data: {
+      id,
+      bucket: bucketKey,
+      filename: file.originalname || "cover",
+      contentType: file.mimetype || "application/octet-stream",
+      data: file.buffer,
+    },
   });
-
-  return new Promise((resolve, reject) => {
-    Readable.from(file.buffer)
-      .pipe(uploadStream)
-      .on("error", reject)
-      .on("finish", () => resolve(uploadStream.id.toString()));
-  });
+  return id;
 };
 
-const deleteGridFsFile = async (bucketKey, fileId) => {
-  if (!mongoose.Types.ObjectId.isValid(fileId)) return;
-
+const deleteGridFsFile = async (_bucketKey, fileId) => {
+  if (!isValidObjectId(fileId)) return;
   try {
-    const bucket = getBucket(bucketKey);
-    await bucket.delete(new mongoose.Types.ObjectId(fileId));
+    await prisma.storedFile.delete({ where: { id: fileId } });
   } catch {
     // File may already be deleted
   }
@@ -111,7 +105,7 @@ const validateCoverImageValue = (coverImage) => {
 
   if (isGridFsCover(coverImage)) {
     const id = getGridFsId(coverImage);
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!isValidObjectId(id)) {
       return "Invalid stored cover image reference";
     }
     return null;

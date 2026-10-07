@@ -77,7 +77,7 @@ const requestAdminPasswordOtp = async (req, res) => {
       );
     }
 
-    if (error.code === 11000) {
+    if (error.code === 11000 || error.code === "P2002") {
       return sendError(res, 429, "Please wait before requesting another code.");
     }
 

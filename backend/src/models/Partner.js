@@ -1,32 +1,20 @@
-const mongoose = require("mongoose");
+const { newObjectId } = require("../utils/objectId");
+const { toMongoShape } = require("../utils/serialize");
+const { createSimpleAdapter } = require("../db/adapterHelpers");
 
-const partnerSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Company name is required"],
-      trim: true,
-    },
-    logo: {
-      type: String,
-      required: [true, "Logo is required"],
-      trim: true,
-    },
-    websiteUrl: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    published: {
-      type: Boolean,
-      default: true,
-    },
-    sortOrder: {
-      type: Number,
-      default: 0,
-    },
-  },
-  { timestamps: true }
-);
+const mapOut = (row) => toMongoShape(row);
+const mapIn = (data, { partial } = {}) => {
+  const payload = { ...data };
+  if (payload._id) {
+    payload.id = payload._id;
+    delete payload._id;
+  }
+  if (!partial && !payload.id) payload.id = newObjectId();
+  return payload;
+};
 
-module.exports = mongoose.model("Partner", partnerSchema);
+module.exports = createSimpleAdapter("partner", {
+  mapOut,
+  mapIn,
+  defaultOrderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+});

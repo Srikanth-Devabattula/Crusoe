@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -21,13 +20,9 @@ const contactRoutes = require("./routes/contactRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const fileRoutes = require("./routes/fileRoutes");
 const { getCorsOptions } = require("./config/cors");
+const { isDbConnected } = require("./config/db");
 const { apiLimiter } = require("./middleware/rateLimitMiddleware");
 const { errorMiddleware, notFound } = require("./middleware/errorMiddleware");
-const {
-  runStartupCleanup,
-  startCleanupScheduler,
-} = require("./services/otpCleanupService");
-const { seedContentIfEmpty } = require("./services/contentSeedService");
 
 const app = express();
 
@@ -77,9 +72,9 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/api/health", (req, res) => {
+app.get("/api/health", async (req, res) => {
   const { isEmailConfigured, getEmailProvider } = require("./config/mail");
-  const dbConnected = mongoose.connection.readyState === 1;
+  const dbConnected = await isDbConnected();
   const emailProvider = getEmailProvider();
 
   res.status(dbConnected ? 200 : 503).json({
@@ -90,7 +85,7 @@ app.get("/api/health", (req, res) => {
     data: {
       database: {
         connected: dbConnected,
-        name: mongoose.connection.name || null,
+        provider: "mysql",
       },
       features: {
         otpAuth: true,
@@ -100,12 +95,6 @@ app.get("/api/health", (req, res) => {
       },
     },
   });
-});
-
-mongoose.connection.once("open", async () => {
-  await runStartupCleanup();
-  startCleanupScheduler();
-  await seedContentIfEmpty();
 });
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

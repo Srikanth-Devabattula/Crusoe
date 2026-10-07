@@ -1,35 +1,39 @@
-const mongoose = require("mongoose");
+const { prisma } = require("../lib/prisma");
 
 /**
- * Connect to MongoDB (local or Atlas via MONGODB_URI)
- * URI must include database name, e.g. ...mongodb.net/crusoetech?retryWrites=true&w=majority
+ * Connect to MySQL via Prisma (DATABASE_URL)
  */
 const connectDB = async () => {
-  const uri = process.env.MONGODB_URI?.trim();
+  const url = process.env.DATABASE_URL?.trim();
 
-  if (!uri) {
+  if (!url) {
     console.error(
-      "MongoDB connection error: MONGODB_URI is not set. Check backend/.env or host env vars."
+      "Database connection error: DATABASE_URL is not set. Check backend/.env or host env vars."
     );
     process.exit(1);
   }
 
   try {
-    const conn = await mongoose.connect(uri, {
-      // Fail fast if Atlas cluster is unreachable (network/IP whitelist/DNS)
-      serverSelectionTimeoutMS: 10000,
-    });
-
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-    console.log(`Database: ${conn.connection.name}`);
+    await prisma.$connect();
+    await prisma.$queryRaw`SELECT 1`;
+    console.log("MySQL connected (Prisma)");
   } catch (error) {
-    console.error(`MongoDB connection error: ${error.message}`);
+    console.error(`Database connection error: ${error.message}`);
     process.exit(1);
   }
 };
 
-mongoose.connection.on("disconnected", () => {
-  console.warn("MongoDB disconnected");
-});
+const disconnectDB = async () => {
+  await prisma.$disconnect();
+};
 
-module.exports = connectDB;
+const isDbConnected = async () => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+module.exports = { connectDB, disconnectDB, isDbConnected };

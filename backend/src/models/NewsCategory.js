@@ -1,31 +1,19 @@
-const mongoose = require("mongoose");
+const { DEFAULT_NEWS_CATEGORIES } = require("../constants/defaultCategories");
+const { newObjectId } = require("../utils/objectId");
+const { toMongoShape } = require("../utils/serialize");
+const { createSimpleAdapter } = require("../db/adapterHelpers");
 
-const DEFAULT_CATEGORIES = [
-  { name: "Announcements", slug: "announcements" },
-  { name: "Press Release", slug: "press-release" },
-  { name: "Company Update", slug: "company-update" },
-  { name: "Events", slug: "events" },
-  { name: "Industry", slug: "industry" },
-];
+const mapOut = (row) => toMongoShape(row);
+const mapIn = (data, { partial } = {}) => {
+  const payload = { ...data };
+  if (payload._id) {
+    payload.id = payload._id;
+    delete payload._id;
+  }
+  if (!partial && !payload.id) payload.id = newObjectId();
+  return payload;
+};
 
-const newsCategorySchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Category name is required"],
-      trim: true,
-    },
-    slug: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-    },
-  },
-  { timestamps: true }
-);
-
-const NewsCategory = mongoose.model("NewsCategory", newsCategorySchema);
-
+const NewsCategory = createSimpleAdapter("newsCategory", { mapOut, mapIn });
 module.exports = NewsCategory;
-module.exports.DEFAULT_CATEGORIES = DEFAULT_CATEGORIES;
+module.exports.DEFAULT_CATEGORIES = DEFAULT_NEWS_CATEGORIES;

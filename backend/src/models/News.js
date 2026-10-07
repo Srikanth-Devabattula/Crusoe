@@ -1,67 +1,23 @@
-const mongoose = require("mongoose");
+const { newObjectId } = require("../utils/objectId");
+const { toMongoShape } = require("../utils/serialize");
+const { createSimpleAdapter } = require("../db/adapterHelpers");
 
-const newsSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: [true, "Title is required"],
-      trim: true,
-    },
-    slug: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-    },
-    excerpt: {
-      type: String,
-      required: [true, "Excerpt is required"],
-      trim: true,
-    },
-    content: {
-      type: String,
-      required: [true, "Content is required"],
-    },
-    category: {
-      type: String,
-      required: [true, "Category is required"],
-      trim: true,
-      lowercase: true,
-    },
-    coverImage: {
-      type: String,
-      default: "",
-    },
-    images: {
-      type: [String],
-      default: [],
-    },
-    videoUrl: {
-      type: String,
-      default: "",
-    },
-    videoUrls: {
-      type: [String],
-      default: [],
-    },
-    featured: {
-      type: Boolean,
-      default: false,
-    },
-    published: {
-      type: Boolean,
-      default: false,
-    },
-    publishedAt: {
-      type: Date,
-      default: null,
-    },
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  },
-  { timestamps: true }
-);
+const mapOut = (row) => toMongoShape({ ...row, authorId: row.authorId });
 
-module.exports = mongoose.model("News", newsSchema);
+const mapIn = (data, { partial } = {}) => {
+  const payload = { ...data };
+  if (payload._id) {
+    payload.id = payload._id;
+    delete payload._id;
+  }
+  if (payload.author !== undefined) {
+    payload.authorId = payload.author || null;
+    delete payload.author;
+  }
+  if (!partial && !payload.id) {
+    payload.id = newObjectId();
+  }
+  return payload;
+};
+
+module.exports = createSimpleAdapter("news", { mapOut, mapIn });
