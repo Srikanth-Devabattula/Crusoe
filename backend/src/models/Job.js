@@ -1,49 +1,16 @@
-const mongoose = require("mongoose");
+const { newObjectId } = require("../utils/objectId");
+const { toMongoShape } = require("../utils/serialize");
+const { createSimpleAdapter } = require("../db/adapterHelpers");
 
-const jobSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: [true, "Job title is required"],
-      trim: true,
-    },
-    shortDescription: {
-      type: String,
-      required: [true, "Short description is required"],
-      trim: true,
-      maxlength: [500, "Short description cannot exceed 500 characters"],
-    },
-    longDescription: {
-      type: String,
-      required: [true, "Long description is required"],
-      trim: true,
-    },
-    experience: {
-      type: String,
-      required: [true, "Experience is required"],
-      trim: true,
-    },
-    location: {
-      type: String,
-      required: [true, "Location is required"],
-      trim: true,
-    },
-    department: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    type: {
-      type: String,
-      enum: ["full-time", "part-time", "contract", "remote"],
-      default: "full-time",
-    },
-    published: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  { timestamps: true }
-);
+const mapOut = (row) => toMongoShape(row);
+const mapIn = (data, { partial } = {}) => {
+  const payload = { ...data };
+  if (payload._id) {
+    payload.id = payload._id;
+    delete payload._id;
+  }
+  if (!partial && !payload.id) payload.id = newObjectId();
+  return payload;
+};
 
-module.exports = mongoose.model("Job", jobSchema);
+module.exports = createSimpleAdapter("job", { mapOut, mapIn });

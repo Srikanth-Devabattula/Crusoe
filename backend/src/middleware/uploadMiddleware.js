@@ -58,7 +58,7 @@ const galleryLimits = {
   files: 11,
 };
 
-/** Blog/news covers stored in MongoDB GridFS (not disk) */
+/** Blog/news covers stored in MySQL (stored_files) via memory buffer — not disk */
 const uploadBlogCover = multer({
   storage: memoryStorage,
   fileFilter: imageFilter,

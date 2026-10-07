@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 // Load .env from backend root (works regardless of cwd on Render/Railway/VPS)
 dotenv.config({ path: path.join(__dirname, "../../.env") });
 
-const REQUIRED_VARS = ["MONGODB_URI", "JWT_SECRET", "ADMIN_EMAIL"];
+const REQUIRED_VARS = ["DATABASE_URL", "JWT_SECRET", "ADMIN_EMAIL"];
 
 /**
  * Validate required environment variables before starting the server

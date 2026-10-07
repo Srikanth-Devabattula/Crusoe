@@ -1,0 +1,246 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model StoredFile {
+  id          String   @id @db.Char(24)
+  bucket      String   @db.VarChar(64)
+  filename    String   @db.VarChar(512)
+  contentType String   @default("application/octet-stream") @db.VarChar(128)
+  data        Bytes    @db.LongBlob
+  createdAt   DateTime @default(now())
+
+  @@index([bucket])
+  @@map("stored_files")
+}
+
+model User {
+  id            String   @id @db.Char(24)
+  name          String   @db.VarChar(255)
+  email         String   @unique @db.VarChar(255)
+  password      String   @db.VarChar(255)
+  passwordPlain String?  @db.Text
+  role          String   @default("staff") @db.VarChar(32)
+  permBlogs     Boolean  @default(false)
+  permNews      Boolean  @default(false)
+  permJobs      Boolean  @default(false)
+  permTestimonials Boolean @default(false)
+  permTeam      Boolean  @default(false)
+  permPartners  Boolean  @default(false)
+  permHeroSlides Boolean @default(false)
+  permContacts  Boolean  @default(false)
+  permApplications Boolean @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  blogs Blog[]
+  news  News[]
+
+  @@map("users")
+}
+
+model OTP {
+  id         String   @id @db.Char(24)
+  email      String   @db.VarChar(255)
+  hashedOTP  String   @db.VarChar(255)
+  expiresAt  DateTime
+  attempts   Int      @default(0)
+  isUsed     Boolean  @default(false)
+  ipAddress  String?  @db.VarChar(64)
+  userAgent  String?  @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([email])
+  @@index([email, expiresAt])
+  @@index([email, isUsed])
+  @@map("otps")
+}
+
+model BlogCategory {
+  id        String   @id @db.Char(24)
+  name      String   @db.VarChar(255)
+  slug      String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("blog_categories")
+}
+
+model Blog {
+  id          String    @id @db.Char(24)
+  title       String    @db.VarChar(512)
+  slug        String    @unique @db.VarChar(512)
+  excerpt     String    @default("") @db.Text
+  content     String    @default("") @db.LongText
+  category    String    @default("insights") @db.VarChar(128)
+  coverImage  String    @default("") @db.Text
+  images      Json      @default("[]")
+  videoUrl    String    @default("") @db.Text
+  videoUrls   Json      @default("[]")
+  featured    Boolean   @default(false)
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  authorId    String?   @db.Char(24)
+  author      User?     @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([category])
+  @@index([published])
+  @@map("blogs")
+}
+
+model NewsCategory {
+  id        String   @id @db.Char(24)
+  name      String   @db.VarChar(255)
+  slug      String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("news_categories")
+}
+
+model News {
+  id          String    @id @db.Char(24)
+  title       String    @db.VarChar(512)
+  slug        String    @unique @db.VarChar(512)
+  excerpt     String    @db.Text
+  content     String    @db.LongText
+  category    String    @db.VarChar(128)
+  coverImage  String    @default("") @db.Text
+  images      Json      @default("[]")
+  videoUrl    String    @default("") @db.Text
+  videoUrls   Json      @default("[]")
+  featured    Boolean   @default(false)
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  authorId    String?   @db.Char(24)
+  author      User?     @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([category])
+  @@index([published])
+  @@map("news")
+}
+
+model Job {
+  id               String   @id @db.Char(24)
+  title            String   @db.VarChar(512)
+  shortDescription String   @db.VarChar(500)
+  longDescription  String   @db.LongText
+  experience       String   @db.VarChar(255)
+  location         String   @db.VarChar(255)
+  department       String   @default("") @db.VarChar(255)
+  type             String   @default("full-time") @db.VarChar(32)
+  published        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  applications Application[]
+
+  @@map("jobs")
+}
+
+model Application {
+  id              String   @id @db.Char(24)
+  jobId           String?  @db.Char(24)
+  job             Job?     @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  applicationType String   @default("job") @db.VarChar(32)
+  message         String   @default("") @db.Text
+  name            String   @db.VarChar(255)
+  email           String   @db.VarChar(255)
+  phone           String   @default("") @db.VarChar(64)
+  resume          String   @db.Text
+  status          String   @default("pending") @db.VarChar(32)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([jobId])
+  @@map("applications")
+}
+
+model Contact {
+  id        String   @id @db.Char(24)
+  name      String   @db.VarChar(255)
+  email     String   @db.VarChar(255)
+  phone     String   @default("") @db.VarChar(64)
+  company   String   @default("") @db.VarChar(255)
+  service   String   @default("") @db.VarChar(255)
+  subject   String   @db.VarChar(512)
+  message   String   @db.LongText
+  status    String   @default("new") @db.VarChar(32)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contacts")
+}
+
+model Testimonial {
+  id        String   @id @db.Char(24)
+  name      String   @db.VarChar(255)
+  title     String   @db.VarChar(255)
+  company   String   @default("") @db.VarChar(255)
+  quote     String   @default("") @db.Text
+  photo     String   @default("") @db.Text
+  rating    Int      @default(5)
+  type      String   @default("text") @db.VarChar(32)
+  videoUrl  String   @default("") @db.Text
+  published Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+model TeamMember {
+  id        String   @id @db.Char(24)
+  name      String   @db.VarChar(255)
+  role      String   @db.VarChar(255)
+  bio       String   @default("") @db.Text
+  photo     String   @default("") @db.Text
+  linkedIn  String   @default("") @db.Text
+  twitter   String   @default("") @db.Text
+  email     String   @default("") @db.VarChar(255)
+  published Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("team_members")
+}
+
+model Partner {
+  id         String   @id @db.Char(24)
+  name       String   @db.VarChar(255)
+  logo       String   @db.Text
+  websiteUrl String   @default("") @db.Text
+  published  Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("partners")
+}
+
+model HeroSlide {
+  id          String   @id @db.Char(24)
+  title       String   @db.VarChar(512)
+  description String   @db.Text
+  image       String   @db.Text
+  icon        String   @db.Text
+  published   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  ctaLink     String   @default("") @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("hero_slides")
+}

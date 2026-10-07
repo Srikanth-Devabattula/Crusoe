@@ -94,10 +94,9 @@ const submitApplication = async (req, res) => {
  * @access  Private (applications permission)
  */
 const getApplications = async (req, res) => {
-  const items = await Application.find()
-    .populate("job", "title location experience")
-    .sort({ createdAt: -1 });
-  return sendSuccess(res, 200, "Applications retrieved", items);
+  const items = await Application.find().sort({ createdAt: -1 });
+  const populated = await Promise.all(items.map((item) => Application.populateJob(item)));
+  return sendSuccess(res, 200, "Applications retrieved", populated);
 };
 
 /**
@@ -120,10 +119,7 @@ const updateApplication = async (req, res) => {
   if (status !== undefined) application.status = status;
   await application.save();
 
-  const populated = await Application.findById(application._id).populate(
-    "job",
-    "title location experience"
-  );
+  const populated = await Application.populateJob(application);
 
   return sendSuccess(res, 200, "Application updated", populated);
 };

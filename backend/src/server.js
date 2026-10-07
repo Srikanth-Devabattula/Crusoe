@@ -2,15 +2,22 @@
 const { validateEnv } = require("./config/env");
 validateEnv();
 
-const mongoose = require("mongoose");
 const app = require("./app");
-const connectDB = require("./config/db");
+const { connectDB, disconnectDB } = require("./config/db");
+const {
+  runStartupCleanup,
+  startCleanupScheduler,
+} = require("./services/otpCleanupService");
+const { seedContentIfEmpty } = require("./services/contentSeedService");
 
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
     await connectDB();
+    await runStartupCleanup();
+    startCleanupScheduler();
+    await seedContentIfEmpty();
 
     const server = app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
@@ -20,7 +27,7 @@ const startServer = async () => {
     const shutdown = async (signal) => {
       console.log(`${signal} received. Closing server...`);
       server.close(async () => {
-        await mongoose.connection.close(false);
+        await disconnectDB();
         process.exit(0);
       });
     };

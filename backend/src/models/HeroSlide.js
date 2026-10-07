@@ -1,42 +1,20 @@
-const mongoose = require("mongoose");
+const { newObjectId } = require("../utils/objectId");
+const { toMongoShape } = require("../utils/serialize");
+const { createSimpleAdapter } = require("../db/adapterHelpers");
 
-const heroSlideSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: [true, "Title is required"],
-      trim: true,
-    },
-    description: {
-      type: String,
-      required: [true, "Description is required"],
-      trim: true,
-    },
-    image: {
-      type: String,
-      required: [true, "Image is required"],
-      trim: true,
-    },
-    icon: {
-      type: String,
-      required: [true, "Icon is required"],
-      trim: true,
-    },
-    published: {
-      type: Boolean,
-      default: true,
-    },
-    sortOrder: {
-      type: Number,
-      default: 0,
-    },
-    ctaLink: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-  },
-  { timestamps: true }
-);
+const mapOut = (row) => toMongoShape(row);
+const mapIn = (data, { partial } = {}) => {
+  const payload = { ...data };
+  if (payload._id) {
+    payload.id = payload._id;
+    delete payload._id;
+  }
+  if (!partial && !payload.id) payload.id = newObjectId();
+  return payload;
+};
 
-module.exports = mongoose.model("HeroSlide", heroSlideSchema);
+module.exports = createSimpleAdapter("heroSlide", {
+  mapOut,
+  mapIn,
+  defaultOrderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+});

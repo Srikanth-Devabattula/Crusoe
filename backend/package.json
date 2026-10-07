@@ -5,7 +5,14 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "postinstall": "prisma generate",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "db:migrate-data": "node scripts/migrate-mongo-to-mysql.js",
+    "db:audit-counts": "node scripts/audit-mongo-mysql-counts.js",
+    "db:mysql-counts": "node scripts/mysql-counts-only.js"
   },
   "keywords": [],
   "author": "",
@@ -22,13 +29,17 @@
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.3",
+    "@prisma/client": "^6.8.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.10.1",
     "validator": "^13.12.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "prisma": "^6.8.2"
+  },
+  "optionalDependencies": {
+    "mongoose": "^8.9.3"
   }
 }

@@ -1,51 +1,20 @@
-const mongoose = require("mongoose");
+const { newObjectId } = require("../utils/objectId");
+const { toMongoShape } = require("../utils/serialize");
+const { createSimpleAdapter } = require("../db/adapterHelpers");
 
-const teamMemberSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Name is required"],
-      trim: true,
-    },
-    role: {
-      type: String,
-      required: [true, "Role is required"],
-      trim: true,
-    },
-    bio: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    photo: {
-      type: String,
-      default: "",
-    },
-    linkedIn: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    twitter: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    email: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    published: {
-      type: Boolean,
-      default: true,
-    },
-    sortOrder: {
-      type: Number,
-      default: 0,
-    },
-  },
-  { timestamps: true }
-);
+const mapOut = (row) => toMongoShape(row);
+const mapIn = (data, { partial } = {}) => {
+  const payload = { ...data };
+  if (payload._id) {
+    payload.id = payload._id;
+    delete payload._id;
+  }
+  if (!partial && !payload.id) payload.id = newObjectId();
+  return payload;
+};
 
-module.exports = mongoose.model("TeamMember", teamMemberSchema);
+module.exports = createSimpleAdapter("teamMember", {
+  mapOut,
+  mapIn,
+  defaultOrderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+});

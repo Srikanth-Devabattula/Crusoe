@@ -2,6 +2,10 @@ const Testimonial = require("../models/Testimonial");
 const TeamMember = require("../models/TeamMember");
 const Partner = require("../models/Partner");
 const HeroSlide = require("../models/HeroSlide");
+const BlogCategory = require("../models/BlogCategory");
+const NewsCategory = require("../models/NewsCategory");
+const { DEFAULT_CATEGORIES: DEFAULT_BLOG_CATEGORIES } = require("../models/BlogCategory");
+const { DEFAULT_CATEGORIES: DEFAULT_NEWS_CATEGORIES } = require("../models/NewsCategory");
 
 const DEFAULT_TESTIMONIALS = [
   {
@@ -261,6 +265,18 @@ const syncHeroSlideCtaLinks = async () => {
 
 const seedContentIfEmpty = async () => {
   try {
+    const blogCategoryCount = await BlogCategory.countDocuments();
+    if (blogCategoryCount === 0) {
+      await BlogCategory.insertMany(DEFAULT_BLOG_CATEGORIES);
+      console.log(`Seeded ${DEFAULT_BLOG_CATEGORIES.length} blog categories`);
+    }
+
+    const newsCategoryCount = await NewsCategory.countDocuments();
+    if (newsCategoryCount === 0) {
+      await NewsCategory.insertMany(DEFAULT_NEWS_CATEGORIES);
+      console.log(`Seeded ${DEFAULT_NEWS_CATEGORIES.length} news categories`);
+    }
+
     const testimonialCount = await Testimonial.countDocuments();
     if (testimonialCount === 0) {
       await Testimonial.insertMany(DEFAULT_TESTIMONIALS);
