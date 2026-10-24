@@ -43,18 +43,43 @@ function mapOut(row, { includePassword = false, includePasswordPlain = false } =
   return doc;
 }
 
-function mapIn(data, { partial } = {}) {
-  const payload = { ...data };
-  if (payload._id) {
-    payload.id = payload._id;
-    delete payload._id;
+const USER_SCALAR_KEYS = [
+  "name",
+  "email",
+  "password",
+  "passwordPlain",
+  "role",
+  "permBlogs",
+  "permNews",
+  "permJobs",
+  "permTestimonials",
+  "permTeam",
+  "permPartners",
+  "permHeroSlides",
+  "permContacts",
+  "permApplications",
+];
+
+function pickScalarUserFields(data) {
+  const payload = {};
+  for (const key of USER_SCALAR_KEYS) {
+    if (data[key] !== undefined) payload[key] = data[key];
   }
-  if (payload.permissions) {
-    Object.assign(payload, permissionsToRow(payload.permissions));
-    delete payload.permissions;
+  if (data.permissions) {
+    Object.assign(payload, permissionsToRow(data.permissions));
+  }
+  return payload;
+}
+
+function mapIn(data, { partial } = {}) {
+  const payload = pickScalarUserFields(data);
+  if (data._id) {
+    payload.id = data._id;
+  } else if (data.id) {
+    payload.id = data.id;
   }
   if (!partial && !payload.id) payload.id = newObjectId();
-  if (!partial && !payload.permissions) {
+  if (!partial && !data.permissions) {
     Object.assign(payload, permissionsToRow({ ...DEFAULT_PERMISSIONS }));
   }
   return payload;

@@ -1,12 +1,12 @@
 /**
  * API base URL — must match where uploads are stored.
  * Local dev: http://localhost:5000/api (see frontend/.env.local)
- * Production: https://crusoe-nhbu.onrender.com/api
+ * Production: https://backend.crusoetec.com/api
  */
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === "production"
-    ? "https://crusoe-nhbu.onrender.com/api"
+    ? "https://backend.crusoetec.com/api"
     : "http://localhost:5000/api");
 
 export const ROUTES = {

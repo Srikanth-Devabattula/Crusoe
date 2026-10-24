@@ -4,6 +4,7 @@ const { blogCoverDir } = require("../middleware/uploadMiddleware");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
 const { applyPublishedAt } = require("../utils/publishDate");
+const { resolveAuthorId } = require("../utils/author");
 const {
   removeCoverAsset,
   resolveGalleryFromRequest,
@@ -144,38 +145,47 @@ const assertCategoryExists = async (slug) => {
 };
 
 const createBlog = async (req, res) => {
-  const body = parseBlogRequestBody(req.body);
-  const parsedVideoUrls = parseVideoUrlsFromBody(req.body);
-  if (parsedVideoUrls !== undefined) body.videoUrls = parsedVideoUrls;
+  try {
+    const body = parseBlogRequestBody(req.body);
+    const parsedVideoUrls = parseVideoUrlsFromBody(req.body);
+    if (parsedVideoUrls !== undefined) body.videoUrls = parsedVideoUrls;
 
-  const gallery = await resolveGalleryFromRequest(req, BLOG_COVER_BUCKET, blogCoverDir, null);
+    const gallery = await resolveGalleryFromRequest(req, BLOG_COVER_BUCKET, blogCoverDir, null);
 
-  if (gallery.changed) {
-    body.images = gallery.images;
-    body.coverImage = gallery.coverImage;
+    if (gallery.changed) {
+      body.images = gallery.images;
+      body.coverImage = gallery.coverImage;
+    }
+
+    const error = validateBlogBody(body);
+    if (error) return sendError(res, 400, error);
+
+    const category = await assertCategoryExists(body.category);
+    if (!category) return sendError(res, 400, "Invalid category");
+    body.category = category.slug;
+
+    const payload = sanitizeBlogBody(body);
+    const publishedAtError = applyPublishedAt(payload, body, null);
+    if (publishedAtError) return sendError(res, 400, publishedAtError.error);
+    const baseSlug = payload.slug || slugify(payload.title);
+    payload.slug = await uniqueSlug(Blog, baseSlug);
+    payload.authorId = resolveAuthorId(req.user?._id);
+
+    const blog = await Blog.create(payload);
+
+    if (blog.featured) {
+      try {
+        await clearOtherFeatured(blog._id);
+      } catch (featuredErr) {
+        console.error("clearOtherFeatured (blog):", featuredErr.message || featuredErr);
+      }
+    }
+
+    return sendSuccess(res, 201, "Blog created", blog);
+  } catch (err) {
+    console.error("createBlog error:", err.message || err);
+    throw err;
   }
-
-  const error = validateBlogBody(body);
-  if (error) return sendError(res, 400, error);
-
-  const category = await assertCategoryExists(body.category);
-  if (!category) return sendError(res, 400, "Invalid category");
-  body.category = category.slug;
-
-  const payload = sanitizeBlogBody(body);
-  const publishedAtError = applyPublishedAt(payload, body, null);
-  if (publishedAtError) return sendError(res, 400, publishedAtError.error);
-  const baseSlug = payload.slug || slugify(payload.title);
-  payload.slug = await uniqueSlug(Blog, baseSlug);
-  payload.author = req.user?._id;
-
-  const blog = await Blog.create(payload);
-
-  if (blog.featured) {
-    await clearOtherFeatured(blog._id);
-  }
-
-  return sendSuccess(res, 201, "Blog created", blog);
 };
 
 const updateBlog = async (req, res) => {

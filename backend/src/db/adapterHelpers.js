@@ -45,16 +45,22 @@ function createChainable(executor) {
   return api;
 }
 
+function stripAdapterDoc(doc) {
+  const plain = {};
+  for (const [key, value] of Object.entries(doc || {})) {
+    if (typeof value === "function") continue;
+    plain[key] = value;
+  }
+  return plain;
+}
+
 function attachSave(doc, delegate, mapIn, mapOut, row) {
   if (!doc || !row) return doc;
   return {
     ...doc,
     async save() {
       const payload = mapIn(
-        {
-          ...this,
-          _id: this._id,
-        },
+        stripAdapterDoc({ ...this, _id: this._id }),
         { partial: true }
       );
       const updated = await delegate.update({

@@ -18,6 +18,16 @@ function getAllowedOrigins() {
   return [...new Set([...DEV_ORIGINS, ...fromEnv])];
 }
 
+function isCrusoeProductionSite(origin) {
+  try {
+    const { protocol, hostname } = new URL(origin);
+    if (protocol !== "https:") return false;
+    return hostname === "crusoetec.com" || hostname === "www.crusoetec.com";
+  } catch {
+    return false;
+  }
+}
+
 function getCorsOptions() {
   const allowedOrigins = getAllowedOrigins();
 
@@ -29,6 +39,10 @@ function getCorsOptions() {
       }
 
       if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      if (process.env.NODE_ENV === "production" && isCrusoeProductionSite(origin)) {
         return callback(null, true);
       }
 

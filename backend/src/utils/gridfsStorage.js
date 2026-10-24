@@ -36,6 +36,9 @@ const getBucket = (bucketKey) => {
 
 const uploadCoverToGridFS = async (bucketKey, file) => {
   getBucket(bucketKey);
+  if (!file?.buffer?.length) {
+    throw new Error("Upload failed: empty file buffer (use memory storage for images)");
+  }
   const id = newObjectId();
   await prisma.storedFile.create({
     data: {

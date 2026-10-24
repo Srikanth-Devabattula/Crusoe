@@ -17,10 +17,17 @@ const nextConfig = {
   },
 
   images: {
+    // GoDaddy Node: sharp/image optimizer often returns null for local PNGs
+    unoptimized: true,
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "backend.crusoetec.com",
+        pathname: "/**",
+      },
       {
         protocol: "https",
         hostname: "crusoe-nhbu.onrender.com",

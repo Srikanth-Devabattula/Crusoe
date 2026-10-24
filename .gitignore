@@ -37,3 +37,12 @@ backend/src/uploads/resumes/*
 
 # Cursor assets (optional local)
 assets/
+
+# GoDaddy deploy artifacts (regenerate locally)
+**/crusoe-*-godaddy.zip
+
+# Local scratch / saved HTML
+**/_tmp_*.html
+
+# Generated DB import (run backend/scripts/generate-godaddy-import-sql.js)
+backend/prisma/godaddy-hosted-import.sql

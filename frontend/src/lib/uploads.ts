@@ -2,18 +2,20 @@ import { API_BASE_URL } from "@/constants";
 
 const GRIDFS_PREFIX = "gridfs:";
 
+export function getApiOrigin(): string {
+  return API_BASE_URL.replace(/\/api\/?$/, "");
+}
+
 /**
- * Base URL for browser requests (empty = same origin via Next rewrites).
- * Server-side rendering uses the full API origin.
+ * Base URL for legacy disk uploads (empty in browser = same origin via Next rewrites).
+ * GridFS files always use {@link getApiOrigin} — Next rewrites break binary streams on GoDaddy.
  */
 export function getUploadsBaseUrl(): string {
-  const apiOrigin = API_BASE_URL.replace(/\/api\/?$/, "");
-
   if (typeof window !== "undefined") {
     return "";
   }
 
-  return apiOrigin;
+  return getApiOrigin();
 }
 
 function resolveStoredCover(
@@ -22,16 +24,16 @@ function resolveStoredCover(
 ): string {
   if (coverImage.startsWith(GRIDFS_PREFIX)) {
     const fileId = coverImage.slice(GRIDFS_PREFIX.length);
-    return `${getUploadsBaseUrl()}/api/files/${bucket}/${fileId}`;
+    return `${getApiOrigin()}/api/files/${bucket}/${fileId}`;
   }
 
   const filename = coverImage.replace(/^\/+/, "").split("/").pop() ?? coverImage;
   return `${getUploadsBaseUrl()}/uploads/${bucket}/${encodeURIComponent(filename)}`;
 }
 
-/** Public URL for a resume stored on the API server */
+/** Public URL for a resume stored on the API server (always backend — not Next rewrite). */
 export function getResumeUrl(filename: string): string {
-  return `${getUploadsBaseUrl()}/uploads/resumes/${encodeURIComponent(filename)}`;
+  return `${getApiOrigin()}/uploads/resumes/${encodeURIComponent(filename)}`;
 }
 
 /** Blog cover — external URL, MongoDB GridFS, or legacy disk filename */

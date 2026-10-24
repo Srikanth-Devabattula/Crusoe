@@ -38,6 +38,10 @@ const errorMiddleware = (err, req, res, next) => {
     statusCode = 403;
   }
 
+  if (statusCode === 500) {
+    console.error("API 500:", err.message || err);
+  }
+
   // Hide internal details in production
   if (process.env.NODE_ENV === "production" && statusCode === 500) {
     message = "Internal Server Error";

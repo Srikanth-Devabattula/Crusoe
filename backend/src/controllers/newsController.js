@@ -4,6 +4,7 @@ const { newsCoverDir } = require("../middleware/uploadMiddleware");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 const { slugify, uniqueSlug } = require("../utils/slugify");
 const { applyPublishedAt } = require("../utils/publishDate");
+const { resolveAuthorId } = require("../utils/author");
 const {
   removeCoverAsset,
   resolveGalleryFromRequest,
@@ -118,34 +119,45 @@ const assertCategoryExists = async (slug) =>
   NewsCategory.findOne({ slug: String(slug).toLowerCase().trim() });
 
 const createNews = async (req, res) => {
-  const body = parseNewsRequestBody(req.body);
-  const parsedVideoUrls = parseVideoUrlsFromBody(req.body);
-  if (parsedVideoUrls !== undefined) body.videoUrls = parsedVideoUrls;
+  try {
+    const body = parseNewsRequestBody(req.body);
+    const parsedVideoUrls = parseVideoUrlsFromBody(req.body);
+    if (parsedVideoUrls !== undefined) body.videoUrls = parsedVideoUrls;
 
-  const gallery = await resolveGalleryFromRequest(req, NEWS_COVER_BUCKET, newsCoverDir, null);
+    const gallery = await resolveGalleryFromRequest(req, NEWS_COVER_BUCKET, newsCoverDir, null);
 
-  if (gallery.changed) {
-    body.images = gallery.images;
-    body.coverImage = gallery.coverImage;
+    if (gallery.changed) {
+      body.images = gallery.images;
+      body.coverImage = gallery.coverImage;
+    }
+
+    const error = validateNewsBody(body);
+    if (error) return sendError(res, 400, error);
+
+    const category = await assertCategoryExists(body.category);
+    if (!category) return sendError(res, 400, "Invalid category");
+    body.category = category.slug;
+
+    const payload = sanitizeNewsBody(body);
+    const publishedAtError = applyPublishedAt(payload, body, null);
+    if (publishedAtError) return sendError(res, 400, publishedAtError.error);
+    payload.slug = await uniqueSlug(News, payload.slug || slugify(payload.title));
+    payload.authorId = resolveAuthorId(req.user?._id);
+
+    const item = await News.create(payload);
+    if (item.featured) {
+      try {
+        await clearOtherFeatured(item._id);
+      } catch (featuredErr) {
+        console.error("clearOtherFeatured (news):", featuredErr.message || featuredErr);
+      }
+    }
+
+    return sendSuccess(res, 201, "News created", item);
+  } catch (err) {
+    console.error("createNews error:", err.message || err);
+    throw err;
   }
-
-  const error = validateNewsBody(body);
-  if (error) return sendError(res, 400, error);
-
-  const category = await assertCategoryExists(body.category);
-  if (!category) return sendError(res, 400, "Invalid category");
-  body.category = category.slug;
-
-  const payload = sanitizeNewsBody(body);
-  const publishedAtError = applyPublishedAt(payload, body, null);
-  if (publishedAtError) return sendError(res, 400, publishedAtError.error);
-  payload.slug = await uniqueSlug(News, payload.slug || slugify(payload.title));
-  payload.author = req.user?._id;
-
-  const item = await News.create(payload);
-  if (item.featured) await clearOtherFeatured(item._id);
-
-  return sendSuccess(res, 201, "News created", item);
 };
 
 const updateNews = async (req, res) => {

@@ -14,8 +14,8 @@ const uniqueSlug = async (Model, baseSlug, excludeId = null) => {
     const query = { slug };
     if (excludeId) query._id = { $ne: excludeId };
 
-    const existing = await Model.findOne(query).select("_id");
-    if (!existing) return slug;
+    const count = await Model.countDocuments(query);
+    if (!count) return slug;
 
     counter += 1;
     slug = `${baseSlug}-${counter}`;

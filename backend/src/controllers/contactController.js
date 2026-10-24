@@ -64,13 +64,15 @@ const updateContact = async (req, res) => {
     return sendError(res, 400, "Invalid status");
   }
 
-  const contact = await Contact.findById(req.params.id);
-  if (!contact) {
+  const existing = await Contact.findById(req.params.id);
+  if (!existing) {
     return sendError(res, 404, "Contact submission not found");
   }
 
-  if (status !== undefined) contact.status = status;
-  await contact.save();
+  const contact =
+    status !== undefined
+      ? await Contact.findByIdAndUpdate(req.params.id, { status })
+      : existing;
 
   return sendSuccess(res, 200, "Contact submission updated", contact);
 };

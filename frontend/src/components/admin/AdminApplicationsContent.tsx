@@ -134,11 +134,25 @@ export function AdminApplicationsContent() {
   } = useBulkSelection(visibleIds);
 
   const handleStatusChange = async (item: JobApplication, status: ApplicationStatus) => {
+    if (item.status === status) return;
+    setItems((prev) =>
+      prev.map((row) => (row._id === item._id ? { ...row, status } : row))
+    );
     try {
-      await applicationService.updateStatus(item._id, status);
+      const res = await applicationService.updateStatus(item._id, status);
+      const updated = res.data;
+      if (updated?._id) {
+        setItems((prev) =>
+          prev.map((row) => (row._id === updated._id ? { ...row, ...updated } : row))
+        );
+      } else {
+        await loadItems();
+      }
       toast.success("Status updated");
-      loadItems();
     } catch (error) {
+      setItems((prev) =>
+        prev.map((row) => (row._id === item._id ? { ...row, status: item.status } : row))
+      );
       toast.error(getApiErrorMessage(error));
     }
   };

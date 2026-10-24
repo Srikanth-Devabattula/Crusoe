@@ -15,6 +15,7 @@
 
 # production
 /build
+crusoe-frontend-godaddy.zip
 
 # misc
 .DS_Store

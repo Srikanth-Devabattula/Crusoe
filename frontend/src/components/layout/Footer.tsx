@@ -87,14 +87,7 @@ export function Footer() {
                 Quality software solutions that help businesses innovate and
                 grow.
               </p> */}
-              <div className="flex items-center gap-3">
-                <Image
-                  src="/images/global/iso.png"
-                  alt="ISO 27001 certified"
-                  width={100}
-                  height={50}
-                  className="h-auto w-[60px] sm:w-[72px]"
-                />
+              <div className="flex items-center gap-2">
                 <div className="flex gap-2">
                   <Link
                     href="#"

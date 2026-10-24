@@ -86,15 +86,16 @@ Does **not** delete MongoDB data or truncate MySQL. Seed rows in MySQL (differen
 
 ---
 
-## Production (GoDaddy Node.js)
+## Production (GoDaddy Node.js / Airo)
 
-1. Create MySQL database in hosting panel.
-2. Set `DATABASE_URL=mysql://USER:PASSWORD@HOST:3306/DATABASE`
-3. Remove `MONGODB_URI` after cutover.
-4. Run `npx prisma migrate deploy` on deploy (or locally against prod DB once).
-5. Run data migration script if importing existing MongoDB data.
-6. Upload `backend` + run `npm install --production`, `npx prisma generate`, `npm start`.
-7. Set `CLIENT_URL`, `JWT_SECRET`, `ADMIN_EMAIL`, email vars as today.
+**Important:** GoDaddy Node.js Hosting only allows outbound DB traffic to **GoDaddy managed MySQL** bundled with the app. It **cannot** open TCP `3306` to a **cPanel (Web Hosting) MySQL** host, even if Remote MySQL lists `%` or your IPs. Use cPanel MySQL for local dev (Remote MySQL + your public IP); use **managed MySQL** for the Node backend in production.
+
+1. In the Node app, use the platform **managed MySQL** credentials (`DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`) — or set `DATABASE_URL` yourself from those values. This backend builds `DATABASE_URL` from `DB_*` when `DATABASE_URL` is unset (`src/config/env.js`).
+2. Run `npx prisma migrate deploy` once against the managed database (from your PC if the managed host allows your IP, or via a one-off deploy step).
+3. Import data from cPanel MySQL if needed (dump/restore or scripts).
+4. Set `CLIENT_URL`, `JWT_SECRET`, `ADMIN_EMAIL`, and email vars. Note: external SMTP may not work from the Node container; check GoDaddy’s email gateway rules.
+5. **MySQL hostname:** use the host shown on cPanel → **MySQL Databases** for the same account (often `sg2plzcpnl{accountId}.prod.sin2.secureserver.net`, not a different server like `sg2plcpnl0104`).
+6. URL-encode special characters in passwords in `DATABASE_URL` (e.g. `@` → `%40`).
 
 ---
 

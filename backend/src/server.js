@@ -9,15 +9,23 @@ const {
   startCleanupScheduler,
 } = require("./services/otpCleanupService");
 const { seedContentIfEmpty } = require("./services/contentSeedService");
+const { ensureAdminFromBootstrap } = require("./services/adminBootstrapService");
 
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
-    await connectDB();
-    await runStartupCleanup();
-    startCleanupScheduler();
-    await seedContentIfEmpty();
+    const dbReady = await connectDB();
+    if (dbReady) {
+      await runStartupCleanup();
+      startCleanupScheduler();
+      await seedContentIfEmpty();
+      await ensureAdminFromBootstrap();
+    } else {
+      console.warn(
+        "Starting without database — fix DATABASE_URL / Remote MySQL, then restart."
+      );
+    }
 
     const server = app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

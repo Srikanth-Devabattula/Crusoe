@@ -60,29 +60,36 @@ const adminLogin = async (req, res) => {
     return sendError(res, 401, "Invalid email or password");
   }
 
-  const adminEmail = getConfiguredAdminEmail();
-  const user = await User.findOne({ email: adminEmail, role: "admin" }).select("+password");
-
-  if (!user) {
-    return sendError(
-      res,
-      401,
-      "Administrator password is not set yet. Use Forgot password to create one."
+  try {
+    const adminEmail = getConfiguredAdminEmail();
+    const user = await User.findOne({ email: adminEmail, role: "admin" }).select(
+      "+password"
     );
+
+    if (!user) {
+      return sendError(
+        res,
+        401,
+        "Administrator password is not set yet. Use Forgot password to create one."
+      );
+    }
+
+    if (!(await user.matchPassword(password))) {
+      return sendError(res, 401, "Invalid email or password");
+    }
+
+    const token = generateToken(user._id);
+    setAuthCookie(res, token);
+
+    return sendSuccess(res, 200, "Logged in successfully", {
+      user: formatUser(user),
+      token,
+      loginMethod: "admin-password",
+    });
+  } catch (error) {
+    console.error("Admin login error:", error.message || error);
+    return sendError(res, 500, "Login failed. Please try again.");
   }
-
-  if (!(await user.matchPassword(password))) {
-    return sendError(res, 401, "Invalid email or password");
-  }
-
-  const token = generateToken(user._id);
-  setAuthCookie(res, token);
-
-  return sendSuccess(res, 200, "Logged in successfully", {
-    user: formatUser(user),
-    token,
-    loginMethod: "admin-password",
-  });
 };
 
 /**

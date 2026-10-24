@@ -263,48 +263,58 @@ const syncHeroSlideCtaLinks = async () => {
   }
 };
 
-const seedContentIfEmpty = async () => {
+const seedBlock = async (label, fn) => {
   try {
-    const blogCategoryCount = await BlogCategory.countDocuments();
-    if (blogCategoryCount === 0) {
+    await fn();
+  } catch (error) {
+    console.error(`Content seed failed (${label}):`, error.message);
+  }
+};
+
+const seedContentIfEmpty = async () => {
+  await seedBlock("blog categories", async () => {
+    if ((await BlogCategory.countDocuments()) === 0) {
       await BlogCategory.insertMany(DEFAULT_BLOG_CATEGORIES);
       console.log(`Seeded ${DEFAULT_BLOG_CATEGORIES.length} blog categories`);
     }
+  });
 
-    const newsCategoryCount = await NewsCategory.countDocuments();
-    if (newsCategoryCount === 0) {
+  await seedBlock("news categories", async () => {
+    if ((await NewsCategory.countDocuments()) === 0) {
       await NewsCategory.insertMany(DEFAULT_NEWS_CATEGORIES);
       console.log(`Seeded ${DEFAULT_NEWS_CATEGORIES.length} news categories`);
     }
+  });
 
-    const testimonialCount = await Testimonial.countDocuments();
-    if (testimonialCount === 0) {
+  await seedBlock("testimonials", async () => {
+    if ((await Testimonial.countDocuments()) === 0) {
       await Testimonial.insertMany(DEFAULT_TESTIMONIALS);
       console.log(`Seeded ${DEFAULT_TESTIMONIALS.length} testimonials`);
     }
+  });
 
-    const teamCount = await TeamMember.countDocuments();
-    if (teamCount === 0) {
+  await seedBlock("team", async () => {
+    if ((await TeamMember.countDocuments()) === 0) {
       await TeamMember.insertMany(DEFAULT_TEAM);
       console.log(`Seeded ${DEFAULT_TEAM.length} team members`);
     }
+  });
 
-    const partnerCount = await Partner.countDocuments();
-    if (partnerCount === 0) {
+  await seedBlock("partners", async () => {
+    if ((await Partner.countDocuments()) === 0) {
       await Partner.insertMany(DEFAULT_PARTNERS);
       console.log(`Seeded ${DEFAULT_PARTNERS.length} partner logos`);
     }
+  });
 
-    const heroSlideCount = await HeroSlide.countDocuments();
-    if (heroSlideCount === 0) {
+  await seedBlock("hero slides", async () => {
+    if ((await HeroSlide.countDocuments()) === 0) {
       await HeroSlide.insertMany(DEFAULT_HERO_SLIDES);
       console.log(`Seeded ${DEFAULT_HERO_SLIDES.length} hero slides`);
     }
+  });
 
-    await syncHeroSlideCtaLinks();
-  } catch (error) {
-    console.error("Content seed failed:", error.message);
-  }
+  await seedBlock("hero slide CTA links", () => syncHeroSlideCtaLinks());
 };
 
 module.exports = { seedContentIfEmpty };

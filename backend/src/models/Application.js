@@ -1,7 +1,11 @@
 const { prisma } = require("../lib/prisma");
 const { newObjectId } = require("../utils/objectId");
 const { toMongoShape } = require("../utils/serialize");
-const { mapIdFilter, mongooseSortToOrderBy } = require("../db/adapterHelpers");
+const {
+  mapIdFilter,
+  mongooseSortToOrderBy,
+  createChainable,
+} = require("../db/adapterHelpers");
 const Job = require("./Job");
 
 const mapOut = (row) => toMongoShape({ ...row, jobId: row.jobId });
@@ -69,11 +73,23 @@ async function populateJob(doc) {
 }
 
 const Application = {
-  async find(filter = {}, sort) {
-    const where = mapIdFilter(filter);
-    const orderBy = sort ? mongooseSortToOrderBy(sort) : { createdAt: "desc" };
-    const rows = await prisma.application.findMany({ where, orderBy });
-    return rows.map((row) => attachSave(mapOut(row)));
+  find(filter = {}, sort) {
+    if (sort !== undefined) {
+      const where = mapIdFilter(filter);
+      const orderBy = mongooseSortToOrderBy(sort);
+      return prisma.application
+        .findMany({ where, orderBy })
+        .then((rows) => rows.map((row) => attachSave(mapOut(row))));
+    }
+
+    return createChainable(async (state) => {
+      const where = mapIdFilter(filter);
+      const orderBy = state.sort
+        ? mongooseSortToOrderBy(state.sort)
+        : { createdAt: "desc" };
+      const rows = await prisma.application.findMany({ where, orderBy });
+      return rows.map((row) => attachSave(mapOut(row)));
+    });
   },
   findOne(filter = {}) {
     const where = mapIdFilter(filter);
@@ -86,6 +102,13 @@ const Application = {
   },
   create(data) {
     return prisma.application.create({ data: mapIn(data) }).then((row) => attachSave(mapOut(row)));
+  },
+  async findByIdAndUpdate(id, data) {
+    const row = await prisma.application.update({
+      where: { id: String(id) },
+      data: mapIn(data, { partial: true }),
+    });
+    return attachSave(mapOut(row));
   },
   async findByIdAndDelete(id) {
     try {

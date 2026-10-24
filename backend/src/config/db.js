@@ -17,9 +17,10 @@ const connectDB = async () => {
     await prisma.$connect();
     await prisma.$queryRaw`SELECT 1`;
     console.log("MySQL connected (Prisma)");
+    return true;
   } catch (error) {
     console.error(`Database connection error: ${error.message}`);
-    process.exit(1);
+    return false;
   }
 };
 

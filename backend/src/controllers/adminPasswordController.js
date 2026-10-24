@@ -20,9 +20,10 @@ const isEmailDeliveryError = (error) => {
     /timeout|timed out|ETIMEDOUT|ESOCKET|ECONNREFUSED|ENOTFOUND|ECONNRESET/i.test(
       message
     ) ||
-    ["ETIMEDOUT", "ESOCKET", "ECONNREFUSED", "ENOTFOUND", "ECONNRESET", "EAUTH"].includes(
+    ["ETIMEDOUT", "ESOCKET", "ECONNREFUSED", "ENOTFOUND", "ECONNRESET", "EAUTH", "EACCES"].includes(
       code
-    )
+    ) ||
+    /EACCES|permission denied|blocked/i.test(message)
   );
 };
 
@@ -70,10 +71,22 @@ const requestAdminPasswordOtp = async (req, res) => {
     console.error("Admin password OTP error:", error.message || error);
 
     if (isEmailDeliveryError(error)) {
+      const detail = String(error?.message || "");
+      if (/domain is not verified/i.test(detail)) {
+        return sendError(
+          res,
+          503,
+          "Email provider rejected the send: your sending domain is not verified in Resend. In Resend → Domains, verify crusoetec.com (DNS records in GoDaddy), then try again."
+        );
+      }
+      if (/Resend email failed:/i.test(detail)) {
+        const resendMsg = detail.replace(/^Failed to send OTP email:\s*/i, "").trim();
+        return sendError(res, 503, resendMsg);
+      }
       return sendError(
         res,
         503,
-        "Email service temporarily unavailable. Please try again later."
+        "Email cannot be sent from this server (outbound SMTP is blocked). Add RESEND_API_KEY in hosting secrets, or set ADMIN_BOOTSTRAP_PASSWORD and restart to log in without OTP."
       );
     }
 

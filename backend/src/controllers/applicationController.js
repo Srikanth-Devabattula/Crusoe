@@ -94,9 +94,16 @@ const submitApplication = async (req, res) => {
  * @access  Private (applications permission)
  */
 const getApplications = async (req, res) => {
-  const items = await Application.find().sort({ createdAt: -1 });
-  const populated = await Promise.all(items.map((item) => Application.populateJob(item)));
-  return sendSuccess(res, 200, "Applications retrieved", populated);
+  try {
+    const items = await Application.find().sort({ createdAt: -1 });
+    const populated = await Promise.all(
+      items.map((item) => Application.populateJob(item))
+    );
+    return sendSuccess(res, 200, "Applications retrieved", populated);
+  } catch (error) {
+    console.error("getApplications error:", error.message || error);
+    return sendError(res, 500, "Could not load applications.");
+  }
 };
 
 /**
@@ -111,13 +118,14 @@ const updateApplication = async (req, res) => {
     return sendError(res, 400, "Invalid status");
   }
 
-  const application = await Application.findById(req.params.id);
+  let application = await Application.findById(req.params.id);
   if (!application) {
     return sendError(res, 404, "Application not found");
   }
 
-  if (status !== undefined) application.status = status;
-  await application.save();
+  if (status !== undefined) {
+    application = await Application.findByIdAndUpdate(req.params.id, { status });
+  }
 
   const populated = await Application.populateJob(application);
 
