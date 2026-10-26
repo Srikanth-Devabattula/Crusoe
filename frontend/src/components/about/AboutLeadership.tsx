@@ -195,7 +195,7 @@ export function AboutLeadership() {
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">
             LEADERSHIP
           </p>
-          <h2 className="text-heading mt-3 text-2xl sm:text-3xl lg:text-[34px]">
+          <h2 className="text-heading mt-3 text-2xl sm:text-3xl lg:text-[33px]">
             Driven by Experienced Leadership
           </h2>
           <p className="text-description mx-auto mt-4 max-w-2xl">

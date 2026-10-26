@@ -95,7 +95,7 @@ export function WhyChooseUsSection() {
                 Why Choose Us
               </p>
 
-              <h2 className="text-heading mt-3 max-w-[720px] text-[26px] leading-[1.1] sm:mt-4 sm:text-[30px] lg:mt-3 lg:max-w-none lg:text-[28px] lg:leading-[1.12] xl:text-[34px] 2xl:text-[38px]">
+              <h2 className="text-heading-home mt-3 max-w-[720px] sm:mt-4 lg:mt-3 lg:max-w-none">
                 World&apos;s leading{" "}
                 <span className="text-brand">Companies Trust Us</span>
               </h2>

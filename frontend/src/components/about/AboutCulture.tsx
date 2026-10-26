@@ -21,7 +21,7 @@ export function AboutCulture() {
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">
             OUR CULTURE
           </p>
-          <h2 className="text-heading mt-3 text-2xl leading-tight sm:text-3xl lg:text-[34px]">
+          <h2 className="text-heading mt-3 text-2xl leading-tight sm:text-3xl lg:text-[33px]">
             People First, Innovation Always.
           </h2>
           <p className="text-description mx-auto mt-5 max-w-2xl text-sm leading-relaxed sm:text-[15px]">

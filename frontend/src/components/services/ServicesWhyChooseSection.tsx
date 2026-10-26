@@ -47,7 +47,7 @@ export function ServicesWhyChooseSection() {
               WHY CHOOSE CRUSOE
             </p>
 
-            <h2 className="mt-3 text-2xl font-bold tracking-tight text-[#0F172A] sm:text-3xl lg:text-[34px]">
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-[#0F172A] sm:text-3xl lg:text-[33px]">
               Built for Quality. Designed for Results.
             </h2>
           </div>

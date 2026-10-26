@@ -48,6 +48,16 @@ const nextConfig = {
     ],
   },
 
+  async redirects() {
+    return [
+      {
+        source: "/services/software-quality",
+        destination: "/services/software-quality-assurance",
+        permanent: true,
+      },
+    ];
+  },
+
   async rewrites() {
     return [
       {

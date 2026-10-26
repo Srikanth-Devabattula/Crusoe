@@ -117,7 +117,7 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
             ))}
           </div>
         </div>
-        <p className="mb-4 line-clamp-[7] overflow-hidden text-justify text-xs leading-relaxed text-gray-700 sm:line-clamp-[8] sm:text-sm lg:line-clamp-[11] lg:text-[11px] lg:leading-[1.55] desktop:line-clamp-[10] desktop:text-sm desktop:leading-relaxed">
+        <p className="mb-4 line-clamp-[7] overflow-hidden text-justify text-xs leading-relaxed text-gray-700 sm:line-clamp-[8] sm:text-[15px] lg:line-clamp-[11] lg:text-[11px] lg:leading-[1.55] desktop:line-clamp-[10] desktop:text-[15px] desktop:leading-relaxed">
           {testimonial.quote}
         </p>
         <div className="mt-auto flex items-center gap-2.5 sm:gap-3">
@@ -150,7 +150,7 @@ export function TestimonialsSection({ variant = "home" }: TestimonialsSectionPro
               TESTIMONIALS
             </p>
             {variant === "home" && (
-              <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-[26px] desktop:text-4xl">
+              <h2 className="text-heading-home">
                 What Our Clients Say
               </h2>
             )}

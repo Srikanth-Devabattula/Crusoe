@@ -40,7 +40,7 @@ export function ServiceDetailView({ page }: ServiceDetailViewProps) {
             </motion.div>
 
             <motion.h1
-              className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[34px] lg:mt-5 lg:text-[38px] xl:text-[42px]"
+              className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[33px] lg:mt-5 lg:text-[33px] xl:text-[33px]"
               custom={0.08}
               variants={fadeUpItem}
             >

@@ -35,7 +35,7 @@ export function AboutTimeline() {
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">
             OUR JOURNEY
           </p>
-          <h2 className="text-heading mt-3 text-2xl sm:text-3xl lg:text-[34px]">
+          <h2 className="text-heading mt-3 text-2xl sm:text-3xl lg:text-[33px]">
             Company History
           </h2>
         </motion.div>

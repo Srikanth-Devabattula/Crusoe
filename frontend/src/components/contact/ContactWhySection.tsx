@@ -24,7 +24,7 @@ export function ContactWhySection() {
           custom={0}
           className="text-center"
         >
-          <h2 className="text-heading text-2xl sm:text-3xl lg:text-[34px]">
+          <h2 className="text-heading text-2xl sm:text-3xl lg:text-[33px]">
             Why Contact <span className="text-brand">Crusoe</span>?
           </h2>
         </motion.div>

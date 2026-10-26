@@ -11,7 +11,7 @@ export const allServiceLinks: RelatedServiceLink[] = [
     href: ROUTES.servicesCadCam,
   },
   {
-    label: "Software Quality",
+    label: "Software Quality Assurance",
     href: ROUTES.servicesQuality,
   },
   {

@@ -48,7 +48,7 @@ export function OurServicesSection() {
               Our Services
             </p>
 
-            <h2 className="text-heading mt-4 max-w-[920px] text-[32px] leading-[1.08] sm:text-[44px] lg:text-[28px] lg:leading-[1.12] desktop:text-[34px] xl:text-[46px] 2xl:text-[50px]">
+            <h2 className="text-heading-home mt-4 max-w-[920px]">
               Solutions That Drive{" "}
               <span className="text-brand">Quality and Innovation</span>
             </h2>
@@ -91,11 +91,11 @@ export function OurServicesSection() {
 
               {/* content */}
               <div className="relative z-10 flex flex-1 flex-col p-3 sm:p-4 lg:p-3 desktop:p-4 xl:p-5">
-                <h3 className="text-lg font-extrabold tracking-[-0.03em] text-[#0f172a] sm:text-xl lg:text-[14px] lg:leading-tight desktop:text-[20px] xl:text-[26px]">
+                <h3 className="text-lg font-extrabold tracking-[-0.03em] text-[#0f172a] sm:text-[18px] lg:text-[14px] lg:leading-tight desktop:text-[18px] xl:text-[18px]">
                   {service.title}
                 </h3>
 
-                <p className="mt-2 flex-1 text-justify text-sm leading-relaxed text-[#4b5563] sm:mt-3 sm:text-[15px] lg:mt-2 lg:text-[11px] lg:leading-[1.5] desktop:mt-3 desktop:text-[14px] desktop:leading-[1.65] xl:mt-4 xl:text-[16px] xl:leading-[1.95]">
+                <p className="mt-2 flex-1 text-justify text-sm leading-relaxed text-[#4b5563] sm:mt-3 sm:text-[15px] lg:mt-2 lg:text-[11px] lg:leading-[1.5] desktop:mt-3 desktop:text-[13px] desktop:leading-[1.65] xl:mt-4 xl:text-[13px] xl:leading-[1.75]">
                   {service.description}
                 </p>
 

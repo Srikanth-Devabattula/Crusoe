@@ -31,9 +31,9 @@ export const servicePages: Record<string, ServicePageData> = {
       "Release sign-off support for enterprise deployments",
     ],
   },
-  "software-quality": {
-    slug: "software-quality",
-    title: "Software Quality",
+  "software-quality-assurance": {
+    slug: "software-quality-assurance",
+    title: "Software Quality Assurance",
     badge: "SOFTWARE QA",
     headline: "Build Confidence with",
     highlight: "End-to-End Quality",

@@ -42,7 +42,7 @@ export function TestimonialsHero() {
               <AnimatedBadge>CLIENT SUCCESS STORIES</AnimatedBadge>
             </motion.div>
 
-            <h1 className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[34px] lg:mt-5 lg:text-[36px] xl:text-[42px]">
+            <h1 className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[33px] lg:mt-5 lg:text-[36px] xl:text-[42px]">
               What Our Clients Say{" "}
               <span className="text-brand">About Us</span>
             </h1>

@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   FaLinkedin,
-  FaTwitter,
   FaEnvelope,
   FaPhone,
   FaMapMarkerAlt,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { ROUTES, SITE_LOGO_SRC, SITE_NAME } from "@/constants";
 import { CONTACT_EMAIL, contactInfoBlocks } from "@/data/contactPage";
 
@@ -22,7 +22,7 @@ const quickLinks = [
 const services = [
   { label: "Engineering Services", href: ROUTES.servicesEngineering },
   { label: "CAD/CAM/CAE Software Testing", href: ROUTES.servicesCadCam },
-  { label: "Software Quality", href: ROUTES.servicesQuality },
+  { label: "Software Quality Assurance", href: ROUTES.servicesQuality },
   { label: "Software Development", href: ROUTES.servicesDevelopment },
 ];
 
@@ -73,35 +73,35 @@ export function Footer() {
         <div className="rounded-[20px] border border-[#e7efe0]/80 bg-white/55 px-4 py-4 shadow-[0_8px_28px_rgba(15,23,42,0.04)] backdrop-blur-sm sm:px-5 sm:py-5 lg:px-6 lg:py-5">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             <div className="lg:col-span-1">
-              <Link href={ROUTES.home} className="mb-2 inline-block">
-                <Image
-                  src={SITE_LOGO_SRC}
-                  alt="Crusoe Tech"
-                  width={320}
-                  height={120}
-                  unoptimized
-                  className="h-auto w-[150px] sm:w-[170px] lg:w-[180px]"
-                />
-              </Link>
-              {/* <p className="mb-3 max-w-xs text-xs leading-snug text-[#5b6472] sm:text-[13px]">
-                Quality software solutions that help businesses innovate and
-                grow.
-              </p> */}
-              <div className="flex items-center gap-2">
-                <div className="flex gap-2">
+              <div className="inline-flex w-fit max-w-full flex-col">
+                <Link href={ROUTES.home} className="inline-block">
+                  <Image
+                    src={SITE_LOGO_SRC}
+                    alt="Crusoe Tech"
+                    width={320}
+                    height={120}
+                    unoptimized
+                    className="h-auto w-[150px] sm:w-[170px] lg:w-[180px]"
+                  />
+                </Link>
+                <div className="mt-2 flex justify-end gap-2">
                   <Link
-                    href="#"
-                    className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-white shadow-[0_6px_16px_rgba(126,168,73,0.25)] transition-all duration-300 hover:bg-brand-dark"
+                    href="https://in.linkedin.com/company/crusoe-technologies"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-brand bg-transparent text-brand transition-colors duration-300 hover:border-brand-dark hover:text-brand-dark"
                     aria-label="LinkedIn"
                   >
                     <FaLinkedin className="h-3.5 w-3.5" />
                   </Link>
                   <Link
-                    href="#"
-                    className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-white shadow-[0_6px_16px_rgba(126,168,73,0.25)] transition-all duration-300 hover:bg-brand-dark"
-                    aria-label="Twitter"
+                    href="https://x.com/CrusoeTechLLP"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-brand bg-transparent text-brand transition-colors duration-300 hover:border-brand-dark hover:text-brand-dark"
+                    aria-label="X"
                   >
-                    <FaTwitter className="h-3.5 w-3.5" />
+                    <FaXTwitter className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               </div>

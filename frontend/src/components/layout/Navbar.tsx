@@ -111,7 +111,7 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href={ROUTES.home}
-            className="shrink-0 outline-none"
+            className="flex shrink-0 items-center outline-none"
           >
             <Image
               src={SITE_LOGO_SRC}
@@ -120,7 +120,7 @@ export function Navbar() {
               height={88}
               priority
               unoptimized
-              className="h-auto w-[200px] sm:w-[216px] lg:w-[168px] xl:w-[190px] desktop:w-[242px] 2xl:w-[292px]"
+              className="h-auto w-[200px] max-h-[60px] object-contain object-left sm:w-[216px] sm:max-h-[65px] lg:w-[168px] lg:max-h-[50px] xl:w-[190px] xl:max-h-[57px] desktop:w-[242px] desktop:max-h-[73px] 2xl:w-[292px] 2xl:max-h-[89px]"
             />
           </Link>
 

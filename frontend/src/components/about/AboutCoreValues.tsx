@@ -38,8 +38,8 @@ export function AboutCoreValues() {
           custom={0}
           className="text-center"
         >
-          <h2 className="text-heading text-2xl sm:text-3xl lg:text-[34px]">
-            OUR CORE VALUES
+          <h2 className="text-heading text-2xl sm:text-3xl lg:text-[33px]">
+            Our Core Values
           </h2>
         </motion.div>
 

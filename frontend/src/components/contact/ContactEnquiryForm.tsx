@@ -205,7 +205,10 @@ export function ContactEnquiryForm() {
             I agree to the{" "}
             <Link
               href={ROUTES.privacyPolicy}
+              target="_blank"
+              rel="noopener noreferrer"
               className="font-medium text-brand hover:underline"
+              onClick={(e) => e.stopPropagation()}
             >
               Privacy Policy
             </Link>

@@ -21,7 +21,7 @@ export function ContactOfficesSection() {
           custom={0}
           className="mx-auto max-w-2xl text-center"
         >
-          <h2 className="text-heading text-2xl sm:text-3xl lg:text-[34px]">
+          <h2 className="text-heading text-2xl sm:text-3xl lg:text-[33px]">
             Our Offices
           </h2>
         </motion.div>

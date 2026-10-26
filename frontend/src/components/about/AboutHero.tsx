@@ -42,7 +42,7 @@ export function AboutHero() {
               <AnimatedBadge>OUR STORY</AnimatedBadge>
             </motion.div>
 
-            <h1 className="text-heading mt-4 text-[34px] leading-[1.12] lg:mt-5">
+            <h1 className="text-heading mt-4 text-[33px] leading-[1.12] lg:mt-5">
               {storyTitle}
             </h1>
 
@@ -50,7 +50,7 @@ export function AboutHero() {
               {storyParagraphs.map((paragraph) => (
                 <p
                   key={paragraph.slice(0, 24)}
-                  className="text-description text-justify text-sm leading-relaxed sm:text-base"
+                  className="text-description text-justify text-sm leading-relaxed sm:text-[15px] lg:text-[15px]"
                 >
                   {paragraph}
                 </p>

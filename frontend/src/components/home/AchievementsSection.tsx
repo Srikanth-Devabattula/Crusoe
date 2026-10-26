@@ -167,7 +167,7 @@ export function AchievementsSection() {
                   </motion.div>
 
                   {/* number */}
-                  <h3 className="text-[22px] font-extrabold leading-none tracking-tight text-[#0f172a] sm:text-[28px] md:text-[34px] lg:text-[32px] desktop:text-[40px] xl:text-[48px]">
+                  <h3 className="text-[22px] font-extrabold leading-none tracking-tight text-[#0f172a] sm:text-[28px] md:text-[33px] lg:text-[32px] desktop:text-[40px] xl:text-[48px]">
                     <Counter
                       value={item.value}
                       suffix={item.suffix}

@@ -39,12 +39,12 @@ export function ServicesHero() {
               <AnimatedBadge>OUR SERVICES</AnimatedBadge>
             </motion.div>
 
-            <h1 className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[34px] lg:mt-5 lg:text-[36px] xl:text-[42px]">
+            <h1 className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[33px] lg:mt-5 lg:text-[33px] xl:text-[33px]">
               Engineering Solutions That{" "}
               <span className="text-brand">Deliver Impact</span>
             </h1>
 
-            <p className="text-description mx-auto mt-4 max-w-lg text-sm leading-relaxed sm:text-base lg:mx-0 lg:mt-5">
+            <p className="text-description mx-auto mt-4 max-w-lg text-sm leading-relaxed sm:text-[15px] lg:mx-0 lg:mt-5 lg:text-[15px]">
               We help businesses build better software, ensure quality at every step,
               and accelerate innovation with reliable engineering solutions.
             </p>

@@ -42,7 +42,7 @@ export function ContactHero() {
               <AnimatedBadge>CONTACT US</AnimatedBadge>
             </motion.div>
 
-            <h1 className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[34px] lg:mt-5 lg:text-[36px] xl:text-[42px]">
+            <h1 className="text-page-hero-title mt-4 lg:mt-5">
               Let&apos;s Build Something
               <br />
               <span className="text-brand">Impactful Together</span>

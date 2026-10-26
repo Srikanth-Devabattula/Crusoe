@@ -30,8 +30,8 @@ export function SoftwareQualityServicePage() {
   return (
     <>
       <ServiceBreadcrumbHero
-        title="Software Quality"
-        crumbs={[...defaultServiceCrumbs, { label: "Software Quality" }]}
+        title="Software Quality Assurance"
+        crumbs={[...defaultServiceCrumbs, { label: "Software Quality Assurance" }]}
       />
 
       {/* Hero banner */}
@@ -48,7 +48,7 @@ export function SoftwareQualityServicePage() {
             <div className="relative aspect-[16/10] w-full sm:aspect-[21/9] lg:aspect-[2.4/1]">
               <Image
                 src={SOFTWARE_QUALITY_IMAGES.hero}
-                alt="Software Quality"
+                alt="Software Quality Assurance"
                 fill
                 priority
                 sizes="100vw"

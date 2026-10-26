@@ -10,7 +10,7 @@ import { ROUTES } from "@/constants";
 import { createPageMetadata } from "@/lib/createPageMetadata";
 
 const CAD_CAM_SLUG = "cad-cam-cae-software-testing";
-const SOFTWARE_QUALITY_SLUG = "software-quality";
+const SOFTWARE_QUALITY_SLUG = "software-quality-assurance";
 const ENGINEERING_SLUG = "engineering-services";
 const SOFTWARE_DEVELOPMENT_SLUG = "software-development";
 

@@ -40,7 +40,7 @@ export function SmartSourcingHero() {
               <AnimatedBadge>SMARTSOURCING</AnimatedBadge>
             </motion.div>
 
-            <h1 className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[34px] lg:mt-5 lg:text-[36px] xl:text-[42px]">
+            <h1 className="text-heading mt-4 text-[28px] leading-[1.12] sm:text-[33px] lg:mt-5 lg:text-[36px] xl:text-[42px]">
               Beyond Outsourcing:
               <br />
               <span className="text-brand">Elevating Innovation</span>

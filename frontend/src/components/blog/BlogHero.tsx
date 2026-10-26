@@ -31,7 +31,7 @@ export function BlogHero() {
           </motion.div>
 
           <motion.h1
-            className="mt-5 text-[2rem] font-bold leading-tight tracking-tight text-slate-900 sm:text-[2.5rem] lg:text-[2.75rem]"
+            className="text-page-hero-title mt-5"
             custom={0.12}
             variants={fadeUp}
           >

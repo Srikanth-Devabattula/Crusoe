@@ -17,7 +17,7 @@ export function ServiceBreadcrumbHero({
       <PageHeroOverlay />
 
       <div className="hero-container relative z-10 pb-10 pt-[5.25rem] sm:pb-12 sm:pt-[5.75rem] lg:pb-14 lg:pt-[6.25rem]">
-        <h1 className="text-heading text-[28px] leading-[1.12] sm:text-[34px] lg:text-[38px] xl:text-[42px]">
+        <h1 className="text-heading text-[28px] leading-[1.12] sm:text-[33px] lg:text-[33px] xl:text-[33px]">
           {title}
         </h1>
 

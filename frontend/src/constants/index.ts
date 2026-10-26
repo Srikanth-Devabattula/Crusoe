@@ -14,7 +14,7 @@ export const ROUTES = {
   about: "/about",
   services: "/services",
   servicesCadCam: "/services/cad-cam-cae-software-testing",
-  servicesQuality: "/services/software-quality",
+  servicesQuality: "/services/software-quality-assurance",
   servicesEngineering: "/services/engineering-services",
   servicesDevelopment: "/services/software-development",
   smartsourcing: "/smartsourcing",

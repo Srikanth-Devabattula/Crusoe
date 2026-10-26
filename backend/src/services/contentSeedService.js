@@ -174,7 +174,7 @@ const DEFAULT_PARTNERS = [
 const HERO_SLIDE_CTA_RULES = [
   [/^engineering services$/i, "/services/engineering-services"],
   [/cad.*cae.*testing|cad\/cam\/cae/i, "/services/cad-cam-cae-software-testing"],
-  [/software quality|quality assurance$/i, "/services/software-quality"],
+  [/software quality|quality assurance$/i, "/services/software-quality-assurance"],
   [/^software development$/i, "/services/software-development"],
   [/smartsourcing/i, "/smartsourcing"],
 ];
@@ -217,7 +217,7 @@ const DEFAULT_HERO_SLIDES = [
       "Comprehensive quality assurance and automated testing services to ensure reliability, performance and seamless user experiences.",
     image: "/images/hero/card1.png",
     icon: "/images/hero/card1icon.png",
-    ctaLink: "/services/software-quality",
+    ctaLink: "/services/software-quality-assurance",
     published: true,
     sortOrder: 3,
   },

@@ -196,7 +196,7 @@ export function AdminHeroSlideForm({
             type="text"
             {...form.register("ctaLink")}
             className={inputClass}
-            placeholder="e.g. /services/software-quality or /contact"
+            placeholder="e.g. /services/software-quality-assurance or /contact"
           />
         </div>
 

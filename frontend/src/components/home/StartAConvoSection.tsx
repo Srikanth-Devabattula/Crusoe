@@ -37,7 +37,7 @@ export function StartAConvoSection() {
 
           <div className="relative grid w-full items-center gap-6 px-6 py-10 sm:gap-8 sm:px-10 sm:py-12 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-10 lg:px-12 xl:gap-12 xl:px-14">
             <div className="order-2 w-full min-w-0 text-center lg:order-1 lg:text-left">
-              <h2 className="text-heading text-[32px] leading-[1.08] sm:text-[44px] lg:text-[28px] lg:leading-[1.12] desktop:text-[34px] xl:text-[46px] 2xl:text-[50px]">
+              <h2 className="text-heading text-[32px] leading-[1.08] sm:text-[44px] lg:text-[28px] lg:leading-[1.12] desktop:text-[33px] xl:text-[46px] 2xl:text-[50px]">
                 Ready to Build
                 <br />
                 <span className="text-brand">Better Software?</span>

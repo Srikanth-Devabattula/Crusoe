@@ -106,7 +106,7 @@ export function LogosSection() {
           <span className="inline-flex items-center rounded-full border border-brand/20 bg-brand-muted/50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-brand">
             Trusted Worldwide
           </span>
-          <h2 className="text-heading mt-4 text-2xl sm:text-3xl lg:text-[34px]">
+          <h2 className="text-heading-home mt-4">
             Companies That{" "}
             <span className="text-brand">Trust Crusoe</span>
           </h2>
