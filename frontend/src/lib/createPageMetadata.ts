@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
-import { SITE_NAME } from "@/constants";
 import {
   DEFAULT_DESCRIPTION,
   DEFAULT_KEYWORDS,
   DEFAULT_OG_IMAGE,
+  SITE_OG_NAME,
   ogTitle,
 } from "@/lib/seo";
 
@@ -39,7 +39,7 @@ export function createPageMetadata(
       title: openGraphTitle,
       description: resolvedDescription,
       url: options?.path,
-      siteName: SITE_NAME,
+      siteName: SITE_OG_NAME,
       type: "website",
       locale: "en_IN",
       images: [

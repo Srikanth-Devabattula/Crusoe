@@ -7,7 +7,9 @@ import {
   DEFAULT_KEYWORDS,
   DEFAULT_OG_IMAGE,
   FAVICON_PATH,
+  GOOGLE_SITE_VERIFICATION,
   HOME_SEO_TITLE,
+  SITE_OG_NAME,
   SITE_URL,
 } from "@/lib/seo";
 import "./globals.css";
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
   },
   description: DEFAULT_DESCRIPTION,
   keywords: DEFAULT_KEYWORDS,
-  applicationName: SITE_NAME,
+  applicationName: SITE_OG_NAME,
   icons: {
     icon: [{ url: FAVICON_PATH, type: "image/png" }],
     shortcut: FAVICON_PATH,
@@ -31,8 +33,9 @@ export const metadata: Metadata = {
     description: DEFAULT_DESCRIPTION,
     type: "website",
     locale: "en_IN",
-    siteName: SITE_NAME,
-    images: [{ url: DEFAULT_OG_IMAGE, alt: SITE_NAME }],
+    siteName: SITE_OG_NAME,
+    url: "/",
+    images: [{ url: DEFAULT_OG_IMAGE, alt: SITE_OG_NAME }],
   },
   twitter: {
     card: "summary_large_image",
@@ -44,6 +47,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  ...(GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: GOOGLE_SITE_VERIFICATION } }
+    : {}),
 };
 
 export default function RootLayout({

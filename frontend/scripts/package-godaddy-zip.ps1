@@ -10,6 +10,7 @@ try {
   Write-Host "Running production build..."
   $env:NEXT_PUBLIC_API_URL = "https://backend.crusoetec.com/api"
   $env:NEXT_PUBLIC_SITE_URL = "https://crusoetec.com"
+  $env:GOOGLE_SITE_VERIFICATION = "4j80TGzsCv74SR8j0DBcPdAdrFr3zvEbLzD2za2q2xc"
   npm run build
   Write-Host "Creating zip (includes .next, excludes cache)..."
   tar -a -c -f $Out `

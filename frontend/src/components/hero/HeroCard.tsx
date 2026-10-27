@@ -81,9 +81,9 @@ export function HeroCard({
         </div>
 
         <div className="lg:my-auto flex flex-col items-start w-full">
-          <h3 className="text-heading mt-4 w-full text-[26px] leading-tight sm:mt-5 sm:text-[32px] lg:mt-0 lg:text-[22px] xl:text-[28px] desktop:text-[42px] 2xl:text-[46px]">
+          <h2 className="text-heading mt-4 w-full text-[26px] leading-tight sm:mt-5 sm:text-[32px] lg:mt-0 lg:text-[22px] xl:text-[28px] desktop:text-[42px] 2xl:text-[46px]">
             {slide.title}
-          </h3>
+          </h2>
 
           <span
             className="mt-2 block h-1 w-12 rounded-full bg-brand sm:mt-3 sm:h-1.5 sm:w-16 desktop:mt-5"

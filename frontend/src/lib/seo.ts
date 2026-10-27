@@ -6,17 +6,29 @@ export const SITE_URL =
     ? "https://crusoetec.com"
     : "http://localhost:3000");
 
+/** Google Search Console HTML tag (public in page source; env overrides for other environments) */
+const GOOGLE_SITE_VERIFICATION_TOKEN =
+  "4j80TGzsCv74SR8j0DBcPdAdrFr3zvEbLzD2za2q2xc";
+
+export const GOOGLE_SITE_VERIFICATION =
+  process.env.GOOGLE_SITE_VERIFICATION?.trim() ||
+  GOOGLE_SITE_VERIFICATION_TOKEN;
+
 export const FAVICON_PATH = "/images/global/favicon.png";
 
 export const DEFAULT_OG_IMAGE = "/images/global/crusoe_logo.svg";
 
-export const HOME_SEO_TITLE = "Crusoe | Onshape 3D CAD Engineering Services Experts";
+/** Full homepage `<title>` — use with `title.absolute` on `/` */
+export const HOME_SEO_TITLE =
+  "Crusoe Technologies | Onshape 3D CAD Engineering Services Experts";
 
-export const DEFAULT_DESCRIPTION =
-  "Crusoe provides Onshape 3D CAD engineering services, CAD software QA, platform migration, engineering design, and custom software development for global teams.";
+/** Open Graph / JSON-LD site name (legal / search branding) */
+export const SITE_OG_NAME = "Crusoe Technologies";
 
 export const HOME_SEO_DESCRIPTION =
-  "Crusoe provides Onshape 3D CAD engineering services, CAD/CAM/CAE software testing, CAD platform migration, and engineering design support for software and manufacturing companies.";
+  "Crusoe Technologies delivers Onshape 3D CAD engineering services, CAD/CAM/CAE software testing, CAD platform migration, and custom software development for global software and manufacturing teams.";
+
+export const DEFAULT_DESCRIPTION = HOME_SEO_DESCRIPTION;
 
 export const DEFAULT_KEYWORDS = [
   "Crusoe Tech",
@@ -49,4 +61,22 @@ export function absoluteUrl(path: string): string {
 
 export function ogTitle(pageTitle: string): string {
   return `${pageTitle} | ${SITE_NAME}`;
+}
+
+export type WebsiteJsonLd = {
+  "@context": "https://schema.org";
+  "@type": "WebSite";
+  name: typeof SITE_OG_NAME;
+  alternateName: string;
+  url: string;
+};
+
+export function getWebsiteJsonLd(): WebsiteJsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_OG_NAME,
+    alternateName: "Crusoe",
+    url: absoluteUrl("/"),
+  };
 }

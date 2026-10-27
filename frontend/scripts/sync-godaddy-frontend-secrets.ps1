@@ -9,8 +9,9 @@ $ErrorActionPreference = "Stop"
 $AppId = "NODEJS-dj7kt4t2oo"
 
 $secrets = @{
-  NEXT_PUBLIC_API_URL   = "https://backend.crusoetec.com/api"
-  NEXT_PUBLIC_SITE_URL  = "https://crusoetec.com"
+  NEXT_PUBLIC_API_URL        = "https://backend.crusoetec.com/api"
+  NEXT_PUBLIC_SITE_URL       = "https://crusoetec.com"
+  GOOGLE_SITE_VERIFICATION   = "4j80TGzsCv74SR8j0DBcPdAdrFr3zvEbLzD2za2q2xc"
 }
 
 function Sync-Variant([string]$TargetVariant) {
