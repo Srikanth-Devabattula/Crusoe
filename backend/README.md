@@ -11,9 +11,12 @@ Node.js Express REST API with **MySQL** and **Prisma** (MongoDB/Mongoose adapter
 
 ## Getting Started
 
+Full walkthrough (Node install, env vars, local vs remote MySQL): **[../docs/LOCAL_DEVELOPMENT.md](../docs/LOCAL_DEVELOPMENT.md)**
+
 ```bash
 npm install
-cp .env.example .env   # set DATABASE_URL, JWT_SECRET, ADMIN_EMAIL, email vars
+cp .env.example .env   # Windows: copy .env.example .env
+# set DATABASE_URL, JWT_SECRET, ADMIN_EMAIL, email vars
 npx prisma generate
 npx prisma migrate deploy   # apply migrations — use deploy, NOT migrate dev, on GoDaddy/shared MySQL
 npm run dev
@@ -23,7 +26,7 @@ npm run dev
 
 See [docs/MYSQL_MIGRATION.md](docs/MYSQL_MIGRATION.md) for schema mapping, data import, and deployment.
 
-- Production: [https://crusoe-nhbu.onrender.com](https://crusoe-nhbu.onrender.com)
+- Production: [https://backend.crusoetec.com](https://backend.crusoetec.com)
 - Local: [http://localhost:5000](http://localhost:5000)
 
 ## Environment Variables

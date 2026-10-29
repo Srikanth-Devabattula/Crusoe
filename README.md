@@ -1,52 +1,47 @@
 # Crusoe Tech — Full Stack Project
 
-Professional full-stack boilerplate with separate frontend and backend applications.
+Monorepo for **crusoetec.com**: Next.js frontend + Express API with MySQL (Prisma).
 
 ## Structure
 
 ```
 crusoetech/
 ├── frontend/   # Next.js 14 + TypeScript + Tailwind
-└── backend/    # Node.js + Express + MongoDB
+├── backend/    # Node.js + Express + MySQL + Prisma
+└── docs/       # Shared documentation
 ```
 
-## Quick Start
+## Local development
 
-### Backend
+**Start here:** [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) — **in-depth guide with copy-paste PowerShell commands** (Node install, MySQL, `.env` templates, migrations, verify health, admin OTP, Prisma, troubleshooting).
 
-```bash
+Quick reference after env is configured:
+
+```powershell
+# Terminal 1
 cd backend
 npm install
-cp .env.example .env
-# Start MongoDB locally, then:
+npx prisma generate
 npm run dev
-```
 
-### Frontend
-
-```bash
+# Terminal 2
 cd frontend
 npm install
-cp .env.example .env.local
 npm run dev
 ```
 
-- Frontend: [http://localhost:3000](http://localhost:3000)
-- Backend API (production): [https://crusoe-nhbu.onrender.com/api](https://crusoe-nhbu.onrender.com/api)
-- Backend API (local): [http://localhost:5000/api](http://localhost:5000/api)
+- Frontend: http://localhost:3000  
+- Backend API: http://localhost:5000/api  
+- Health: http://localhost:5000/api/health  
 
-## Features
+## Production
 
-- Scalable folder architecture
-- Responsive placeholder pages
-- REST API structure with JWT auth boilerplate
-- MongoDB models and middleware
-- File upload support (resumes)
-- Email configuration placeholder
+- Site: https://crusoetec.com  
+- API: https://backend.crusoetec.com/api  
 
-## Next Steps
+Deploy and hosting details live under `frontend/scripts/` and `backend/docs/` (GoDaddy / Airo).
 
-- Implement form logic with React Hook Form + Zod
-- Wire admin authentication end-to-end
-- Build final UI design
-- Seed admin user in database
+## App READMEs
+
+- [frontend/README.md](frontend/README.md)  
+- [backend/README.md](backend/README.md)  
